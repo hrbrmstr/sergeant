@@ -1,9 +1,16 @@
 Package: sergeant
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
+Title: Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'
+Version: 0.1.0.9000
 Authors@R: c(person("Bob", "Rudis", email = "bob@rudis.net", role = c("aut", "cre")))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.3.0)
+Description: Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'.
+Depends:
+    R (>= 3.0.0)
 License: AGPL + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Suggests:
+    testthat,
+    httr,
+    jsonlite,
+    htmltools
+RoxygenNote: 5.0.1

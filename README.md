@@ -15,7 +15,7 @@ The following functions are implemented:
 -   `drill_profiles`: Get the profiles of running and completed queries
 -   `drill_query`: Submit a query and return results
 -   `drill_stats`: Get Drillbit information, such as ports numbers
--   \`drill\_status Get the status of Drill
+-   `drill_status`: Get the status of Drill
 -   `drill_storage`: Get the list of storage plugin names and configurations
 -   `drill_threads`: Get information about threads
 
@@ -39,7 +39,6 @@ packageVersion("sergeant")
 #> [1] '0.1.0.9000'
 
 drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet`")
-#> No encoding supplied: defaulting to UTF-8.
 #> $columns
 #> [1] "N_NATIONKEY" "N_NAME"      "N_REGIONKEY" "N_COMMENT"  
 #> 
@@ -79,7 +78,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Thu Jun  2 22:01:36 2016"
+#> [1] "Thu Jun  2 22:04:19 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

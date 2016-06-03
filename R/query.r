@@ -10,7 +10,7 @@ drill_query <- function(query, drill_server=Sys.getenv("DRILL_URL")) {
                     body=list(queryType="SQL",
                               query=query))
 
-  jsonlite::fromJSON(content(res, as="text"), flatten=TRUE)
+  jsonlite::fromJSON(content(res, as="text", encoding="UTF-8"), flatten=TRUE)
 
 }
 

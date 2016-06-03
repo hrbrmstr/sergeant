@@ -27,7 +27,7 @@ The following functions are implemented:
 - `drill_profiles`:	Get the profiles of running and completed queries
 - `drill_query`:	Submit a query and return results
 - `drill_stats`:	Get Drillbit information, such as ports numbers
-- `drill_status	Get the status of Drill
+- `drill_status`:	Get the status of Drill
 - `drill_storage`:	Get the list of storage plugin names and configurations
 - `drill_threads`:	Get information about threads
 

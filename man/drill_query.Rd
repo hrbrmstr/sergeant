@@ -4,7 +4,8 @@
 \alias{drill_query}
 \title{Submit a query and return results}
 \usage{
-drill_query(query, drill_server = Sys.getenv("DRILL_URL"))
+drill_query(query, drill_server = Sys.getenv("DRILL_URL", unset =
+  "http://localhost:8047"))
 }
 \arguments{
 \item{query}{query to run}

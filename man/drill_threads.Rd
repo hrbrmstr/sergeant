@@ -4,7 +4,8 @@
 \alias{drill_threads}
 \title{Get information about threads}
 \usage{
-drill_threads(drill_server = Sys.getenv("DRILL_URL"))
+drill_threads(drill_server = Sys.getenv("DRILL_URL", unset =
+  "http://localhost:8047"))
 }
 \arguments{
 \item{drill_server}{base URL of the \code{drill} server}

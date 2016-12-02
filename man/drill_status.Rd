@@ -4,7 +4,8 @@
 \alias{drill_status}
 \title{Get the status of Drill}
 \usage{
-drill_status(drill_server = Sys.getenv("DRILL_URL"))
+drill_status(drill_server = Sys.getenv("DRILL_URL", unset =
+  "http://localhost:8047"))
 }
 \arguments{
 \item{drill_server}{base URL of the \code{drill} server}

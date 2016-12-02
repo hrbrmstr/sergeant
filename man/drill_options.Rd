@@ -4,7 +4,8 @@
 \alias{drill_options}
 \title{List the name, default, and data type of the system and session options}
 \usage{
-drill_options(drill_server = Sys.getenv("DRILL_URL"))
+drill_options(drill_server = Sys.getenv("DRILL_URL", unset =
+  "http://localhost:8047"))
 }
 \arguments{
 \item{drill_server}{base URL of the \code{drill} server}

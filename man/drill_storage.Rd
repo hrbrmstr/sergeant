@@ -4,9 +4,12 @@
 \alias{drill_storage}
 \title{Get the list of storage plugin names and configurations}
 \usage{
-drill_storage(drill_server = Sys.getenv("DRILL_URL"))
+drill_storage(plugin = NULL, drill_server = Sys.getenv("DRILL_URL", unset =
+  "http://localhost:8047"))
 }
 \arguments{
+\item{plugin}{the assigned name in the storage plugin definition.}
+
 \item{drill_server}{base URL of the \code{drill} server}
 }
 \description{

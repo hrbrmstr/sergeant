@@ -2,6 +2,6 @@
 #'
 #' @name sergeant
 #' @docType package
-#' @author Bob Rudis (@@hrbrmstr)
+#' @author Bob Rudis (bob@@rud.is)
 #' @import httr jsonlite htmltools
 NULL

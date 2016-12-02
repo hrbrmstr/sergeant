@@ -4,7 +4,8 @@
 \alias{drill_profiles}
 \title{Get the profiles of running and completed queries}
 \usage{
-drill_profiles(drill_server = Sys.getenv("DRILL_URL"))
+drill_profiles(drill_server = Sys.getenv("DRILL_URL", unset =
+  "http://localhost:8047"))
 }
 \arguments{
 \item{drill_server}{base URL of the \code{drill} server}

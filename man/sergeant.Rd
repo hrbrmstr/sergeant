@@ -9,6 +9,6 @@
 Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'
 }
 \author{
-Bob Rudis (@hrbrmstr)
+Bob Rudis (bob@rud.is)
 }
 

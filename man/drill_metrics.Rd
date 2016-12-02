@@ -4,7 +4,8 @@
 \alias{drill_metrics}
 \title{Get the current memory metrics}
 \usage{
-drill_metrics(drill_server = Sys.getenv("DRILL_URL"))
+drill_metrics(drill_server = Sys.getenv("DRILL_URL", unset =
+  "http://localhost:8047"))
 }
 \arguments{
 \item{drill_server}{base URL of the \code{drill} server}

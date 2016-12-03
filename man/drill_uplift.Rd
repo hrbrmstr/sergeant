@@ -14,4 +14,8 @@ If you know the result of `drill_query()` will be a data frame, then
 you can pipe it to this function to pull out `rows` and automatically
 type-convert it.
 }
+\details{
+Not really intended to be called directly, but useful if you ran \code{drill_query()}
+without `uplift=TRUE` but want to then convert the structure.
+}
 

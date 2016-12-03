@@ -6,7 +6,7 @@
 #'
 #' If any query errors result, error messages will be presented to the console.
 #'
-#' @param ... named parameters to be sent to \code{ALTER [SYSTEM|SESSION]}
+#' @param ... named parameters to be sent to ALTER [SYSTEM|SESSION]
 #' @param type set the \code{session} or \code{system} parameter
 #' @param drill_server base URL of the \code{drill} server
 #' @return a \code{tbl} (invisibly) with the \code{ALTER} queries sent and results, including errors.
@@ -54,6 +54,9 @@ drill_set <- function(..., type=c("session", "system"),
 #' @param all if \code{TRUE}, all parameters are reset (\code{...} is ignored)
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_system_reset(all=TRUE)
+#' }
 drill_system_reset <- function(..., all=FALSE,
                                drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
 
@@ -91,7 +94,10 @@ drill_system_reset <- function(..., all=FALSE,
 #' @param ... bare name of system options to reset
 #' @param drill_server base URL of the \code{drill} server
 #' @export
-drill_setting_reset <- function(...,
+#' @examples \dontrun{
+#' drill_settings_reset(exec.errors.verbose)
+#' }
+drill_settings_reset <- function(...,
                                drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
 
 

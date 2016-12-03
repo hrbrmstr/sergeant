@@ -17,7 +17,7 @@ The following functions are implemented:
 -   `drill_profiles`: Get the profiles of running and completed queries
 -   `drill_query`: Submit a query and return results
 -   `drill_set`: Set Drill SYSTEM or SESSION options
--   `drill_setting_reset`: Changes (optionally, all) session settings back to system defaults
+-   `drill_settings_reset`: Changes (optionally, all) session settings back to system defaults
 -   `drill_show_files`: Show files in a file system schema.
 -   `drill_show_schemas`: Returns a list of available schemas.
 -   `drill_stats`: Get Drillbit information, such as ports numbers
@@ -43,6 +43,75 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 #> [1] '0.1.0.9000'
+
+drill_version()
+#> [1] "1.9.0"
+
+drill_storage()$name
+#> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"
+
+drill_query("SELECT * FROM cp.`employee.json` limit 100")
+#> Parsed with column specification:
+#> cols(
+#>   store_id = col_integer(),
+#>   gender = col_character(),
+#>   department_id = col_integer(),
+#>   birth_date = col_date(format = ""),
+#>   supervisor_id = col_integer(),
+#>   last_name = col_character(),
+#>   position_title = col_character(),
+#>   hire_date = col_datetime(format = ""),
+#>   management_role = col_character(),
+#>   salary = col_double(),
+#>   marital_status = col_character(),
+#>   full_name = col_character(),
+#>   employee_id = col_integer(),
+#>   education_level = col_character(),
+#>   first_name = col_character(),
+#>   position_id = col_integer()
+#> )
+#> # A tibble: 100 × 16
+#>    store_id gender department_id birth_date supervisor_id last_name         position_title  hire_date   management_role
+#> *     <int>  <chr>         <int>     <date>         <int>     <chr>                  <chr>     <dttm>             <chr>
+#> 1         0      F             1 1961-08-26             0    Nowmer              President 1994-12-01 Senior Management
+#> 2         0      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01 Senior Management
+#> 3         0      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01 Senior Management
+#> 4         0      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01 Senior Management
+#> 5         0      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01 Senior Management
+#> 6         0      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01 Senior Management
+#> 7         9      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01  Store Management
+#> 8        21      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01  Store Management
+#> 9         0      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01 Senior Management
+#> 10        1      M            11 1967-06-20             5  Murraiin          Store Manager 1998-01-01  Store Management
+#> # ... with 90 more rows, and 7 more variables: salary <dbl>, marital_status <chr>, full_name <chr>, employee_id <int>,
+#> #   education_level <chr>, first_name <chr>, position_id <int>
+
+drill_query("SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
+#> Parsed with column specification:
+#> cols(
+#>   gender = col_integer()
+#> )
+#> # A tibble: 2 × 1
+#>   gender
+#> *  <int>
+#> 1    601
+#> 2    554
+
+drill_options()
+#> # A tibble: 105 × 4
+#>                                              name value   type    kind
+#> *                                           <chr> <chr>  <chr>   <chr>
+#> 1                  planner.enable_hash_single_key  TRUE SYSTEM BOOLEAN
+#> 2              planner.enable_limit0_optimization FALSE SYSTEM BOOLEAN
+#> 3               store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN
+#> 4                 planner.enable_constant_folding  TRUE SYSTEM BOOLEAN
+#> 5                       store.json.extended_types FALSE SYSTEM BOOLEAN
+#> 6    planner.memory.non_blocking_operators_memory    64 SYSTEM    LONG
+#> 7                   planner.enable_multiphase_agg  TRUE SYSTEM BOOLEAN
+#> 8  planner.filter.max_selectivity_estimate_factor     1 SYSTEM  DOUBLE
+#> 9                     planner.enable_mux_exchange  TRUE SYSTEM BOOLEAN
+#> 10                   store.parquet.use_new_reader FALSE SYSTEM BOOLEAN
+#> # ... with 95 more rows
 ```
 
 ### Test Results
@@ -52,7 +121,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Sat Dec  3 11:28:51 2016"
+#> [1] "Sat Dec  3 12:35:10 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

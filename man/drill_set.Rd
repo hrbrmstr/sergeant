@@ -8,7 +8,7 @@ drill_set(..., type = c("session", "system"),
   drill_server = Sys.getenv("DRILL_URL", unset = "http://localhost:8047"))
 }
 \arguments{
-\item{...}{named parameters to be sent to \code{ALTER [SYSTEM|SESSION]}}
+\item{...}{named parameters to be sent to ALTER [SYSTEM|SESSION]}
 
 \item{type}{set the \code{session} or \code{system} parameter}
 

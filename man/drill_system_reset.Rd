@@ -17,4 +17,9 @@ drill_system_reset(..., all = FALSE, drill_server = Sys.getenv("DRILL_URL",
 \description{
 Changes (optionally, all) system settings back to system defaults
 }
+\examples{
+\dontrun{
+drill_system_reset(all=TRUE)
+}
+}
 

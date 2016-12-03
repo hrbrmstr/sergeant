@@ -29,7 +29,7 @@ The following functions are implemented:
 - `drill_profiles`:	Get the profiles of running and completed queries
 - `drill_query`:	Submit a query and return results
 - `drill_set`:	Set Drill SYSTEM or SESSION options
-- `drill_setting_reset`:	Changes (optionally, all) session settings back to system defaults
+- `drill_settings_reset`:	Changes (optionally, all) session settings back to system defaults
 - `drill_show_files`:	Show files in a file system schema.
 - `drill_show_schemas`:	Returns a list of available schemas.
 - `drill_stats`:	Get Drillbit information, such as ports numbers
@@ -59,6 +59,15 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 
+drill_version()
+
+drill_storage()$name
+
+drill_query("SELECT * FROM cp.`employee.json` limit 100")
+
+drill_query("SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
+
+drill_options()
 ```
 
 ### Test Results

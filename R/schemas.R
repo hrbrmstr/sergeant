@@ -19,14 +19,6 @@ drill_use <- function(schema_name, drill_server=Sys.getenv("DRILL_URL", unset="h
   invisible(out)
 }
 
-#' Identify the version of Drill running
-#'
-#' @param drill_server base URL of the \code{drill} server
-#' @export
-drill_version <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
-  drill_query("SELECT version FROM sys.version", drill_server=drill_server)$rows$version[1]
-}
-
 #' Show files in a file system schema.
 #'
 #' @param schema_spec properly quoted "filesystem.directory_name" reference path

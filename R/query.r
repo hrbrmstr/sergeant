@@ -1,10 +1,13 @@
 #' Submit a query and return results
 #'
 #' @param query query to run
-#' @param uplift automatically run `drill_uplift()` on the result?
+#' @param uplift automatically run \code{drill_uplift()} on the result?
 #' @param drill_server base URL of the \code{drill} server
 #' @export
-drill_query <- function(query, uplift=FALSE, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+#' @examples \dontrun{
+#' drill_query("SELECT * FROM cp.`employee.json` limit 5")
+#' }
+drill_query <- function(query, uplift=TRUE, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
 
   res <- httr::POST(sprintf("%s/query.json", drill_server),
                     encode="json",
@@ -28,6 +31,9 @@ drill_query <- function(query, uplift=FALSE, drill_server=Sys.getenv("DRILL_URL"
 #' If you know the result of `drill_query()` will be a data frame, then
 #' you can pipe it to this function to pull out `rows` and automatically
 #' type-convert it.
+#'
+#' Not really intended to be called directly, but useful if you ran \code{drill_query()}
+#' without `uplift=TRUE` but want to then convert the structure.
 #'
 #' @param query_result the result of a call to `drill_query()`
 #' @export

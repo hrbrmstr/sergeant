@@ -6,14 +6,33 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sergeant)](http://cran.r-project.org/web/packages/sergeant) 
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/sergeant)
 -->
+<img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
+
 `sergeant` : Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'
+
+Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
+
+The package doesn't have a `dplyr`-esque interface yet, but creating one is possible since Drill uses pretty standard SQL for queries. Right now, you need to build Drill SQL queries by hand and issue them with `drill_query()`. It's good to get one's hands dirty with some SQL on occassion (it build character).
+
+I find writing SQL queries to parquet files with Drill on a local 64GB Linux workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
+
+You can download Drill from <https://drill.apache.org/download/> (use "Direct File Download"). I use `/usr/local/drill` as the install directory. `drill-embedded` is a super-easy way to get started playing with Drill on a single workstation and most of my workflows can get by using Drill this way. If there is sufficient desire for an automated downloader and a way to start the `drill-embedded` server from within R, please file an issue.
+
+Theren are a few convenience wrappers for various informational SQL queries (like `drill_version()`). Please file an PR if you add more.
+
+The package has been written with retrieval of rectangular data sources in mind. If you need/want a version of `drill_query()` that will enable returning of non-rectangular data (which is possible with Drill) then please file an issue.
+
+Some of the more "controlling vs data ops" REST API functions aren't implemented. Please file a PR if you need those.
+
+Finally, I run most of this locally and at home, so it's all been coded with no authentication or encryption in mind. If you want/need support for that, please file an issue. If there is demand for this, it will change the R API a bit (I've already thought out what to do but have no need for it right now).
 
 The following functions are implemented:
 
--   `drill_cancel`: Cancel the query that has the given queryid.
+-   `drill_active`: Test whether Drill HTTP REST API server is up
+-   `drill_cancel`: Cancel the query that has the given queryid
 -   `drill_metrics`: Get the current memory metrics
 -   `drill_options`: List the name, default, and data type of the system and session options
--   `drill_profile`: Get the profile of the query that has the given queryid.
+-   `drill_profile`: Get the profile of the query that has the given queryid
 -   `drill_profiles`: Get the profiles of running and completed queries
 -   `drill_query`: Submit a query and return results
 -   `drill_set`: Set Drill SYSTEM or SESSION options
@@ -44,12 +63,19 @@ library(sergeant)
 packageVersion("sergeant")
 #> [1] '0.1.0.9000'
 
+drill_active()
+#> [1] TRUE
+
 drill_version()
 #> [1] "1.9.0"
 
 drill_storage()$name
 #> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"
+```
 
+Working with the built-in JSON data sets:
+
+``` r
 drill_query("SELECT * FROM cp.`employee.json` limit 100")
 #> Parsed with column specification:
 #> cols(
@@ -114,6 +140,86 @@ drill_options()
 #> # ... with 95 more rows
 ```
 
+Working with parquet files
+--------------------------
+
+``` r
+drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
+#> Parsed with column specification:
+#> cols(
+#>   N_COMMENT = col_character(),
+#>   N_NAME = col_character(),
+#>   N_NATIONKEY = col_integer(),
+#>   N_REGIONKEY = col_integer()
+#> )
+#> # A tibble: 5 × 4
+#>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY
+#> *                <chr>     <chr>       <int>       <int>
+#> 1  haggle. carefully f   ALGERIA           0           0
+#> 2 al foxes promise sly ARGENTINA           1           1
+#> 3 y alongside of the p    BRAZIL           2           1
+#> 4 eas hang ironic, sil    CANADA           3           1
+#> 5 y above the carefull     EGYPT           4           4
+```
+
+Including multiple parquet files in different directories (note the wildcard support):
+
+``` r
+drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
+#> Parsed with column specification:
+#> cols(
+#>   N_COMMENT = col_character(),
+#>   N_NAME = col_character(),
+#>   N_NATIONKEY = col_integer(),
+#>   N_REGIONKEY = col_integer(),
+#>   dir0 = col_character()
+#> )
+#> # A tibble: 5 × 5
+#>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY      dir0
+#> *                <chr>     <chr>       <int>       <int>     <chr>
+#> 1  haggle. carefully f   ALGERIA           0           0 nationsMF
+#> 2 al foxes promise sly ARGENTINA           1           1 nationsMF
+#> 3 y alongside of the p    BRAZIL           2           1 nationsMF
+#> 4 eas hang ironic, sil    CANADA           3           1 nationsMF
+#> 5 y above the carefull     EGYPT           4           4 nationsMF
+```
+
+### A preview of the built-in support for spatial ops
+
+Via: <https://github.com/k255/drill-gis>
+
+A common use case is to select data within boundary of given polygon:
+
+``` r
+drill_query("
+select columns[2] as city, columns[4] as lon, columns[3] as lat
+    from cp.`sample-data/CA-cities.csv`
+    where
+        ST_Within(
+            ST_Point(columns[4], columns[3]),
+            ST_GeomFromText(
+                'POLYGON((-121.95 37.28, -121.94 37.35, -121.84 37.35, -121.84 37.28, -121.95 37.28))'
+                )
+            )
+")
+#> Parsed with column specification:
+#> cols(
+#>   city = col_character(),
+#>   lon = col_double(),
+#>   lat = col_double()
+#> )
+#> # A tibble: 7 × 3
+#>          city       lon      lat
+#> *       <chr>     <dbl>    <dbl>
+#> 1     Burbank -121.9316 37.32328
+#> 2    San Jose -121.8950 37.33939
+#> 3        Lick -121.8458 37.28716
+#> 4 Willow Glen -121.8897 37.30855
+#> 5 Buena Vista -121.9166 37.32133
+#> 6    Parkmoor -121.9308 37.32105
+#> 7   Fruitdale -121.9327 37.31086
+```
+
 ### Test Results
 
 ``` r
@@ -121,7 +227,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Sat Dec  3 12:35:10 2016"
+#> [1] "Sat Dec  3 14:18:30 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

@@ -22,4 +22,7 @@ Changes (optionally, all) system settings back to system defaults
 drill_system_reset(all=TRUE)
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

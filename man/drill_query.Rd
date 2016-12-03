@@ -4,13 +4,15 @@
 \alias{drill_query}
 \title{Submit a query and return results}
 \usage{
-drill_query(query, uplift = TRUE, drill_server = Sys.getenv("DRILL_URL",
-  unset = "http://localhost:8047"))
+drill_query(query, uplift = TRUE, .progress = FALSE,
+  drill_server = Sys.getenv("DRILL_URL", unset = "http://localhost:8047"))
 }
 \arguments{
 \item{query}{query to run}
 
 \item{uplift}{automatically run \code{drill_uplift()} on the result?}
+
+\item{.progress}{if \code{TRUE} then ask \code{httr::PSOT} to display a progress bar}
 
 \item{drill_server}{base URL of the \code{drill} server}
 }
@@ -21,5 +23,8 @@ Submit a query and return results
 \dontrun{
 drill_query("SELECT * FROM cp.`employee.json` limit 5")
 }
+}
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
 }
 

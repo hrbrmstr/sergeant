@@ -14,7 +14,8 @@ Imports:
     htmltools,
     dplyr,
     readr,
-    purrr
+    purrr,
+    utils
 Suggests:
     testthat
 RoxygenNote: 5.0.1

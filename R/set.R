@@ -10,6 +10,7 @@
 #' @param type set the \code{session} or \code{system} parameter
 #' @param drill_server base URL of the \code{drill} server
 #' @return a \code{tbl} (invisibly) with the \code{ALTER} queries sent and results, including errors.
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
 #' drill_set(exec.errors.verbose=TRUE, store.format="parquet", web.logs.max_lines=20000)
@@ -53,6 +54,7 @@ drill_set <- function(..., type=c("session", "system"),
 #' @param ... bare name of system options to reset
 #' @param all if \code{TRUE}, all parameters are reset (\code{...} is ignored)
 #' @param drill_server base URL of the \code{drill} server
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
 #' drill_system_reset(all=TRUE)
@@ -93,6 +95,7 @@ drill_system_reset <- function(..., all=FALSE,
 #'
 #' @param ... bare name of system options to reset
 #' @param drill_server base URL of the \code{drill} server
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
 #' drill_settings_reset(exec.errors.verbose)

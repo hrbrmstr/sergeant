@@ -21,4 +21,7 @@ drill_show_files("dfs.tmp")
 drill_show_files("dfs.tmp")
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

@@ -1,5 +1,21 @@
+s_head <- purrr::safely(httr::HEAD)
+
+#' Test whether Drill HTTP REST API server is up
+#'
+#' This is a very simple test (performs \code{HEAD /} on \code{drill_server}
+#'
+#' @param drill_server base URL of the \code{drill} server
+#' @export
+#' @examples \dontrun{
+#' drill_active()
+#' }
+drill_active <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+  !is.null(s_head(drill_server, httr::timeout(2))$result)
+}
+
 #' Get the status of Drill
 #'
+#' @note The output of this is in a "viewer" window
 #' @param drill_server base URL of the \code{drill} server
 #' @export
 #' @examples \dontrun{
@@ -27,6 +43,7 @@ drill_metrics <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loc
 
 #' Get information about threads
 #'
+#' @note The output of this is in a "viewer" window
 #' @param drill_server base URL of the \code{drill} server
 #' @export
 #' @examples \dontrun{
@@ -43,6 +60,7 @@ drill_threads <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loc
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_profiles()
 #' }
@@ -52,9 +70,11 @@ drill_profiles <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://lo
   jsonlite::fromJSON(cnt)
 }
 
-#' Get the profile of the query that has the given queryid.
+#' Get the profile of the query that has the given queryid
 #'
+#' @param query_id UUID of the query in standard UUID format that Drill assigns to each query
 #' @param drill_server base URL of the \code{drill} server
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 drill_profile <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/profiles/%s.json", drill_server, query_id))
@@ -62,10 +82,11 @@ drill_profile <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="
   jsonlite::fromJSON(cnt)
 }
 
-#' Cancel the query that has the given queryid.
+#' Cancel the query that has the given queryid
 #'
 #' @param query_id the UUID of the query in standard UUID format that Drill assigns to each query.
 #' @param drill_server base URL of the \code{drill} server
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 drill_cancel <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/profiles/cancel%s", drill_server, query_id))
@@ -77,6 +98,7 @@ drill_cancel <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="h
 #'
 #' @param plugin the assigned name in the storage plugin definition.
 #' @param drill_server base URL of the \code{drill} server
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
 #' drill_storage()
@@ -99,6 +121,7 @@ drill_storage <- function(plugin=NULL, drill_server=Sys.getenv("DRILL_URL", unse
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_options()
 #' }
@@ -113,6 +136,7 @@ drill_options <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loc
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_stats()
 #' }
@@ -126,6 +150,7 @@ drill_stats <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://local
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_version()
 #' }

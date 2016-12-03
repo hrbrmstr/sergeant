@@ -2,15 +2,20 @@
 % Please edit documentation in R/sergeant.r
 \name{drill_profile}
 \alias{drill_profile}
-\title{Get the profile of the query that has the given queryid.}
+\title{Get the profile of the query that has the given queryid}
 \usage{
 drill_profile(query_id, drill_server = Sys.getenv("DRILL_URL", unset =
   "http://localhost:8047"))
 }
 \arguments{
+\item{query_id}{UUID of the query in standard UUID format that Drill assigns to each query}
+
 \item{drill_server}{base URL of the \code{drill} server}
 }
 \description{
-Get the profile of the query that has the given queryid.
+Get the profile of the query that has the given queryid
+}
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
 }
 

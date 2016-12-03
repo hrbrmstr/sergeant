@@ -20,4 +20,7 @@ Changes (optionally, all) session settings back to system defaults
 drill_settings_reset(exec.errors.verbose)
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

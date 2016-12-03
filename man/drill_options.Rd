@@ -18,4 +18,7 @@ List the name, default, and data type of the system and session options
 drill_options()
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

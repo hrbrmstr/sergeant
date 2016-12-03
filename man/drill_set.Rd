@@ -30,4 +30,7 @@ If any query errors result, error messages will be presented to the console.
 drill_set(exec.errors.verbose=TRUE, store.format="parquet", web.logs.max_lines=20000)
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

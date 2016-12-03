@@ -13,6 +13,9 @@ drill_threads(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Get information about threads
 }
+\note{
+The output of this is in a "viewer" window
+}
 \examples{
 \dontrun{
 drill_threads()

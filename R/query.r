@@ -2,17 +2,27 @@
 #'
 #' @param query query to run
 #' @param uplift automatically run \code{drill_uplift()} on the result?
+#' @param .progress if \code{TRUE} then ask \code{httr::PSOT} to display a progress bar
 #' @param drill_server base URL of the \code{drill} server
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
 #' drill_query("SELECT * FROM cp.`employee.json` limit 5")
 #' }
-drill_query <- function(query, uplift=TRUE, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_query <- function(query, uplift=TRUE, .progress=FALSE, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
 
-  res <- httr::POST(sprintf("%s/query.json", drill_server),
-                    encode="json",
-                    body=list(queryType="SQL",
-                              query=query))
+  if (.progress) {
+    res <- httr::POST(sprintf("%s/query.json", drill_server),
+                      encode="json",
+                      progress(),
+                      body=list(queryType="SQL",
+                                query=query))
+  } else {
+    res <- httr::POST(sprintf("%s/query.json", drill_server),
+                      encode="json",
+                      body=list(queryType="SQL",
+                                query=query))
+  }
 
   out <- jsonlite::fromJSON(httr::content(res, as="text", encoding="UTF-8"), flatten=TRUE)
 
@@ -36,6 +46,7 @@ drill_query <- function(query, uplift=TRUE, drill_server=Sys.getenv("DRILL_URL",
 #' without `uplift=TRUE` but want to then convert the structure.
 #'
 #' @param query_result the result of a call to `drill_query()`
+#' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 drill_uplift <- function(query_result) {
   dplyr::tbl_df(readr::type_convert(query_result$rows))

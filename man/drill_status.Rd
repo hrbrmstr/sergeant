@@ -13,6 +13,9 @@ drill_status(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Get the status of Drill
 }
+\note{
+The output of this is in a "viewer" window
+}
 \examples{
 \dontrun{
 drill_status()

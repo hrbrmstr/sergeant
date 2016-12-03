@@ -2,7 +2,7 @@
 % Please edit documentation in R/sergeant.r
 \name{drill_cancel}
 \alias{drill_cancel}
-\title{Cancel the query that has the given queryid.}
+\title{Cancel the query that has the given queryid}
 \usage{
 drill_cancel(query_id, drill_server = Sys.getenv("DRILL_URL", unset =
   "http://localhost:8047"))
@@ -13,6 +13,9 @@ drill_cancel(query_id, drill_server = Sys.getenv("DRILL_URL", unset =
 \item{drill_server}{base URL of the \code{drill} server}
 }
 \description{
-Cancel the query that has the given queryid.
+Cancel the query that has the given queryid
+}
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
 }
 

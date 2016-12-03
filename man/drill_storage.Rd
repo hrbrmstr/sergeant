@@ -20,4 +20,7 @@ Get the list of storage plugin names and configurations
 drill_storage()
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

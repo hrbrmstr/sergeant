@@ -4,11 +4,25 @@
 \name{sergeant}
 \alias{sergeant}
 \alias{sergeant-package}
-\title{Tools to Transform and Query Data with the 'Apache' 'Drill' 'REST' 'API'}
+\title{Tools to Transform and Query Data with the the 'Apache Drill' 'REST API'}
 \description{
-Tools to Transform and Query Data with the 'Apache' 'Drill' 'REST' 'API'
+Drill is an innovative distributed SQL engine designed to enable data exploration
+and analytics on non-relational datastores. Users can query the data using standard
+SQL and BI tools without having to create and manage schemas. Some of the key features
+are:
+}
+\details{
+\itemize{
+  \item{Schema-free JSON document model similar to MongoDB and Elasticsearch}
+  \item{Industry-standard APIs: ANSI SQL, ODBC/JDBC, RESTful APIs}
+  \item{Extremely user and developer friendly}
+  \item{Pluggable architecture enables connectivity to multiple datastores}
+}
 }
 \author{
 Bob Rudis (bob@rud.is)
+}
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
 }
 

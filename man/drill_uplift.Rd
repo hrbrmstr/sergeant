@@ -18,4 +18,7 @@ type-convert it.
 Not really intended to be called directly, but useful if you ran \code{drill_query()}
 without `uplift=TRUE` but want to then convert the structure.
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

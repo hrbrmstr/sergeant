@@ -18,4 +18,7 @@ Get the profiles of running and completed queries
 drill_profiles()
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

@@ -16,4 +16,7 @@ storage plugin, such as hive, or a storage plugin and workspace.}
 \description{
 Change to a particular schema.
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

@@ -13,4 +13,7 @@ drill_show_schemas(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Returns a list of available schemas.
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

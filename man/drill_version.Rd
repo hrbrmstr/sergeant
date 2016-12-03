@@ -18,4 +18,7 @@ Identify the version of Drill running
 drill_version()
 }
 }
+\references{
+\href{https://drill.apache.org/docs/}{Drill documentation}
+}
 

@@ -4,11 +4,13 @@
 \alias{drill_query}
 \title{Submit a query and return results}
 \usage{
-drill_query(query, drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_query(query, uplift = FALSE, drill_server = Sys.getenv("DRILL_URL",
+  unset = "http://localhost:8047"))
 }
 \arguments{
 \item{query}{query to run}
+
+\item{uplift}{automatically run `drill_uplift()` on the result?}
 
 \item{drill_server}{base URL of the \code{drill} server}
 }

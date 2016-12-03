@@ -4,9 +4,9 @@
 \name{sergeant}
 \alias{sergeant}
 \alias{sergeant-package}
-\title{Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'}
+\title{Tools to Transform and Query Data with the 'Apache' 'Drill' 'REST' 'API'}
 \description{
-Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'
+Tools to Transform and Query Data with the 'Apache' 'Drill' 'REST' 'API'
 }
 \author{
 Bob Rudis (bob@rud.is)

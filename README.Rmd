@@ -22,18 +22,24 @@ knitr::opts_chunk$set(
 
 The following functions are implemented:
 
+- `drill_cancel`:	Cancel the query that has the given queryid.
 - `drill_metrics`:	Get the current memory metrics
 - `drill_options`:	List the name, default, and data type of the system and session options
+- `drill_profile`:	Get the profile of the query that has the given queryid.
 - `drill_profiles`:	Get the profiles of running and completed queries
 - `drill_query`:	Submit a query and return results
+- `drill_set`:	Set Drill SYSTEM or SESSION options
+- `drill_setting_reset`:	Changes (optionally, all) session settings back to system defaults
+- `drill_show_files`:	Show files in a file system schema.
+- `drill_show_schemas`:	Returns a list of available schemas.
 - `drill_stats`:	Get Drillbit information, such as ports numbers
 - `drill_status`:	Get the status of Drill
 - `drill_storage`:	Get the list of storage plugin names and configurations
+- `drill_system_reset`:	Changes (optionally, all) system settings back to system defaults
 - `drill_threads`:	Get information about threads
-
-### News
-
-- Version 0.1.0 released
+- `drill_uplift`:	Turn a columnar query results into a type-converted tbl
+- `drill_use`:	Change to a particular schema.
+- `drill_version`:	Identify the version of Drill running
 
 ### Installation
 
@@ -53,7 +59,6 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 
-drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet`")
 ```
 
 ### Test Results

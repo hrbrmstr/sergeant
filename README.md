@@ -10,18 +10,24 @@
 
 The following functions are implemented:
 
+-   `drill_cancel`: Cancel the query that has the given queryid.
 -   `drill_metrics`: Get the current memory metrics
 -   `drill_options`: List the name, default, and data type of the system and session options
+-   `drill_profile`: Get the profile of the query that has the given queryid.
 -   `drill_profiles`: Get the profiles of running and completed queries
 -   `drill_query`: Submit a query and return results
+-   `drill_set`: Set Drill SYSTEM or SESSION options
+-   `drill_setting_reset`: Changes (optionally, all) session settings back to system defaults
+-   `drill_show_files`: Show files in a file system schema.
+-   `drill_show_schemas`: Returns a list of available schemas.
 -   `drill_stats`: Get Drillbit information, such as ports numbers
 -   `drill_status`: Get the status of Drill
 -   `drill_storage`: Get the list of storage plugin names and configurations
+-   `drill_system_reset`: Changes (optionally, all) system settings back to system defaults
 -   `drill_threads`: Get information about threads
-
-### News
-
--   Version 0.1.0 released
+-   `drill_uplift`: Turn a columnar query results into a type-converted tbl
+-   `drill_use`: Change to a particular schema.
+-   `drill_version`: Identify the version of Drill running
 
 ### Installation
 
@@ -37,38 +43,6 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 #> [1] '0.1.0.9000'
-
-drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet`")
-#> $columns
-#> [1] "N_NATIONKEY" "N_NAME"      "N_REGIONKEY" "N_COMMENT"  
-#> 
-#> $rows
-#>               N_COMMENT         N_NAME N_NATIONKEY N_REGIONKEY
-#> 1   haggle. carefully f        ALGERIA           0           0
-#> 2  al foxes promise sly      ARGENTINA           1           1
-#> 3  y alongside of the p         BRAZIL           2           1
-#> 4  eas hang ironic, sil         CANADA           3           1
-#> 5  y above the carefull          EGYPT           4           4
-#> 6  ven packages wake qu       ETHIOPIA           5           0
-#> 7  refully final reques         FRANCE           6           3
-#> 8  l platelets. regular        GERMANY           7           3
-#> 9  ss excuses cajole sl          INDIA           8           2
-#> 10  slyly express asymp      INDONESIA           9           2
-#> 11 efully alongside of            IRAN          10           4
-#> 12 nic deposits boost a           IRAQ          11           4
-#> 13 ously. final, expres          JAPAN          12           2
-#> 14 ic deposits are blit         JORDAN          13           4
-#> 15  pending excuses hag          KENYA          14           0
-#> 16 rns. blithely bold c        MOROCCO          15           0
-#> 17 s. ironic, unusual a     MOZAMBIQUE          16           0
-#> 18 platelets. blithely            PERU          17           1
-#> 19 c dependencies. furi          CHINA          18           2
-#> 20 ular asymptotes are         ROMANIA          19           3
-#> 21 ts. silent requests    SAUDI ARABIA          20           4
-#> 22 hely enticingly expr        VIETNAM          21           2
-#> 23  requests against th         RUSSIA          22           3
-#> 24 eans boost carefully UNITED KINGDOM          23           3
-#> 25 y final packages. sl  UNITED STATES          24           1
 ```
 
 ### Test Results
@@ -78,7 +52,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Thu Jun  2 22:04:19 2016"
+#> [1] "Sat Dec  3 11:28:51 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

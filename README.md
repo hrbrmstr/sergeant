@@ -18,7 +18,7 @@ I find writing SQL queries to parquet files with Drill on a local 64GB Linux wor
 
 You can download Drill from <https://drill.apache.org/download/> (use "Direct File Download"). I use `/usr/local/drill` as the install directory. `drill-embedded` is a super-easy way to get started playing with Drill on a single workstation and most of my workflows can get by using Drill this way. If there is sufficient desire for an automated downloader and a way to start the `drill-embedded` server from within R, please file an issue.
 
-Theren are a few convenience wrappers for various informational SQL queries (like `drill_version()`). Please file an PR if you add more.
+There are a few convenience wrappers for various informational SQL queries (like `drill_version()`). Please file an PR if you add more.
 
 The package has been written with retrieval of rectangular data sources in mind. If you need/want a version of `drill_query()` that will enable returning of non-rectangular data (which is possible with Drill) then please file an issue.
 
@@ -227,7 +227,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Sat Dec  3 14:18:30 2016"
+#> [1] "Sat Dec  3 14:25:31 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

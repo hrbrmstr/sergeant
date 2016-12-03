@@ -13,4 +13,9 @@ drill_status(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Get the status of Drill
 }
+\examples{
+\dontrun{
+drill_status()
+}
+}
 

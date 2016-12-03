@@ -13,4 +13,9 @@ drill_metrics(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Get the current memory metrics
 }
+\examples{
+\dontrun{
+drill_metrics()
+}
+}
 

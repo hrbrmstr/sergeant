@@ -13,4 +13,9 @@ drill_profiles(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Get the profiles of running and completed queries
 }
+\examples{
+\dontrun{
+drill_profiles()
+}
+}
 

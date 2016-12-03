@@ -13,4 +13,9 @@ drill_options(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 List the name, default, and data type of the system and session options
 }
+\examples{
+\dontrun{
+drill_options()
+}
+}
 

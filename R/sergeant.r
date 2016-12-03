@@ -2,6 +2,9 @@
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_status()
+#' }
 drill_status <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/status", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
@@ -13,6 +16,9 @@ drill_status <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loca
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_metrics()
+#' }
 drill_metrics <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/status/metrics", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
@@ -23,6 +29,9 @@ drill_metrics <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loc
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_threads()
+#' }
 drill_threads <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/status/threads", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
@@ -34,6 +43,9 @@ drill_threads <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loc
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_profiles()
+#' }
 drill_profiles <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/profiles.json", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
@@ -66,6 +78,9 @@ drill_cancel <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="h
 #' @param plugin the assigned name in the storage plugin definition.
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_storage()
+#' }
 drill_storage <- function(plugin=NULL, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
 
   if (is.null(plugin)) {
@@ -75,7 +90,8 @@ drill_storage <- function(plugin=NULL, drill_server=Sys.getenv("DRILL_URL", unse
   }
 
   cnt <- httr::content(res, as="text", encoding="UTF-8")
-  jsonlite::fromJSON(cnt, flatten=TRUE)
+  jsonlite::fromJSON(cnt, flatten=TRUE) %>%
+    dplyr::tbl_df()
 
 }
 
@@ -83,18 +99,36 @@ drill_storage <- function(plugin=NULL, drill_server=Sys.getenv("DRILL_URL", unse
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_options()
+#' }
 drill_options <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/options.json", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
-  jsonlite::fromJSON(cnt)
+  jsonlite::fromJSON(cnt) %>%
+    dplyr::tbl_df()
 }
 
 #' Get Drillbit information, such as ports numbers
 #'
 #' @param drill_server base URL of the \code{drill} server
 #' @export
+#' @examples \dontrun{
+#' drill_stats()
+#' }
 drill_stats <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
   res <- httr::GET(sprintf("%s/stats.json", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
+}
+
+#' Identify the version of Drill running
+#'
+#' @param drill_server base URL of the \code{drill} server
+#' @export
+#' @examples \dontrun{
+#' drill_version()
+#' }
+drill_version <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+  drill_query("SELECT version FROM sys.version", uplift=FALSE, drill_server=drill_server)$rows$version[1]
 }

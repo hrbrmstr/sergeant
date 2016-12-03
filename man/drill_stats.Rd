@@ -13,4 +13,9 @@ drill_stats(drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Get Drillbit information, such as ports numbers
 }
+\examples{
+\dontrun{
+drill_stats()
+}
+}
 

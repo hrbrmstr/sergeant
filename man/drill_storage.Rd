@@ -15,4 +15,9 @@ drill_storage(plugin = NULL, drill_server = Sys.getenv("DRILL_URL", unset =
 \description{
 Get the list of storage plugin names and configurations
 }
+\examples{
+\dontrun{
+drill_storage()
+}
+}
 

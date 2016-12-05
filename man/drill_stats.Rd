@@ -4,18 +4,17 @@
 \alias{drill_stats}
 \title{Get Drillbit information, such as ports numbers}
 \usage{
-drill_stats(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_stats(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Get Drillbit information, such as ports numbers
 }
 \examples{
 \dontrun{
-drill_stats()
+drill_con() \%>\% drill_stats()
 }
 }
 \references{

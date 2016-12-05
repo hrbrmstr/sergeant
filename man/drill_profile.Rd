@@ -4,13 +4,12 @@
 \alias{drill_profile}
 \title{Get the profile of the query that has the given queryid}
 \usage{
-drill_profile(query_id, drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_profile(drill_con, query_id)
 }
 \arguments{
-\item{query_id}{UUID of the query in standard UUID format that Drill assigns to each query}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
-\item{drill_server}{base URL of the \code{drill} server}
+\item{query_id}{UUID of the query in standard UUID format that Drill assigns to each query}
 }
 \description{
 Get the profile of the query that has the given queryid

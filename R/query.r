@@ -1,15 +1,17 @@
 #' Submit a query and return results
 #'
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param query query to run
 #' @param uplift automatically run \code{drill_uplift()} on the result?
 #' @param .progress if \code{TRUE} then ask \code{httr::PSOT} to display a progress bar
-#' @param drill_server base URL of the \code{drill} server
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
-#' drill_query("SELECT * FROM cp.`employee.json` limit 5")
+#' drill_con() %>% drill_query("SELECT * FROM cp.`employee.json` limit 5")
 #' }
-drill_query <- function(query, uplift=TRUE, .progress=FALSE, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_query <- function(drill_con, query, uplift=TRUE, .progress=FALSE) {
+
+  drill_server <- make_server(drill_con)
 
   if (.progress) {
     res <- httr::POST(sprintf("%s/query.json", drill_server),

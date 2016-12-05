@@ -4,18 +4,17 @@
 \alias{drill_profiles}
 \title{Get the profiles of running and completed queries}
 \usage{
-drill_profiles(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_profiles(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Get the profiles of running and completed queries
 }
 \examples{
 \dontrun{
-drill_profiles()
+drill_connection() \%>\% drill_profiles()
 }
 }
 \references{

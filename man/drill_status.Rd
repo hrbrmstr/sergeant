@@ -4,11 +4,10 @@
 \alias{drill_status}
 \title{Get the status of Drill}
 \usage{
-drill_status(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_status(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Get the status of Drill
@@ -18,7 +17,7 @@ The output of this is in a "viewer" window
 }
 \examples{
 \dontrun{
-drill_status()
+drill_connection() \%>\% drill_status()
 }
 }
 

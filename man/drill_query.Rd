@@ -4,24 +4,23 @@
 \alias{drill_query}
 \title{Submit a query and return results}
 \usage{
-drill_query(query, uplift = TRUE, .progress = FALSE,
-  drill_server = Sys.getenv("DRILL_URL", unset = "http://localhost:8047"))
+drill_query(drill_con, query, uplift = TRUE, .progress = FALSE)
 }
 \arguments{
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
+
 \item{query}{query to run}
 
 \item{uplift}{automatically run \code{drill_uplift()} on the result?}
 
 \item{.progress}{if \code{TRUE} then ask \code{httr::PSOT} to display a progress bar}
-
-\item{drill_server}{base URL of the \code{drill} server}
 }
 \description{
 Submit a query and return results
 }
 \examples{
 \dontrun{
-drill_query("SELECT * FROM cp.`employee.json` limit 5")
+drill_con() \%>\% drill_query("SELECT * FROM cp.`employee.json` limit 5")
 }
 }
 \references{

@@ -40,6 +40,7 @@ Finally, I run most of this locally and at home, so it's all been coded with no 
 
 The following functions are implemented:
 
+- `drill_connection`: Setup parameters for a Drill server/cluster connection
 - `drill_active`: Test whether Drill HTTP REST API server is up
 - `drill_cancel`:	Cancel the query that has the given queryid
 - `drill_metrics`:	Get the current memory metrics
@@ -78,33 +79,37 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 
-drill_active()
+dc <- drill_connection() 
 
-drill_version()
+drill_active(dc)
 
-drill_storage()$name
+drill_version(dc)
+
+drill_storage(dc)$name
 ```
 
 Working with the built-in JSON data sets:
 
 ```{r}
-drill_query("SELECT * FROM cp.`employee.json` limit 100")
+drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
 
-drill_query("SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
+drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
 
-drill_options()
+drill_options(dc)
+
+drill_options(dc, "json")
 ```
 
 ## Working with parquet files
 
 ```{r}
-drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
+drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
 ```
 
 Including multiple parquet files in different directories (note the wildcard support):
 
 ```{r}
-drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
+drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
 ```
 
 ### A preview of the built-in support for spatial ops
@@ -114,7 +119,7 @@ Via: <https://github.com/k255/drill-gis>
 A common use case is to select data within boundary of given polygon:
 
 ```{r}
-drill_query("
+drill_query(dc, "
 select columns[2] as city, columns[4] as lon, columns[3] as lat
     from cp.`sample-data/CA-cities.csv`
     where

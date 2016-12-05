@@ -1,27 +1,57 @@
 s_head <- purrr::safely(httr::HEAD)
 
+#' Setup a Drill connection
+#'
+#' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
+#' @param port Drill port (will pick up the value from \code{DRILL_POST} env var)
+#' @param ssl use ssl?
+#' @param user,password NOT IMPLEMENTED YET credentials for username/password auth.
+#'                      (will pick up the values from \code{DRILL_USER}/\code{DRILL_PASSWORD}
+#'                      env vars)
+#' @export
+#' @examples
+#' dc <- drill_connection()
+drill_connection <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
+                      port=Sys.getenv("DRILL_PORT", 8047),
+                      ssl=FALSE,
+                      user=Sys.getenv("DRILL_USER", ""),
+                      password=Sys.getenv("DRILL_PASSWORD", "")) {
+  list(host=host,
+       port=port,
+       ssl=ssl,
+       user=ifelse(user[1]=="", NA, user[1]),
+       password=ifelse(password[1]=="", NA, password[1])) -> out
+
+  class(out) <- c("drill_conn", class(out))
+
+  out
+
+}
+
 #' Test whether Drill HTTP REST API server is up
 #'
-#' This is a very simple test (performs \code{HEAD /} on \code{drill_server}
+#' This is a very simple test (performs \code{HEAD /} request on the Drill server/cluster)
 #'
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @examples \dontrun{
-#' drill_active()
+#' drill_connection() %>% drill_active()
 #' }
-drill_active <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_active <- function(drill_con) {
+  drill_server <- make_server(drill_con)
   !is.null(s_head(drill_server, httr::timeout(2))$result)
 }
 
 #' Get the status of Drill
 #'
 #' @note The output of this is in a "viewer" window
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @examples \dontrun{
-#' drill_status()
+#' drill_connection() %>% drill_status()
 #' }
-drill_status <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_status <- function(drill_con) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/status", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   cnt <- htmltools::HTML(cnt)
@@ -30,12 +60,13 @@ drill_status <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loca
 
 #' Get the current memory metrics
 #'
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @examples \dontrun{
-#' drill_metrics()
+#' drill_connection() %>% drill_metrics()
 #' }
-drill_metrics <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_metrics <- function(drill_con) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/status/metrics", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt, flatten=TRUE)
@@ -44,12 +75,13 @@ drill_metrics <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loc
 #' Get information about threads
 #'
 #' @note The output of this is in a "viewer" window
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @examples \dontrun{
-#' drill_threads()
+#' drill_connection() %>% drill_threads()
 #' }
-drill_threads <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_threads <- function(drill_con) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/status/threads", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   cnt <- htmltools::HTML(sprintf("<pre>%s</pre>", cnt))
@@ -58,13 +90,14 @@ drill_threads <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://loc
 
 #' Get the profiles of running and completed queries
 #'
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
-#' drill_profiles()
+#' drill_connection() %>% drill_profiles()
 #' }
-drill_profiles <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_profiles <- function(drill_con) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/profiles.json", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
@@ -72,11 +105,12 @@ drill_profiles <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://lo
 
 #' Get the profile of the query that has the given queryid
 #'
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param query_id UUID of the query in standard UUID format that Drill assigns to each query
-#' @param drill_server base URL of the \code{drill} server
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
-drill_profile <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_profile <- function(drill_con, query_id) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/profiles/%s.json", drill_server, query_id))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
@@ -84,11 +118,12 @@ drill_profile <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="
 
 #' Cancel the query that has the given queryid
 #'
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param query_id the UUID of the query in standard UUID format that Drill assigns to each query.
-#' @param drill_server base URL of the \code{drill} server
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
-drill_cancel <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_cancel <- function(drill_con, query_id) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/profiles/cancel%s", drill_server, query_id))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
@@ -101,9 +136,11 @@ drill_cancel <- function(query_id, drill_server=Sys.getenv("DRILL_URL", unset="h
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
-#' drill_storage()
+#' drill_connection() %>% drill_storage()
 #' }
-drill_storage <- function(plugin=NULL, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_storage <- function(drill_con, plugin=NULL) {
+
+  drill_server <- make_server(drill_con)
 
   if (is.null(plugin)) {
     res <- httr::GET(sprintf("%s/storage.json", drill_server))
@@ -119,28 +156,33 @@ drill_storage <- function(plugin=NULL, drill_server=Sys.getenv("DRILL_URL", unse
 
 #' List the name, default, and data type of the system and session options
 #'
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
+#' @param pattern pattern to filter results by
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
-#' drill_options()
+#' drill_connection() %>% drill_options()
 #' }
-drill_options <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_options <- function(drill_con, pattern=NULL) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/options.json", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt) %>%
-    dplyr::tbl_df()
+    dplyr::tbl_df() -> out
+  if (!is.null(pattern)) out <- dplyr::filter(out, grepl(pattern, name))
+  out
 }
 
 #' Get Drillbit information, such as ports numbers
 #'
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
-#' drill_stats()
+#' drill_con() %>% drill_stats()
 #' }
-drill_stats <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_stats <- function(drill_con) {
+  drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/stats.json", drill_server))
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
@@ -148,12 +190,12 @@ drill_stats <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://local
 
 #' Identify the version of Drill running
 #'
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
-#' drill_version()
+#' drill_connection() %>% drill_version()
 #' }
-drill_version <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
-  drill_query("SELECT version FROM sys.version", uplift=FALSE, drill_server=drill_server)$rows$version[1]
+drill_version <- function(drill_con) {
+  drill_query(drill_con, "SELECT version FROM sys.version", uplift=FALSE)$rows$version[1]
 }

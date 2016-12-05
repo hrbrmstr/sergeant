@@ -4,22 +4,21 @@
 \alias{drill_system_reset}
 \title{Changes (optionally, all) system settings back to system defaults}
 \usage{
-drill_system_reset(..., all = FALSE, drill_server = Sys.getenv("DRILL_URL",
-  unset = "http://localhost:8047"))
+drill_system_reset(drill_con, ..., all = FALSE)
 }
 \arguments{
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
+
 \item{...}{bare name of system options to reset}
 
 \item{all}{if \code{TRUE}, all parameters are reset (\code{...} is ignored)}
-
-\item{drill_server}{base URL of the \code{drill} server}
 }
 \description{
 Changes (optionally, all) system settings back to system defaults
 }
 \examples{
 \dontrun{
-drill_system_reset(all=TRUE)
+drill_connection() \%>\% drill_system_reset(all=TRUE)
 }
 }
 \references{

@@ -4,18 +4,17 @@
 \alias{drill_active}
 \title{Test whether Drill HTTP REST API server is up}
 \usage{
-drill_active(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_active(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
-This is a very simple test (performs \code{HEAD /} on \code{drill_server}
+This is a very simple test (performs \code{HEAD /} request on the Drill server/cluster)
 }
 \examples{
 \dontrun{
-drill_active()
+drill_connection() \%>\% drill_active()
 }
 }
 

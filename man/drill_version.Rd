@@ -4,18 +4,17 @@
 \alias{drill_version}
 \title{Identify the version of Drill running}
 \usage{
-drill_version(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_version(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Identify the version of Drill running
 }
 \examples{
 \dontrun{
-drill_version()
+drill_connection() \%>\% drill_version()
 }
 }
 \references{

@@ -18,6 +18,21 @@
 #' @author Bob Rudis (bob@@rud.is)
 #' @import httr jsonlite htmltools
 #' @importFrom purrr map map2 map2_df %>%
-#' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl
+#' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter
 #' @import utils
+NULL
+
+
+#' sergeant exported operators
+#'
+#' The following functions are imported and then re-exported
+#' from the sergeant package to enable use of the magrittr
+#' pipe operator with no additional library calls
+#'
+#' @name sergeant-exports
+NULL
+
+#' @name %>%
+#' @export
+#' @rdname sergeant-exports
 NULL

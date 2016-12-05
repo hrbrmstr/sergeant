@@ -4,11 +4,10 @@
 \alias{drill_show_schemas}
 \title{Returns a list of available schemas.}
 \usage{
-drill_show_schemas(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_show_schemas(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Returns a list of available schemas.

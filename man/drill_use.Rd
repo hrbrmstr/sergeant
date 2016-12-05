@@ -4,14 +4,13 @@
 \alias{drill_use}
 \title{Change to a particular schema.}
 \usage{
-drill_use(schema_name, drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_use(drill_con, schema_name)
 }
 \arguments{
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
+
 \item{schema_name}{A unique name for a Drill schema. A schema in Drill is a configured
 storage plugin, such as hive, or a storage plugin and workspace.}
-
-\item{drill_server}{base URL of the \code{drill} server}
 }
 \description{
 Change to a particular schema.

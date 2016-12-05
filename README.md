@@ -28,6 +28,7 @@ Finally, I run most of this locally and at home, so it's all been coded with no 
 
 The following functions are implemented:
 
+-   `drill_connection`: Setup parameters for a Drill server/cluster connection
 -   `drill_active`: Test whether Drill HTTP REST API server is up
 -   `drill_cancel`: Cancel the query that has the given queryid
 -   `drill_metrics`: Get the current memory metrics
@@ -63,20 +64,26 @@ library(sergeant)
 packageVersion("sergeant")
 #> [1] '0.1.0.9000'
 
-drill_active()
+dc <- drill_connection() 
+
+drill_active(dc)
+#> http://localhost:8047
 #> [1] TRUE
 
-drill_version()
+drill_version(dc)
+#> http://localhost:8047
 #> [1] "1.9.0"
 
-drill_storage()$name
+drill_storage(dc)$name
+#> http://localhost:8047
 #> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"
 ```
 
 Working with the built-in JSON data sets:
 
 ``` r
-drill_query("SELECT * FROM cp.`employee.json` limit 100")
+drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
+#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   store_id = col_integer(),
@@ -112,7 +119,8 @@ drill_query("SELECT * FROM cp.`employee.json` limit 100")
 #> # ... with 90 more rows, and 7 more variables: salary <dbl>, marital_status <chr>, full_name <chr>, employee_id <int>,
 #> #   education_level <chr>, first_name <chr>, position_id <int>
 
-drill_query("SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
+drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
+#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   gender = col_integer()
@@ -123,7 +131,8 @@ drill_query("SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gen
 #> 1    601
 #> 2    554
 
-drill_options()
+drill_options(dc)
+#> http://localhost:8047
 #> # A tibble: 105 × 4
 #>                                              name value   type    kind
 #> *                                           <chr> <chr>  <chr>   <chr>
@@ -138,13 +147,27 @@ drill_options()
 #> 9                     planner.enable_mux_exchange  TRUE SYSTEM BOOLEAN
 #> 10                   store.parquet.use_new_reader FALSE SYSTEM BOOLEAN
 #> # ... with 95 more rows
+
+drill_options(dc, "json")
+#> http://localhost:8047
+#> # A tibble: 7 × 4
+#>                                                    name value   type    kind
+#>                                                   <chr> <chr>  <chr>   <chr>
+#> 1                     store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN
+#> 2                             store.json.extended_types FALSE SYSTEM BOOLEAN
+#> 3                              store.json.writer.uglify FALSE SYSTEM BOOLEAN
+#> 4                store.json.reader.skip_invalid_records  TRUE SYSTEM BOOLEAN
+#> 5 store.json.reader.print_skipped_invalid_record_number  TRUE SYSTEM BOOLEAN
+#> 6                              store.json.all_text_mode  TRUE SYSTEM BOOLEAN
+#> 7                    store.json.writer.skip_null_fields  TRUE SYSTEM BOOLEAN
 ```
 
 Working with parquet files
 --------------------------
 
 ``` r
-drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
+drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
+#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   N_COMMENT = col_character(),
@@ -165,7 +188,8 @@ drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIM
 Including multiple parquet files in different directories (note the wildcard support):
 
 ``` r
-drill_query("SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
+drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
+#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   N_COMMENT = col_character(),
@@ -191,7 +215,7 @@ Via: <https://github.com/k255/drill-gis>
 A common use case is to select data within boundary of given polygon:
 
 ``` r
-drill_query("
+drill_query(dc, "
 select columns[2] as city, columns[4] as lon, columns[3] as lat
     from cp.`sample-data/CA-cities.csv`
     where
@@ -202,6 +226,7 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
                 )
             )
 ")
+#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   city = col_character(),
@@ -227,7 +252,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Sat Dec  3 14:25:31 2016"
+#> [1] "Mon Dec  5 10:12:22 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

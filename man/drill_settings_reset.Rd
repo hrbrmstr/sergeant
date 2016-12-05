@@ -10,14 +10,14 @@ drill_settings_reset(..., drill_server = Sys.getenv("DRILL_URL", unset =
 \arguments{
 \item{...}{bare name of system options to reset}
 
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Changes (optionally, all) session settings back to system defaults
 }
 \examples{
 \dontrun{
-drill_settings_reset(exec.errors.verbose)
+drill_connection() \%>\% drill_settings_reset(exec.errors.verbose)
 }
 }
 \references{

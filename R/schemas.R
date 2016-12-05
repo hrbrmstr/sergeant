@@ -1,38 +1,37 @@
 #' Returns a list of available schemas.
 #'
-#' @param drill_server base URL of the \code{drill} server
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
-drill_show_schemas <- function(drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
-  drill_query("SHOW SCHEMAS", drill_server=drill_server)$rows$SCHEMA_NAME
+drill_show_schemas <- function(drill_con) {
+  drill_query(drill_con, "SHOW SCHEMAS")$rows$SCHEMA_NAME
 }
 
 #' Change to a particular schema.
 #'
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param schema_name A unique name for a Drill schema. A schema in Drill is a configured
 #'                   storage plugin, such as hive, or a storage plugin and workspace.
-#' @param drill_server base URL of the \code{drill} server
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
-drill_use <- function(schema_name, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_use <- function(drill_con, schema_name) {
   query <- sprintf("USE `%s`", schema_name)
-  out <- drill_query(query, drill_server=drill_server)
+  out <- drill_query(drill_con, query)
   if (!("errorMessage" %in% names(out))) message(out$rows$summary[1])
   invisible(out)
 }
 
 #' Show files in a file system schema.
 #'
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param schema_spec properly quoted "filesystem.directory_name" reference path
-#' @param drill_server base URL of the \code{drill} server
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
-#' drill_show_files("dfs.tmp")
-#' drill_show_files("dfs.tmp")
+#' drill_con() %>% drill_show_files("dfs.tmp")
 #' }
-drill_show_files <- function(schema_spec, drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_show_files <- function(drill_con, schema_spec) {
   query <- sprintf("SHOW FILES IN %s", schema_spec)
-  drill_query(query, uplift=TRUE, drill_server=drill_server) %>%
+  drill_query(drill_con, query, uplift=TRUE) %>%
     dplyr::select(name, isDirectory, permissions, everything())
 }

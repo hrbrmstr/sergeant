@@ -4,18 +4,17 @@
 \alias{drill_metrics}
 \title{Get the current memory metrics}
 \usage{
-drill_metrics(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_metrics(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Get the current memory metrics
 }
 \examples{
 \dontrun{
-drill_metrics()
+drill_connection() \%>\% drill_metrics()
 }
 }
 

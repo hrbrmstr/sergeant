@@ -4,11 +4,10 @@
 \alias{drill_threads}
 \title{Get information about threads}
 \usage{
-drill_threads(drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_threads(drill_con)
 }
 \arguments{
-\item{drill_server}{base URL of the \code{drill} server}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 }
 \description{
 Get information about threads
@@ -18,7 +17,7 @@ The output of this is in a "viewer" window
 }
 \examples{
 \dontrun{
-drill_threads()
+drill_connection() \%>\% drill_threads()
 }
 }
 

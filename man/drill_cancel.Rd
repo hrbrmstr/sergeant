@@ -4,13 +4,12 @@
 \alias{drill_cancel}
 \title{Cancel the query that has the given queryid}
 \usage{
-drill_cancel(query_id, drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_cancel(drill_con, query_id)
 }
 \arguments{
-\item{query_id}{the UUID of the query in standard UUID format that Drill assigns to each query.}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
-\item{drill_server}{base URL of the \code{drill} server}
+\item{query_id}{the UUID of the query in standard UUID format that Drill assigns to each query.}
 }
 \description{
 Cancel the query that has the given queryid

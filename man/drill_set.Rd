@@ -4,15 +4,14 @@
 \alias{drill_set}
 \title{Set Drill SYSTEM or SESSION options}
 \usage{
-drill_set(..., type = c("session", "system"),
-  drill_server = Sys.getenv("DRILL_URL", unset = "http://localhost:8047"))
+drill_set(drill_con, ..., type = c("session", "system"))
 }
 \arguments{
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
+
 \item{...}{named parameters to be sent to ALTER [SYSTEM|SESSION]}
 
 \item{type}{set the \code{session} or \code{system} parameter}
-
-\item{drill_server}{base URL of the \code{drill} server}
 }
 \value{
 a \code{tbl} (invisibly) with the \code{ALTER} queries sent and results, including errors.
@@ -27,7 +26,8 @@ If any query errors result, error messages will be presented to the console.
 }
 \examples{
 \dontrun{
-drill_set(exec.errors.verbose=TRUE, store.format="parquet", web.logs.max_lines=20000)
+drill_connection() \%>\%
+  drill_set(exec.errors.verbose=TRUE, store.format="parquet", web.logs.max_lines=20000)
 }
 }
 \references{

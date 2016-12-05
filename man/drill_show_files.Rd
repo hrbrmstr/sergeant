@@ -4,21 +4,19 @@
 \alias{drill_show_files}
 \title{Show files in a file system schema.}
 \usage{
-drill_show_files(schema_spec, drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_show_files(drill_con, schema_spec)
 }
 \arguments{
-\item{schema_spec}{properly quoted "filesystem.directory_name" reference path}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
-\item{drill_server}{base URL of the \code{drill} server}
+\item{schema_spec}{properly quoted "filesystem.directory_name" reference path}
 }
 \description{
 Show files in a file system schema.
 }
 \examples{
 \dontrun{
-drill_show_files("dfs.tmp")
-drill_show_files("dfs.tmp")
+drill_con() \%>\% drill_show_files("dfs.tmp")
 }
 }
 \references{

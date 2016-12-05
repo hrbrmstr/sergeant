@@ -4,8 +4,7 @@
 \alias{drill_storage}
 \title{Get the list of storage plugin names and configurations}
 \usage{
-drill_storage(plugin = NULL, drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_storage(drill_con, plugin = NULL)
 }
 \arguments{
 \item{plugin}{the assigned name in the storage plugin definition.}
@@ -17,7 +16,7 @@ Get the list of storage plugin names and configurations
 }
 \examples{
 \dontrun{
-drill_storage()
+drill_connection() \%>\% drill_storage()
 }
 }
 \references{

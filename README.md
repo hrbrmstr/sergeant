@@ -67,15 +67,12 @@ packageVersion("sergeant")
 dc <- drill_connection() 
 
 drill_active(dc)
-#> http://localhost:8047
 #> [1] TRUE
 
 drill_version(dc)
-#> http://localhost:8047
-#> [1] "1.9.0"
+#> NULL
 
 drill_storage(dc)$name
-#> http://localhost:8047
 #> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"
 ```
 
@@ -83,7 +80,6 @@ Working with the built-in JSON data sets:
 
 ``` r
 drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
-#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   store_id = col_integer(),
@@ -120,7 +116,6 @@ drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
 #> #   education_level <chr>, first_name <chr>, position_id <int>
 
 drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
-#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   gender = col_integer()
@@ -132,7 +127,6 @@ drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY
 #> 2    554
 
 drill_options(dc)
-#> http://localhost:8047
 #> # A tibble: 105 × 4
 #>                                              name value   type    kind
 #> *                                           <chr> <chr>  <chr>   <chr>
@@ -149,7 +143,6 @@ drill_options(dc)
 #> # ... with 95 more rows
 
 drill_options(dc, "json")
-#> http://localhost:8047
 #> # A tibble: 7 × 4
 #>                                                    name value   type    kind
 #>                                                   <chr> <chr>  <chr>   <chr>
@@ -167,7 +160,6 @@ Working with parquet files
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
-#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   N_COMMENT = col_character(),
@@ -189,7 +181,6 @@ Including multiple parquet files in different directories (note the wildcard sup
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
-#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   N_COMMENT = col_character(),
@@ -226,7 +217,6 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
                 )
             )
 ")
-#> http://localhost:8047
 #> Parsed with column specification:
 #> cols(
 #>   city = col_character(),
@@ -252,7 +242,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Mon Dec  5 10:12:22 2016"
+#> [1] "Mon Dec  5 10:27:10 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

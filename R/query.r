@@ -2,14 +2,16 @@
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param query query to run
-#' @param uplift automatically run \code{drill_uplift()} on the result?
-#' @param .progress if \code{TRUE} then ask \code{httr::PSOT} to display a progress bar
+#' @param uplift automatically run \code{drill_uplift()} on the result? (default: \code{TRUE})
+#' @param .progress if \code{TRUE} (default if in an interactive session) then ask
+#'                  \code{httr::POST} to display a progress bar
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
-#' drill_con() %>% drill_query("SELECT * FROM cp.`employee.json` limit 5")
+#' drill_con() %>%
+#'   drill_query("SELECT * FROM cp.`employee.json` limit 5")
 #' }
-drill_query <- function(drill_con, query, uplift=TRUE, .progress=FALSE) {
+drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) {
 
   drill_server <- make_server(drill_con)
 
@@ -32,8 +34,7 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=FALSE) {
     message(sprintf("Query ==> %s\n%s\n", gsub("[\r\n]", " ", query), out$errorMessage))
     invisible(out)
   } else {
-    if (uplift) out <- drill_uplift(out)
-    out
+    if (uplift) drill_uplift(out)
   }
 
 }

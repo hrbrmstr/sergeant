@@ -4,23 +4,25 @@
 \alias{drill_query}
 \title{Submit a query and return results}
 \usage{
-drill_query(drill_con, query, uplift = TRUE, .progress = FALSE)
+drill_query(drill_con, query, uplift = TRUE, .progress = interactive())
 }
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
 \item{query}{query to run}
 
-\item{uplift}{automatically run \code{drill_uplift()} on the result?}
+\item{uplift}{automatically run \code{drill_uplift()} on the result? (default: \code{TRUE})}
 
-\item{.progress}{if \code{TRUE} then ask \code{httr::PSOT} to display a progress bar}
+\item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
+\code{httr::POST} to display a progress bar}
 }
 \description{
 Submit a query and return results
 }
 \examples{
 \dontrun{
-drill_con() \%>\% drill_query("SELECT * FROM cp.`employee.json` limit 5")
+drill_con() \%>\%
+  drill_query("SELECT * FROM cp.`employee.json` limit 5")
 }
 }
 \references{

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
-`sergeant` : Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'
+`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and JDBC Interface
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
@@ -43,6 +43,7 @@ The following functions are implemented:
 - `drill_connection`: Setup parameters for a Drill server/cluster connection
 - `drill_active`: Test whether Drill HTTP REST API server is up
 - `drill_cancel`:	Cancel the query that has the given queryid
+- `drill_jdbc`:	Connect to Drill using JDBC _(driver included with package until CRAN release)_
 - `drill_metrics`:	Get the current memory metrics
 - `drill_options`:	List the name, default, and data type of the system and session options
 - `drill_profile`:	Get the profile of the query that has the given queryid
@@ -130,6 +131,17 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
                 )
             )
 ")
+```
+
+### JDBC
+
+```{r}
+library(RJDBC)
+
+con <- drill_jdbc("localhost:2181", "jla")
+
+dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
+  tibble::as_tibble()
 ```
 
 ### Test Results

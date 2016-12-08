@@ -8,7 +8,7 @@
 -->
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
-`sergeant` : Tools to Transform and Query Data with the 'Apache' 'Drill' 'API'
+`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and JDBC Interface
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
@@ -31,6 +31,7 @@ The following functions are implemented:
 -   `drill_connection`: Setup parameters for a Drill server/cluster connection
 -   `drill_active`: Test whether Drill HTTP REST API server is up
 -   `drill_cancel`: Cancel the query that has the given queryid
+-   `drill_jdbc`: Connect to Drill using JDBC *(driver included with package until CRAN release)*
 -   `drill_metrics`: Get the current memory metrics
 -   `drill_options`: List the name, default, and data type of the system and session options
 -   `drill_profile`: Get the profile of the query that has the given queryid
@@ -235,6 +236,35 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 #> 7   Fruitdale -121.9327 37.31086
 ```
 
+### JDBC
+
+``` r
+library(RJDBC)
+#> Loading required package: DBI
+#> Loading required package: rJava
+
+con <- drill_jdbc("localhost:2181", "jla")
+#> Using [jdbc:drill:zk=localhost:2181/drill/jla]...
+
+dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
+  tibble::as_tibble()
+#> # A tibble: 1,155 × 16
+#>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
+#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
+#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
+#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
+#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
+#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
+#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
+#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
+#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
+#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
+#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
+#> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
+```
+
 ### Test Results
 
 ``` r
@@ -242,7 +272,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Mon Dec  5 10:27:10 2016"
+#> [1] "Thu Dec  8 11:09:19 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

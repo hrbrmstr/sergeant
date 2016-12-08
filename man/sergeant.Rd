@@ -4,12 +4,12 @@
 \name{sergeant}
 \alias{sergeant}
 \alias{sergeant-package}
-\title{Tools to Transform and Query Data with the the 'Apache Drill' 'REST API'}
+\title{Tools to Transform and Query Data with the the 'Apache Drill' 'REST API' and JDBC Interface}
 \description{
-Drill is an innovative distributed SQL engine designed to enable data exploration
-and analytics on non-relational datastores. Users can query the data using standard
-SQL and BI tools without having to create and manage schemas. Some of the key features
-are:
+Drill is an innovative low-latency distributed query engine designed to enable data
+exploration and analytics on both relational and non-relational datastores, scaling to
+petabytes of data. Users can query the data using standard SQL and BI tools without
+having to create and manage schemas. Some of the key features are:
 }
 \details{
 \itemize{
@@ -18,6 +18,17 @@ are:
   \item{Extremely user and developer friendly}
   \item{Pluggable architecture enables connectivity to multiple datastores}
 }
+
+Drill includes a distributed execution environment, purpose built for large-scale data
+processing. At the core of Drill is the "Drillbit" service which is responsible for
+accepting requests from the client, processing the queries, and returning results to
+the client.
+
+You can install and run a Drillbit service on one node or on many nodes to form a
+distributed cluster environment. When a Drillbit runs on each data node in a cluster,
+Drill can maximize data locality during query execution without moving data over the
+network or between nodes. Drill uses ZooKeeper to maintain cluster membership and health
+check information.
 }
 \author{
 Bob Rudis (bob@rud.is)

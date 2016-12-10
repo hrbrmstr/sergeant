@@ -1,3 +1,7 @@
+# sergeant 0.1.1.9000
+
+* tweaked `drill_query()` and `drill_version()`
+
 # sergeant 0.1.0.9000
 
 * Added JDBC connector and included JDBC driver in the package (for now)

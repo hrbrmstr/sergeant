@@ -12,7 +12,7 @@ drill_connection(host = Sys.getenv("DRILL_HOST", "localhost"),
 \arguments{
 \item{host}{Drill host (will pick up the value from \code{DRILL_HOST} env var)}
 
-\item{port}{Drill port (will pick up the value from \code{DRILL_POST} env var)}
+\item{port}{Drill port (will pick up the value from \code{DRILL_PORT} env var)}
 
 \item{ssl}{use ssl?}
 

@@ -3,7 +3,7 @@ s_head <- purrr::safely(httr::HEAD)
 #' Setup a Drill connection
 #'
 #' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
-#' @param port Drill port (will pick up the value from \code{DRILL_POST} env var)
+#' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
 #' @param ssl use ssl?
 #' @param user,password NOT IMPLEMENTED YET credentials for username/password auth.
 #'                      (will pick up the values from \code{DRILL_USER}/\code{DRILL_PASSWORD}
@@ -197,5 +197,5 @@ drill_stats <- function(drill_con) {
 #' drill_connection() %>% drill_version()
 #' }
 drill_version <- function(drill_con) {
-  drill_query(drill_con, "SELECT version FROM sys.version", uplift=FALSE)$rows$version[1]
+  drill_query(drill_con, "SELECT version FROM sys.version", uplift=FALSE, .progress=FALSE)$rows$version[1]
 }

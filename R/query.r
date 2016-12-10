@@ -34,7 +34,8 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
     message(sprintf("Query ==> %s\n%s\n", gsub("[\r\n]", " ", query), out$errorMessage))
     invisible(out)
   } else {
-    if (uplift) drill_uplift(out)
+    if (uplift) out <- drill_uplift(out)
+    out
   }
 
 }

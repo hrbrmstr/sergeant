@@ -4,7 +4,7 @@
 \alias{drill_jdbc}
 \title{Connect to Drill using JDBC}
 \usage{
-drill_jdbc(nodes = "localhost:2181", cluster_id, schema = NULL,
+drill_jdbc(nodes = "localhost:2181", cluster_id = NULL, schema = NULL,
   use_zk = TRUE)
 }
 \arguments{
@@ -31,6 +31,9 @@ if you use the JDBC connection.
 \dontrun{
 con <- drill_jdbc("localhost:2181", "main")
 dbGetQuery(con, "SELECT * FROM cp.`employee.json`")
+
+# for local/embedded mode with default configuration info
+con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 }
 }
 \references{

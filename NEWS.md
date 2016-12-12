@@ -1,3 +1,7 @@
+# sergeant 0.1.2.9000
+
+* support embedded drill JDBC connection
+
 # sergeant 0.1.1.9000
 
 * tweaked `drill_query()` and `drill_version()`

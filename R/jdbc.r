@@ -17,8 +17,11 @@
 #' @examples \dontrun{
 #' con <- drill_jdbc("localhost:2181", "main")
 #' dbGetQuery(con, "SELECT * FROM cp.`employee.json`")
+#'
+#' # for local/embedded mode with default configuration info
+#' con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 #' }
-drill_jdbc <- function(nodes="localhost:2181", cluster_id, schema=NULL, use_zk=TRUE) {
+drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
 
   drill_jdbc_drv <- RJDBC::JDBC(driverClass="org.apache.drill.jdbc.Driver",
             system.file("jars", "drill-jdbc-all-1.9.0.jar", package="sergeant", mustWork=TRUE))
@@ -26,7 +29,9 @@ drill_jdbc <- function(nodes="localhost:2181", cluster_id, schema=NULL, use_zk=T
   conn_type <- "drillbit"
   if (use_zk) conn_type <- "zk"
 
-  conn_str <- sprintf("jdbc:drill:%s=%s/drill/%s", conn_type, nodes, cluster_id)
+  conn_str <- sprintf("jdbc:drill:%s=%s", conn_type, nodes)
+
+  if (!is.null(cluster_id)) conn_str <- sprintf("%s%s", conn_str, sprintf("/drill/%s", cluster_id))
 
   if (!is.null(schema)) conn_str <- sprintf("%s;%s", schema)
 
@@ -35,3 +40,4 @@ drill_jdbc <- function(nodes="localhost:2181", cluster_id, schema=NULL, use_zk=T
   RJDBC::dbConnect(drill_jdbc_drv, conn_str)
 
 }
+

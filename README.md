@@ -63,7 +63,7 @@ library(sergeant)
 
 # current verison
 packageVersion("sergeant")
-#> [1] '0.1.1.9000'
+#> [1] '0.1.2.9000'
 
 dc <- drill_connection() 
 
@@ -152,7 +152,7 @@ drill_options(dc, "json")
 #> 3                              store.json.writer.uglify FALSE SYSTEM BOOLEAN
 #> 4                store.json.reader.skip_invalid_records  TRUE SYSTEM BOOLEAN
 #> 5 store.json.reader.print_skipped_invalid_record_number  TRUE SYSTEM BOOLEAN
-#> 6                              store.json.all_text_mode  TRUE SYSTEM BOOLEAN
+#> 6                              store.json.all_text_mode FALSE SYSTEM BOOLEAN
 #> 7                    store.json.writer.skip_null_fields  TRUE SYSTEM BOOLEAN
 ```
 
@@ -250,7 +250,7 @@ dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>%
   tibble::as_tibble()
 #> # A tibble: 1,155 × 16
 #>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
-#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
+#> *        <dbl>             <chr>      <chr>     <chr>       <dbl>                  <chr>    <dbl>         <dbl>
 #> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
 #> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
 #> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
@@ -261,7 +261,7 @@ dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>%
 #> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
 #> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
 #> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
-#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <dbl>, supervisor_id <dbl>,
 #> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
 ```
 
@@ -272,7 +272,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Fri Dec  9 22:47:26 2016"
+#> [1] "Mon Dec 12 06:40:23 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

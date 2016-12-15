@@ -46,7 +46,7 @@ The following functions are implemented:
 - `drill_jdbc`:	Connect to Drill using JDBC _(driver included with package until CRAN release)_
 - `drill_metrics`:	Get the current memory metrics
 - `drill_options`:	List the name, default, and data type of the system and session options
-- `drill_profile`:	Get the profile of the query that has the given queryid
+- `drill_profile`:	Get the profile of the query that has the given query id
 - `drill_profiles`:	Get the profiles of running and completed queries
 - `drill_query`:	Submit a query and return results
 - `drill_set`:	Set Drill SYSTEM or SESSION options
@@ -140,9 +140,40 @@ library(RJDBC)
 
 con <- drill_jdbc("drill.local:2181", "jla")
 
+drill_query(con, "SELECT * FROM cp.`employee.json`")
+
+# but it can work via JDBC function calls, too
 dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
   tibble::as_tibble()
 ```
+
+### Use in knitr SQL code chunks
+
+If you install `knit` via GitHub (`devtools::install_github("yihui/knitr")) you can use the `sql` chunk code type with `drill_jdbc()` connections:
+
+    ---
+    output: html_document
+    ---
+
+    ```{r libraries, message=FALSE}
+    library(sergeant)
+    library(DBI)
+    library(RJDBC)
+    ```
+
+    ## Setup JDBC connection
+
+    ```{r conn_setup}
+    dc <- drill_jdbc("drill.local:2181", "jla")
+    ```
+
+    ## Test out a query
+
+    ```{sql, connection=dc}
+    SELECT * FROM cp.`employee.json`
+    ```
+
+Which is (IMO) _way_ better than using the Drill consoles, the Drill Web UI query box or SQLWorkbench.
 
 ### Test Results
 

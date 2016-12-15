@@ -34,7 +34,7 @@ The following functions are implemented:
 -   `drill_jdbc`: Connect to Drill using JDBC *(driver included with package until CRAN release)*
 -   `drill_metrics`: Get the current memory metrics
 -   `drill_options`: List the name, default, and data type of the system and session options
--   `drill_profile`: Get the profile of the query that has the given queryid
+-   `drill_profile`: Get the profile of the query that has the given query id
 -   `drill_profiles`: Get the profiles of running and completed queries
 -   `drill_query`: Submit a query and return results
 -   `drill_set`: Set Drill SYSTEM or SESSION options
@@ -152,7 +152,7 @@ drill_options(dc, "json")
 #> 3                              store.json.writer.uglify FALSE SYSTEM BOOLEAN
 #> 4                store.json.reader.skip_invalid_records  TRUE SYSTEM BOOLEAN
 #> 5 store.json.reader.print_skipped_invalid_record_number  TRUE SYSTEM BOOLEAN
-#> 6                              store.json.all_text_mode FALSE SYSTEM BOOLEAN
+#> 6                              store.json.all_text_mode  TRUE SYSTEM BOOLEAN
 #> 7                    store.json.writer.skip_null_fields  TRUE SYSTEM BOOLEAN
 ```
 
@@ -246,11 +246,10 @@ library(RJDBC)
 con <- drill_jdbc("drill.local:2181", "jla")
 #> Using [jdbc:drill:zk=drill.local:2181/drill/jla]...
 
-dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
-  tibble::as_tibble()
+drill_query(con, "SELECT * FROM cp.`employee.json`")
 #> # A tibble: 1,155 × 16
 #>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
-#> *        <dbl>             <chr>      <chr>     <chr>       <dbl>                  <chr>    <dbl>         <dbl>
+#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
 #> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
 #> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
 #> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
@@ -261,9 +260,81 @@ dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>%
 #> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
 #> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
 #> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
-#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <dbl>, supervisor_id <dbl>,
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
+
+# but it can work via JDBC function calls, too
+dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
+  tibble::as_tibble()
+#> # A tibble: 1,155 × 16
+#>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
+#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
+#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
+#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
+#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
+#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
+#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
+#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
+#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
+#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
+#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
+#> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
 #> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
 ```
+
+### Use in knitr SQL code chunks
+
+If you install `knit` via GitHub (`devtools::install_github("yihui/knitr")) you can use the`sql`chunk code type with`drill\_jdbc()\` connections:
+
+    ---
+    output: html_document
+    ---
+
+
+    ```r
+    library(sergeant)
+    library(DBI)
+    library(RJDBC)
+    ```
+
+    ## Setup JDBC connection
+
+
+    ```r
+    dc <- drill_jdbc("drill.local:2181", "jla")
+    #> Using [jdbc:drill:zk=drill.local:2181/drill/jla]...
+    ```
+
+    ## Test out a query
+
+
+    ```sql
+    SELECT * FROM cp.`employee.json`
+    ```
+
+
+    <div class="knitsql-table">
+
+
+    Table: Displaying records 1 - 10
+
+    employee_id   full_name           first_name   last_name   position_id   position_title           store_id   department_id   birth_date   hire_date               salary       supervisor_id   education_level    marital_status   gender   management_role   
+    ------------  ------------------  -----------  ----------  ------------  -----------------------  ---------  --------------  -----------  ----------------------  -----------  --------------  -----------------  ---------------  -------  ------------------
+    1             Sheri Nowmer        Sheri        Nowmer      1             President                0          1               1961-08-26   1994-12-01 00:00:00.0   80000.0000   0               Graduate Degree    S                F        Senior Management 
+    2             Derrick Whelply     Derrick      Whelply     2             VP Country Manager       0          1               1915-07-03   1994-12-01 00:00:00.0   40000.0000   1               Graduate Degree    M                M        Senior Management 
+    4             Michael Spence      Michael      Spence      2             VP Country Manager       0          1               1969-06-20   1998-01-01 00:00:00.0   40000.0000   1               Graduate Degree    S                M        Senior Management 
+    5             Maya Gutierrez      Maya         Gutierrez   2             VP Country Manager       0          1               1951-05-10   1998-01-01 00:00:00.0   35000.0000   1               Bachelors Degree   M                F        Senior Management 
+    6             Roberta Damstra     Roberta      Damstra     3             VP Information Systems   0          2               1942-10-08   1994-12-01 00:00:00.0   25000.0000   1               Bachelors Degree   M                F        Senior Management 
+    7             Rebecca Kanagaki    Rebecca      Kanagaki    4             VP Human Resources       0          3               1949-03-27   1994-12-01 00:00:00.0   15000.0000   1               Bachelors Degree   M                F        Senior Management 
+    8             Kim Brunner         Kim          Brunner     11            Store Manager            9          11              1922-08-10   1998-01-01 00:00:00.0   10000.0000   5               Bachelors Degree   S                F        Store Management  
+    9             Brenda Blumberg     Brenda       Blumberg    11            Store Manager            21         11              1979-06-23   1998-01-01 00:00:00.0   17000.0000   5               Graduate Degree    M                F        Store Management  
+    10            Darren Stanz        Darren       Stanz       5             VP Finance               0          5               1949-08-26   1994-12-01 00:00:00.0   50000.0000   1               Partial College    M                M        Senior Management 
+    11            Jonathan Murraiin   Jonathan     Murraiin    11            Store Manager            1          11              1967-06-20   1998-01-01 00:00:00.0   15000.0000   5               Graduate Degree    S                M        Store Management  
+
+    </div>
+
+Which is (IMO) *way* better than using the Drill consoles, the Drill Web UI query box or SQLWorkbench.
 
 ### Test Results
 
@@ -272,7 +343,7 @@ library(sergeant)
 library(testthat)
 
 date()
-#> [1] "Mon Dec 12 06:40:23 2016"
+#> [1] "Thu Dec 15 12:51:49 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

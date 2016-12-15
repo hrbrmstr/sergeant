@@ -7,17 +7,24 @@
 drill_query(drill_con, query, uplift = TRUE, .progress = interactive())
 }
 \arguments{
-\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()} or
+\code{drill_jdbc()})}
 
 \item{query}{query to run}
 
-\item{uplift}{automatically run \code{drill_uplift()} on the result? (default: \code{TRUE})}
+\item{uplift}{automatically run \code{drill_uplift()} on the result? (default: \code{TRUE},
+ignored if \code{drill_con} is a \code{JDBCConnection} created by
+\code{drill_jdbc()})}
 
 \item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
 \code{httr::POST} to display a progress bar}
 }
 \description{
-Submit a query and return results
+This function can handle REST API connections or JDBC connections. There is a benefit to
+calling this function for JDBC connections vs a straight call to \code{dbGetQuery()} in
+that the function result is a `tbl_df` vs a plain \code{data.frame} so you get better
+default printing (which can be helpful if you accidentally execute a query and the result
+set is huge).
 }
 \examples{
 \dontrun{

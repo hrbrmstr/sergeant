@@ -30,6 +30,9 @@ if you use the JDBC connection.
 \examples{
 \dontrun{
 con <- drill_jdbc("localhost:2181", "main")
+drill_query(con, "SELECT * FROM cp.`employee.json`")
+
+# you can also use the connection with RJDBC calls:
 dbGetQuery(con, "SELECT * FROM cp.`employee.json`")
 
 # for local/embedded mode with default configuration info

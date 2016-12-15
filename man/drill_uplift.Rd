@@ -2,7 +2,7 @@
 % Please edit documentation in R/query.r
 \name{drill_uplift}
 \alias{drill_uplift}
-\title{Turn a columnar query results into a type-converted tbl}
+\title{Turn columnar query results into a type-converted tbl}
 \usage{
 drill_uplift(query_result)
 }
@@ -15,8 +15,8 @@ you can pipe it to this function to pull out `rows` and automatically
 type-convert it.
 }
 \details{
-Not really intended to be called directly, but useful if you ran \code{drill_query()}
-without `uplift=TRUE` but want to then convert the structure.
+Not really intended to be called directly, but useful if you accidentally ran
+\code{drill_query()} without `uplift=TRUE` but want to then convert the structure.
 }
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}

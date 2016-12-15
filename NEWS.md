@@ -1,5 +1,11 @@
 # sergeant 0.1.2.9000
 
+* can pass RJDBC connections made with `drill_jdbc()` to `drill_query()`
+* finally enaled `nodes` parameter to be a multi-element character vector as it said
+  in the function description
+
+# sergeant 0.1.2.9000
+
 * support embedded drill JDBC connection
 
 # sergeant 0.1.1.9000

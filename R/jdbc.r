@@ -16,6 +16,9 @@
 #' @export
 #' @examples \dontrun{
 #' con <- drill_jdbc("localhost:2181", "main")
+#' drill_query(con, "SELECT * FROM cp.`employee.json`")
+#'
+#' # you can also use the connection with RJDBC calls:
 #' dbGetQuery(con, "SELECT * FROM cp.`employee.json`")
 #'
 #' # for local/embedded mode with default configuration info
@@ -28,6 +31,8 @@ drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use
 
   conn_type <- "drillbit"
   if (use_zk) conn_type <- "zk"
+
+  if (length(nodes) > 1) nodes <- paste0(nodes, collapse=",")
 
   conn_str <- sprintf("jdbc:drill:%s=%s", conn_type, nodes)
 

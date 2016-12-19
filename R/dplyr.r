@@ -24,17 +24,27 @@ src_drill <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_
 }
 
 #' @export
+src_tbls.src_drill <- function(x) {
+  tmp <- dbGetQuery(x$con, "SHOW DATABASES")
+  paste0(unlist(tmp$SCHEMA_NAME, use.names=FALSE), collapse=", ")
+}
+
+#' @export
 src_desc.src_drill <- function(con) {
 
-  info <- RJDBC::dbGetInfo(con$con)
+  #info <- RJDBC::dbGetInfo(con$con)
+  tmp <- dbGetQuery(con$con, "select * from sys.version")
+  version <- tmp$version
+  tmp <- dbGetQuery(con$con, "select direct_max from sys.memory")
+  memory <- scales::comma(tmp$direct_max)
 
-  cat("drill", toString(info))
+  sprintf("Version: %s; Direct memory: %s bytes", version, memory)
 
 }
 
 #' @export
 tbl.src_drill <- function(src, from, ...) {
-  tbl_sql("drill", src = src, from = from, ...)
+  tbl_sql("drill", src=src, from=from, ...)
 }
 
 #' @export

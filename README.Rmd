@@ -75,8 +75,9 @@ options(width=120)
 ### Experimental `dplyr` interface
 
 ```{r message=FALSE}
-library(sergeant)
+library(RJDBC)
 library(dplyr)
+library(sergeant)
 
 ds <- src_drill("localhost:31010", use_zk=FALSE)
 

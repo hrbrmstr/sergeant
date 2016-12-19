@@ -19,7 +19,8 @@ Imports:
     readr,
     purrr,
     utils,
-    RJDBC
+    RJDBC,
+    scales
 Suggests:
     testthat,
     rJava,

@@ -31,6 +31,7 @@
 #' @importFrom purrr map map2 map2_df %>%
 #' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter src_sql src_desc src
 #' @import utils RJDBC
+#' @importFrom scales comma
 NULL
 
 

@@ -59,20 +59,21 @@ devtools::install_github("hrbrmstr/sergeant")
 ### Experimental `dplyr` interface
 
 ``` r
-library(sergeant)
+library(RJDBC)
 library(dplyr)
+library(sergeant)
 
 ds <- src_drill("localhost:31010", use_zk=FALSE)
 
 ds
-#> drill src:  
-#> tbls: boot, CATALOGS, COLUMNS, drillbits, memory, options, SCHEMATA, TABLES, threads, version, VIEWS
+#> src:  Version: 1.9.0; Direct memory: 9,663,676,416 bytes
+#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.root, dfs.tmp, sys
 
 db <- tbl(ds, "cp.`employee.json`") 
 
 count(db, gender, marital_status)
 #> Source:   query [?? x 3]
-#> drill Database: 
+#> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
 #> Groups: gender
 #> 
 #>   gender marital_status     n
@@ -86,7 +87,7 @@ group_by(db, position_title) %>%
   count(gender) %>% 
   mutate(full_desc=ifelse(gender=="F", "Female", "Male"))
 #> Source:   query [?? x 4]
-#> drill Database: 
+#> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
 #> Groups: position_title
 #> 
 #>            position_title gender     n full_desc
@@ -288,8 +289,6 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 
 ``` r
 library(RJDBC)
-#> Loading required package: DBI
-#> Loading required package: rJava
 
 con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 #> Using [jdbc:drill:drillbit=localhost:31010]...
@@ -396,7 +395,7 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Dec 19 17:49:55 2016"
+#> [1] "Mon Dec 19 18:37:54 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

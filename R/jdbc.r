@@ -27,7 +27,7 @@
 drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
 
   drill_jdbc_drv <- RJDBC::JDBC(driverClass="org.apache.drill.jdbc.Driver",
-            system.file("jars", "drill-jdbc-all-1.9.0.jar", package="sergeant", mustWork=TRUE))
+                                system.file("jars", "drill-jdbc-all-1.9.0.jar", package="sergeant", mustWork=TRUE))
 
   conn_type <- "drillbit"
   if (use_zk) conn_type <- "zk"
@@ -46,3 +46,48 @@ drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use
 
 }
 
+#' A DBI driver that uses the Drill JDBC driver to access databases.
+#' @export
+setClass("DrillDriver", contains = "JDBCDriver")
+
+#' Class representing a (DBI) database connection which uses JDBC to connect to Drill.
+#' @export
+setClass("DrillConnection", contains = "JDBCConnection")
+
+#' Representation of a DBI result set returned from a JDBC Drill connection
+#' @export
+setClass("DrillResult", contains = "JDBCResult")
+
+#' Drill dbConnect
+#' @export
+setMethod(
+  f="dbConnect",
+  signature="DrillDriver",
+  definition=function(drv="JDBCDriver", nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE, ...) {
+    conn_type <- "drillbit"
+    if (use_zk) conn_type <- "zk"
+    if (length(nodes) > 1) nodes <- paste0(nodes, collapse=",")
+    conn_str <- sprintf("jdbc:drill:%s=%s", conn_type, nodes)
+    if (!is.null(cluster_id)) conn_str <- sprintf("%s%s", conn_str, sprintf("/drill/%s", cluster_id))
+    if (!is.null(schema)) conn_str <- sprintf("%s;%s", schema)
+    message(sprintf("Using [%s]...", conn_str))
+    RJDBC::dbConnect(drill_jdbc_drv, conn_str)
+  },
+  valueClass="DrillConnection"
+)
+
+#' Drill dbDataType
+#' @export
+setMethod(
+  f="dbDataType",
+  signature=signature(dbObj="DrillConnection", obj = "ANY"),
+  definition=function(dbObj, obj, ...) {
+    if (is.integer(obj)) "INTEGER"
+    else if (inherits(obj, "Date")) "DATE"
+    else if (identical(class(obj), "times")) "TIME"
+    else if (inherits(obj, "POSIXct")) "TIMESTAMP"
+    else if (is.numeric(obj)) "DOUBLE"
+    else "VARCHAR(255)"
+  },
+  valueClass = "character"
+)

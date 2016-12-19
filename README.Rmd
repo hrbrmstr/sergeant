@@ -72,6 +72,25 @@ devtools::install_github("hrbrmstr/sergeant")
 options(width=120)
 ```
 
+### Experimental `dplyr` interface
+
+```{r message=FALSE}
+library(sergeant)
+library(dplyr)
+
+ds <- src_drill("localhost:31010", use_zk=FALSE)
+
+ds
+
+db <- tbl(ds, "cp.`employee.json`") 
+
+count(db, gender, marital_status)
+
+group_by(db, position_title) %>% 
+  count(gender) %>% 
+  mutate(full_desc=ifelse(gender=="F", "Female", "Male"))
+```
+
 ### Usage
 
 ```{r}
@@ -80,7 +99,7 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 
-dc <- drill_connection() 
+dc <- drill_connection("localhost") 
 
 drill_active(dc)
 
@@ -138,7 +157,7 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 ```{r}
 library(RJDBC)
 
-con <- drill_jdbc("drill.local:2181", "jla")
+con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 
 drill_query(con, "SELECT * FROM cp.`employee.json`")
 
@@ -164,7 +183,7 @@ If you install `knit` via GitHub (`devtools::install_github("yihui/knitr")) you 
     ## Setup JDBC connection
 
     ```{r conn_setup}
-    dc <- drill_jdbc("drill.local:2181", "jla")
+    dc <- drill_jdbc("localhost:31010", use_zk=FALSE)
     ```
 
     ## Test out a query

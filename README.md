@@ -84,7 +84,7 @@ count(db, gender, marital_status)
 #> 3      M              S   276
 #> 4      F              M   304
 
-# gets translated to:
+# ^^ gets translated to:
 # 
 # SELECT *
 # FROM (SELECT  gender ,  marital_status , COUNT(*) AS  n 
@@ -103,7 +103,7 @@ count(db, gender, marital_status) %>% collect()
 #> 3      M              S   276
 #> 4      F              M   304
 
-# gets translated to:
+# ^^ gets translated to:
 # 
 # SELECT  gender ,  marital_status , COUNT(*) AS  n 
 # FROM  cp.`employee.json` 
@@ -177,6 +177,38 @@ arrange(db, desc(employee_id)) %>% print(n=20)
 #       FROM  cp.`employee.json` 
 #       ORDER BY  employee_id  DESC)  lvpxoaejbc 
 # LIMIT 5
+
+mutate(db, position_title=tolower(position_title)) %>%
+  mutate(salary=as.numeric(salary)) %>% 
+  mutate(gender=ifelse(gender=="F", "Female", "Male")) %>%
+  mutate(marital_status=ifelse(marital_status=="S", "Single", "Married")) %>% 
+  group_by(supervisor_id) %>% 
+  summarise(underlings_count=n()) %>% 
+  collect()
+#> # A tibble: 112 × 2
+#>    supervisor_id underlings_count
+#> *          <chr>            <dbl>
+#> 1              0                1
+#> 2              1                7
+#> 3              5                9
+#> 4              4                2
+#> 5              2                3
+#> 6             20                2
+#> 7             21                4
+#> 8             22                7
+#> 9              6                4
+#> 10            36                2
+#> # ... with 102 more rows
+
+# ^^ gets translated to:
+# 
+# SELECT  supervisor_id , COUNT(*) AS  underlings_count 
+# FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  position_title ,  store_id ,  department_id ,  birth_date ,  hire_date ,  salary ,  supervisor_id ,  education_level ,  gender ,  management_role , CASE WHEN ( marital_status  = 'S') THEN ('Single') ELSE ('Married') END AS  marital_status 
+#       FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  position_title ,  store_id ,  department_id ,  birth_date ,  hire_date ,  salary ,  supervisor_id ,  education_level ,  marital_status ,  management_role , CASE WHEN ( gender  = 'F') THEN ('Female') ELSE ('Male') END AS  gender 
+#             FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  position_title ,  store_id ,  department_id ,  birth_date ,  hire_date ,  supervisor_id ,  education_level ,  marital_status ,  gender ,  management_role , CAST( salary  AS DOUBLE) AS  salary 
+#                   FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  store_id ,  department_id ,  birth_date ,  hire_date ,  salary ,  supervisor_id ,  education_level ,  marital_status ,  gender ,  management_role , LOWER( position_title ) AS  position_title 
+#                         FROM  cp.`employee.json` )  cnjsqxeick )  bnbnjrubna )  wavfmhkczv )  zaxeyyicxo 
+# GROUP BY  supervisor_id 
 
 db2 <- tbl(ds, "dfs.tmp.`/in/c.parquet`")
 db2
@@ -533,7 +565,7 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Dec 19 19:58:29 2016"
+#> [1] "Mon Dec 19 22:38:36 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

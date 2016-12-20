@@ -53,13 +53,40 @@ sql_escape_ident.JDBCConnection <- function(con, x) {
 }
 
 #' @export
+db_data_type <- function(con, fields) UseMethod("db_data_type")
+
+#' @export
+db_data_type.JDBCConnection <- function(con, fields, ...) {
+  print("\n\n\nHERE\n\n\n")
+  data_type <- function(x) {
+    switch(class(x)[1],
+      logical = "BOOLEAN",
+      integer = "INTEGER",
+      numeric = "DOUBLE",
+      factor =  "CHARACTER",
+      character = "CHARACTER",
+      Date = "DATE",
+      POSIXct = "TIMESTAMP",
+      stop("Can't map type ", paste(class(x), collapse = "/"),
+           " to a supported database type.")
+    )
+  }
+  vapply(fields, data_type, character(1))
+}
+
+#' @export
 sql_translate_env.JDBCConnection <- function(x) {
   dplyr::sql_variant(
-    dplyr::sql_translator(
+    scalar=dplyr::sql_translator(
       .parent = dplyr::base_scalar,
-      `!=` = dplyr::sql_infix("<>")
+      `!=` = dplyr::sql_infix("<>"),
+      as.numeric = function(x) build_sql("CAST(", x, " AS DOUBLE)"),
+      as.character = function(x) build_sql("CAST(", x, " AS CHARACTER)"),
+      as.date = function(x) build_sql("CAST(", x, " AS DATE)"),
+      as.posixct = function(x) build_sql("CAST(", x, " AS TIMESTAMP)"),
+      as.logical = function(x) build_sql("CAST(", x, " AS BOOLEAN)")
     ),
-    dplyr::sql_translator(.parent = dplyr::base_agg,
+    aggregate=dplyr::sql_translator(.parent = dplyr::base_agg,
                           n = function() dplyr::sql("COUNT(*)"),
                           cor = dplyr::sql_prefix("CORR"),
                           cov = dplyr::sql_prefix("COVAR_SAMP"),

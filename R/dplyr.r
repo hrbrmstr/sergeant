@@ -1,4 +1,35 @@
+#' Connect to Drill (using dplyr).
+#'
+#' Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
+#' fully-qualified "table reference".
+#'
+#' Presently, this is a hack-ish wrapper around the RJDBC JDBCConnection presented by Drill.
+#' While basic functionality works, Drill needs it's own DBI driver to avoid collisions withy
+#' any other JDBC connections you might have open and more work needs to be done under the covers
+#' to deal with quoting properly and exposing more Drill built-in functions.
+#'
+#' @note A copy of the Drill JDBC driver comes with this package but this is only temporary.
+#'       It will have to be removed before a CRAN submission.
+#'
+#' @param nodes character vector of nodes. If more than one node, you can either have
+#'              a single string with the comma-separated node:port pairs pre-made or
+#'              pass in a character vector with multiple node:port strings and the
+#'              function will make a comma-separated node string for you.
+#' @param cluster_id the cluster id from \code{drill-override.conf}
+#' @param schema an optional schema name to append to the JDBC connection string
+#' @param use_zk are you connecting to a ZooKeeper instance (default: \code{TRUE}) or
+#'               connecting to an individual DrillBit.
 #' @export
+#' @examples \dontrun{
+#' library(RJDBC)
+#' library(dplyr)
+#' library(sergeant)
+#'
+#' ds <- src_drill("localhost:31010", use_zk=FALSE)
+#' print(ds)
+#' db <- tbl(ds, "cp.`employee.json`")
+#' count(db, gender, marital_status)
+#' }
 src_drill <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
 
   drill_jdbc_drv <- RJDBC::JDBC(driverClass="org.apache.drill.jdbc.Driver",
@@ -93,7 +124,7 @@ sql_translate_env.JDBCConnection <- function(x) {
                           sd =  dplyr::sql_prefix("STDDEV_SAMP"),
                           var = dplyr::sql_prefix("VAR_SAMP"),
                           n_distinct = function(x) {
-                            dplyr::build_sql(dplyr::sql("count(distinct "), x, dplyr::sql(")"))
+                            dplyr::build_sql(dplyr::sql("COUNT(DISTINCT "), x, dplyr::sql(")"))
                           }
     )
   )

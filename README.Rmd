@@ -40,6 +40,14 @@ Finally, I run most of this locally and at home, so it's all been coded with no 
 
 The following functions are implemented:
 
+**`dply`r**: (not mentioning the supporting ones)
+
+- `src_drill`: Connect to Drill (using dplyr). 
+
+See `dplyr` for the `dplyr` operations (light testing shows they work in even gnarly SQL cases).
+
+**Drill APIs**:
+
 - `drill_connection`: Setup parameters for a Drill server/cluster connection
 - `drill_active`: Test whether Drill HTTP REST API server is up
 - `drill_cancel`:	Cancel the query that has the given queryid
@@ -79,7 +87,9 @@ library(RJDBC)
 library(dplyr)
 library(sergeant)
 
-ds <- src_drill("localhost:31010", use_zk=FALSE)
+ds <- src_drill("drill.local:2181", "jla") 
+# or the following if running drill-embedded
+# ds <- src_drill("localhost:31010", use_zk=FALSE)
 
 ds
 
@@ -233,7 +243,9 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 ```{r}
 library(RJDBC)
 
-con <- drill_jdbc("localhost:31010", use_zk=FALSE)
+con <- drill_jdbc("drill.local:2818", "jla") 
+# or the following if running drill-embedded
+# con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 
 drill_query(con, "SELECT * FROM cp.`employee.json`")
 
@@ -259,7 +271,7 @@ If you install `knit` via GitHub (`devtools::install_github("yihui/knitr")) you 
     ## Setup JDBC connection
 
     ```{r conn_setup}
-    dc <- drill_jdbc("localhost:31010", use_zk=FALSE)
+    dc <- drill_jdbc("drill.local:2818", "jla")
     ```
 
     ## Test out a query

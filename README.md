@@ -28,6 +28,13 @@ Finally, I run most of this locally and at home, so it's all been coded with no 
 
 The following functions are implemented:
 
+**`dply`r**: (not mentioning the supporting ones)
+
+-   `src_drill`: Connect to Drill (using dplyr). 
+
+See `dplyr` for the `dplyr` operations (light testing shows they work in even gnarly SQL cases).
+
+**Drill APIs**:
 -   `drill_connection`: Setup parameters for a Drill server/cluster connection
 -   `drill_active`: Test whether Drill HTTP REST API server is up
 -   `drill_cancel`: Cancel the query that has the given queryid

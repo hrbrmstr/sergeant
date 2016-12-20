@@ -1,5 +1,5 @@
 Package: sergeant
-Title: Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and 'JDBC' Interface
+Title: Tools to Transform and Query Data with the 'Apache Drill' 'REST API', 'JDBC' Interface and `dplyr`
 Version: 0.2.0.9000
 Authors@R: c(person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")))
 Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 

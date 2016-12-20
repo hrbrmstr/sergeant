@@ -28,7 +28,7 @@ Finally, I run most of this locally and at home, so it's all been coded with no 
 
 The following functions are implemented:
 
-**`dply`r**: (not mentioning the supporting ones)
+**`dplyr`**: (not mentioning the supporting ones)
 
 -   `src_drill`: Connect to Drill (using dplyr). 
 

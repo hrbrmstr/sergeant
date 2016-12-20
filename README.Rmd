@@ -90,6 +90,14 @@ count(db, gender, marital_status)
 group_by(db, position_title) %>% 
   count(gender) %>% 
   mutate(full_desc=ifelse(gender=="F", "Female", "Male"))
+
+db2 <- tbl(ds, "dfs.tmp.`/in/c.parquet`")
+db2
+
+db3 <- tbl(ds, "dfs.tmp.`/in/b.json`")
+db3
+
+left_join(db2, db3)
 ```
 
 ### Usage

@@ -85,11 +85,52 @@ ds
 
 db <- tbl(ds, "cp.`employee.json`") 
 
+# without `collect()`:
 count(db, gender, marital_status)
+
+# gets translated to:
+# 
+# SELECT *
+# FROM (SELECT  gender ,  marital_status , COUNT(*) AS  n 
+#       FROM  cp.`employee.json` 
+#       GROUP BY  gender ,  marital_status )  govketbhqb 
+# LIMIT 1000
+
+count(db, gender, marital_status) %>% collect()
+
+# gets translated to:
+# 
+# SELECT  gender ,  marital_status , COUNT(*) AS  n 
+# FROM  cp.`employee.json` 
+# GROUP BY  gender ,  marital_status 
+
+group_by(db, position_title) %>% 
+  count(gender) -> tmp2
 
 group_by(db, position_title) %>% 
   count(gender) %>% 
-  mutate(full_desc=ifelse(gender=="F", "Female", "Male"))
+  ungroup() %>% 
+  mutate(full_desc=ifelse(gender=="F", "Female", "Male")) %>% 
+  collect() %>% 
+  select(Title=position_title, Gender=full_desc, Count=n)
+
+# ^^ gets translated to:
+# 
+# SELECT  position_title ,  gender ,  n ,
+#         CASE WHEN ( gender  = 'F') THEN ('Female') ELSE ('Male') END AS  full_desc 
+# FROM (SELECT  position_title ,  gender , COUNT(*) AS  n 
+#       FROM  cp.`employee.json` 
+#       GROUP BY  position_title ,  gender )  dcyuypuypb 
+
+arrange(db, desc(employee_id)) %>% print(n=20)
+
+# ^^ gets translated to:
+# 
+# SELECT *
+# FROM (SELECT *
+#       FROM  cp.`employee.json` 
+#       ORDER BY  employee_id  DESC)  lvpxoaejbc 
+# LIMIT 5
 
 db2 <- tbl(ds, "dfs.tmp.`/in/c.parquet`")
 db2
@@ -98,6 +139,14 @@ db3 <- tbl(ds, "dfs.tmp.`/in/b.json`")
 db3
 
 left_join(db2, db3)
+
+# ^^ gets translated to:
+# 
+# SELECT *
+# FROM (SELECT * FROM  dfs.tmp.`/in/c.parquet` 
+#       LEFT JOIN dfs.tmp.`/in/b.json` 
+#       USING ( car ))  gnyhbahqil 
+# LIMIT 1000
 ```
 
 ### Usage

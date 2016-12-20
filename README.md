@@ -71,6 +71,7 @@ ds
 
 db <- tbl(ds, "cp.`employee.json`") 
 
+# without `collect()`:
 count(db, gender, marital_status)
 #> Source:   query [?? x 3]
 #> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
@@ -83,26 +84,99 @@ count(db, gender, marital_status)
 #> 3      M              S   276
 #> 4      F              M   304
 
+# gets translated to:
+# 
+# SELECT *
+# FROM (SELECT  gender ,  marital_status , COUNT(*) AS  n 
+#       FROM  cp.`employee.json` 
+#       GROUP BY  gender ,  marital_status )  govketbhqb 
+# LIMIT 1000
+
+count(db, gender, marital_status) %>% collect()
+#> Source: local data frame [4 x 3]
+#> Groups: gender [2]
+#> 
+#>   gender marital_status     n
+#> *  <chr>          <chr> <dbl>
+#> 1      F              S   297
+#> 2      M              M   278
+#> 3      M              S   276
+#> 4      F              M   304
+
+# gets translated to:
+# 
+# SELECT  gender ,  marital_status , COUNT(*) AS  n 
+# FROM  cp.`employee.json` 
+# GROUP BY  gender ,  marital_status 
+
+group_by(db, position_title) %>% 
+  count(gender) -> tmp2
+
 group_by(db, position_title) %>% 
   count(gender) %>% 
-  mutate(full_desc=ifelse(gender=="F", "Female", "Male"))
-#> Source:   query [?? x 4]
+  ungroup() %>% 
+  mutate(full_desc=ifelse(gender=="F", "Female", "Male")) %>% 
+  collect() %>% 
+  select(Title=position_title, Gender=full_desc, Count=n)
+#> # A tibble: 30 × 3
+#>                     Title Gender Count
+#> *                   <chr>  <chr> <dbl>
+#> 1               President Female     1
+#> 2      VP Country Manager   Male     3
+#> 3      VP Country Manager Female     3
+#> 4  VP Information Systems Female     1
+#> 5      VP Human Resources Female     1
+#> 6           Store Manager Female    13
+#> 7              VP Finance   Male     1
+#> 8           Store Manager   Male    11
+#> 9            HQ Marketing Female     2
+#> 10 HQ Information Systems Female     4
+#> # ... with 20 more rows
+
+# ^^ gets translated to:
+# 
+# SELECT  position_title ,  gender ,  n ,
+#         CASE WHEN ( gender  = 'F') THEN ('Female') ELSE ('Male') END AS  full_desc 
+# FROM (SELECT  position_title ,  gender , COUNT(*) AS  n 
+#       FROM  cp.`employee.json` 
+#       GROUP BY  position_title ,  gender )  dcyuypuypb 
+
+arrange(db, desc(employee_id)) %>% print(n=20)
+#> Source:   query [?? x 16]
 #> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
-#> Groups: position_title
 #> 
-#>            position_title gender     n full_desc
-#>                     <chr>  <chr> <dbl>     <chr>
-#> 1               President      F     1    Female
-#> 2      VP Country Manager      M     3      Male
-#> 3      VP Country Manager      F     3    Female
-#> 4  VP Information Systems      F     1    Female
-#> 5      VP Human Resources      F     1    Female
-#> 6           Store Manager      F    13    Female
-#> 7              VP Finance      M     1      Male
-#> 8           Store Manager      M    11      Male
-#> 9            HQ Marketing      F     2    Female
-#> 10 HQ Information Systems      F     4    Female
-#> # ... with more rows
+#>    employee_id          full_name first_name last_name position_id          position_title store_id department_id
+#>          <chr>              <chr>      <chr>     <chr>       <chr>                   <chr>    <chr>         <chr>
+#> 1          999    Beverly Dittmar    Beverly   Dittmar          17 Store Permanent Stocker        8            17
+#> 2          998  Elizabeth Jantzer  Elizabeth   Jantzer          17 Store Permanent Stocker        8            17
+#> 3          997         John Sweet       John     Sweet          17 Store Permanent Stocker        8            17
+#> 4          996     William Murphy    William    Murphy          17 Store Permanent Stocker        8            17
+#> 5          995      Carol Lindsay      Carol   Lindsay          17 Store Permanent Stocker        8            17
+#> 6          994      Richard Burke    Richard     Burke          17 Store Permanent Stocker        8            17
+#> 7          993      Ethan Bunosky      Ethan   Bunosky          17 Store Permanent Stocker        8            17
+#> 8          992  Claudette Cabrera  Claudette   Cabrera          17 Store Permanent Stocker        8            17
+#> 9          991        Maria Terry      Maria     Terry          17 Store Permanent Stocker        8            17
+#> 10         990        Stacey Case     Stacey      Case          17 Store Permanent Stocker        8            17
+#> 11          99    Elizabeth Horne  Elizabeth     Horne          18 Store Temporary Stocker        6            18
+#> 12         989    Dominick Nutter   Dominick    Nutter          17 Store Permanent Stocker        8            17
+#> 13         988    Brian Willeford      Brian Willeford          17 Store Permanent Stocker        8            17
+#> 14         987 Margaret Clendenen   Margaret Clendenen          17 Store Permanent Stocker        8            17
+#> 15         986         Maeve Wall      Maeve      Wall          17 Store Permanent Stocker        8            17
+#> 16         985     Mildred Morrow    Mildred    Morrow          16 Store Temporary Checker        8            16
+#> 17         984      French Wilson     French    Wilson          16 Store Temporary Checker        8            16
+#> 18         983   Elisabeth Duncan  Elisabeth    Duncan          16 Store Temporary Checker        8            16
+#> 19         982     Linda Anderson      Linda  Anderson          16 Store Temporary Checker        8            16
+#> 20         981      Selene Watson     Selene    Watson          16 Store Temporary Checker        8            16
+#> # ... with more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
+
+# ^^ gets translated to:
+# 
+# SELECT *
+# FROM (SELECT *
+#       FROM  cp.`employee.json` 
+#       ORDER BY  employee_id  DESC)  lvpxoaejbc 
+# LIMIT 5
 
 db2 <- tbl(ds, "dfs.tmp.`/in/c.parquet`")
 db2
@@ -159,6 +233,14 @@ left_join(db2, db3)
 #> 9           Merc 230  22.8     4          Merc 230 140.8  3.15
 #> 10          Merc 280  19.2     6          Merc 280 167.6  3.44
 #> # ... with more rows
+
+# ^^ gets translated to:
+# 
+# SELECT *
+# FROM (SELECT * FROM  dfs.tmp.`/in/c.parquet` 
+#       LEFT JOIN dfs.tmp.`/in/b.json` 
+#       USING ( car ))  gnyhbahqil 
+# LIMIT 1000
 ```
 
 ### Usage
@@ -451,7 +533,7 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Dec 19 19:25:04 2016"
+#> [1] "Mon Dec 19 19:58:29 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

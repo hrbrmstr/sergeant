@@ -1,4 +1,4 @@
-#' Tools to Transform and Query Data with the the 'Apache Drill' 'REST API' and JDBC Interface
+#' Tools to Transform and Query Data with the the 'Apache Drill' 'REST API', JDBC Interface & dplyr
 #'
 #' Drill is an innovative low-latency distributed query engine designed to enable data
 #' exploration and analytics on both relational and non-relational datastores, scaling to

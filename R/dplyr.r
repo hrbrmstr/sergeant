@@ -1,7 +1,8 @@
 #' Connect to Drill (using dplyr).
 #'
 #' Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
-#' fully-qualified "table reference".
+#' fully-qualified "table reference". The vast majority of Drill SQL functions have
+#' also been made available to the \code{dplyr} interface.
 #'
 #' Presently, this is a hack-ish wrapper around the RJDBC JDBCConnection presented by Drill.
 #' While basic functionality works, Drill needs it's own DBI driver to avoid collisions withy
@@ -21,37 +22,26 @@
 #'               connecting to an individual DrillBit.
 #' @export
 #' @examples \dontrun{
-#' library(RJDBC)
-#' library(dplyr)
-#' library(sergeant)
+#' db <- src_drill("localhost:31010", use_zk=FALSE)
+#' print(db)
+#' emp <- tbl(db, "cp.`employee.json`")
 #'
-#' ds <- src_drill("localhost:31010", use_zk=FALSE)
-#' print(ds)
-#' db <- tbl(ds, "cp.`employee.json`")
-#' count(db, gender, marital_status)
+#' count(emp, gender, marital_status)
+#'
+#' # Drill custom SQL functions are also available
+#' select(emp, full_name) %>%
+#'   mutate(        loc = strpos(full_name, "a"),
+#'          first_three = substr(full_name, 1L, 3L),
+#'                  len = length(full_name),
+#'                   rx = regexp_replace(full_name, "[aeiouAEIOU]", "*"),
+#'                  rnd = rand(),
+#'                  pos = position("en", full_name),
+#'                  rpd = rpad(full_name, 20L),
+#'                 rpdw = rpad_with(full_name, 20L, "*"))
 #' }
 src_drill <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
-
-  drill_jdbc_drv <- RJDBC::JDBC(driverClass="org.apache.drill.jdbc.Driver",
-                                system.file("jars", "drill-jdbc-all-1.9.0.jar", package="sergeant", mustWork=TRUE))
-
-  conn_type <- "drillbit"
-  if (use_zk) conn_type <- "zk"
-
-  if (length(nodes) > 1) nodes <- paste0(nodes, collapse=",")
-
-  conn_str <- sprintf("jdbc:drill:%s=%s", conn_type, nodes)
-
-  if (!is.null(cluster_id)) conn_str <- sprintf("%s%s", conn_str, sprintf("/drill/%s", cluster_id))
-
-  if (!is.null(schema)) conn_str <- sprintf("%s;%s", schema)
-
-  message(sprintf("Using [%s]...", conn_str))
-
-  con <- RJDBC::dbConnect(drill_jdbc_drv, conn_str)
-
+  con <- drill_jdbc(nodes=nodes, cluster_id=cluster_id, schema=schema, use_zk=use_zk)
   src_sql("drill", con)
-
 }
 
 #' @export
@@ -63,7 +53,6 @@ src_tbls.src_drill <- function(x) {
 #' @export
 src_desc.src_drill <- function(con) {
 
-  #info <- RJDBC::dbGetInfo(con$con)
   tmp <- dbGetQuery(con$con, "select * from sys.version")
   version <- tmp$version
   tmp <- dbGetQuery(con$con, "select direct_max from sys.memory")

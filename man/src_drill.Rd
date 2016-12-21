@@ -22,7 +22,8 @@ connecting to an individual DrillBit.}
 }
 \description{
 Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
-fully-qualified "table reference".
+fully-qualified "table reference". The vast majority of Drill SQL functions have
+also been made available to the \code{dplyr} interface.
 }
 \details{
 Presently, this is a hack-ish wrapper around the RJDBC JDBCConnection presented by Drill.
@@ -36,14 +37,22 @@ A copy of the Drill JDBC driver comes with this package but this is only tempora
 }
 \examples{
 \dontrun{
-library(RJDBC)
-library(dplyr)
-library(sergeant)
+db <- src_drill("localhost:31010", use_zk=FALSE)
+print(db)
+emp <- tbl(db, "cp.`employee.json`")
 
-ds <- src_drill("localhost:31010", use_zk=FALSE)
-print(ds)
-db <- tbl(ds, "cp.`employee.json`")
-count(db, gender, marital_status)
+count(emp, gender, marital_status)
+
+# Drill custom SQL functions are also available
+select(emp, full_name) \%>\%
+  mutate(        loc = strpos(full_name, "a"),
+         first_three = substr(full_name, 1L, 3L),
+                 len = length(full_name),
+                  rx = regexp_replace(full_name, "[aeiouAEIOU]", "*"),
+                 rnd = rand(),
+                 pos = position("en", full_name),
+                 rpd = rpad(full_name, 20L),
+                rpdw = rpad_with(full_name, 20L, "*"))
 }
 }
 

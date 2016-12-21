@@ -8,7 +8,7 @@
 -->
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
-`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and JDBC Interface
+`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface & dplyr
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 

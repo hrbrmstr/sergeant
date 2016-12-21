@@ -1,3 +1,7 @@
+# sergeant 0.2.1.9000
+
+* implemented a large subset of Drill SQL Functions <https://drill.apache.org/docs/about-sql-function-examples/>
+
 # sergeant 0.2.0.9000
 
 * experimental alpha dplyr driver

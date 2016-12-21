@@ -91,15 +91,15 @@ db_data_type.JDBCConnection <- function(con, fields, ...) {
   print("\n\n\nHERE\n\n\n")
   data_type <- function(x) {
     switch(class(x)[1],
-      logical = "BOOLEAN",
-      integer = "INTEGER",
-      numeric = "DOUBLE",
-      factor =  "CHARACTER",
-      character = "CHARACTER",
-      Date = "DATE",
-      POSIXct = "TIMESTAMP",
-      stop("Can't map type ", paste(class(x), collapse = "/"),
-           " to a supported database type.")
+           logical = "BOOLEAN",
+           integer = "INTEGER",
+           numeric = "DOUBLE",
+           factor =  "CHARACTER",
+           character = "CHARACTER",
+           Date = "DATE",
+           POSIXct = "TIMESTAMP",
+           stop("Can't map type ", paste(class(x), collapse = "/"),
+                " to a supported database type.")
     )
   }
   vapply(fields, data_type, character(1))
@@ -115,17 +115,60 @@ sql_translate_env.JDBCConnection <- function(x) {
       as.character = function(x) build_sql("CAST(", x, " AS CHARACTER)"),
       as.date = function(x) build_sql("CAST(", x, " AS DATE)"),
       as.posixct = function(x) build_sql("CAST(", x, " AS TIMESTAMP)"),
-      as.logical = function(x) build_sql("CAST(", x, " AS BOOLEAN)")
+      as.logical = function(x) build_sql("CAST(", x, " AS BOOLEAN)"),
+      cbrt = sql_prefix("CBRT", 1),
+      degrees = sql_prefix("DEGREES", 1),
+      e = sql_prefix("E", 0),
+      lshift = sql_prefix("LSHIFT", 2),
+      mod = sql_prefix("MOD", 2),
+      negative = sql_prefix("NEGATIVE", 1),
+      pi = sql_prefix("PI", 0),
+      pow = sql_prefix("POW", 2),
+      radians = sql_prefix("RADIANS", 1),
+      rand = sql_prefix("RAND", 0),
+      rshift = sql_prefix("RSHIFT", 2),
+      trunc = sql_prefix("TRUNC", 2),
+      convert_to = sql_prefix("CONVERT_TO", 2),
+      convert_from = sql_prefix("CONVERT_FROM", 2),
+      string_binary = sql_prefix("STRING_BINARY", 1),
+      binary_string = sql_prefix("BINARY_STRING", 1),
+      to_char = sql_prefix("TO_CHAR", 2),
+      to_date = sql_prefix("TO_DATE", 2),
+      to_number = sql_prefix("TO_NUMBER", 2),
+      char_to_timestamp = sql_prefix("TO_TIMESTAMP", 2),
+      double_to_timestamp = sql_prefix("TO_TIMESTAMP", 1),
+      char_length = sql_prefix("CHAR_LENGTH", 1),
+      flatten = sql_prefix("FLATTEN", 1),
+      kvgen = sql_prefix("KVGEN", 1),
+      repeated_count = sql_prefix("REPEATED_COUNT", 1),
+      repeated_contains = sql_prefix("REPEATED_CONTAINS", 1),
+      ilike = sql_prefix("ILIKE", 2),
+      init_cap = sql_prefix("INIT_CAP", 1),
+      length = sql_prefix("LENGTH", 1),
+      lower = sql_prefix("LOWER", 1),
+      ltrim = sql_prefix("LTRIM", 2),
+      nullif = sql_prefix("NULLIF", 2),
+      position = function(x, y) build_sql("POSITION(", x, " IN ", y, ")"),
+      regexp_replace = sql_prefix("REGEXP_REPLACE", 3),
+      rtrim = sql_prefix("RTRIM", 2),
+      rpad = sql_prefix("RPAD", 2),
+      rpad_with = sql_prefix("RPAD", 3),
+      lpad = sql_prefix("LPAD", 2),
+      lpad_with = sql_prefix("LPAD", 3),
+      strpos = sql_prefix("STRPOS", 2),
+      substr = sql_prefix("SUBSTR", 3),
+      trim = function(x, y, z) build_sql("TRIM(", x, " ", y, " FROM ", z, ")"),
+      upper = sql_prefix("UPPER", 1)
     ),
     aggregate=dplyr::sql_translator(.parent = dplyr::base_agg,
-                          n = function() dplyr::sql("COUNT(*)"),
-                          cor = dplyr::sql_prefix("CORR"),
-                          cov = dplyr::sql_prefix("COVAR_SAMP"),
-                          sd =  dplyr::sql_prefix("STDDEV_SAMP"),
-                          var = dplyr::sql_prefix("VAR_SAMP"),
-                          n_distinct = function(x) {
-                            dplyr::build_sql(dplyr::sql("COUNT(DISTINCT "), x, dplyr::sql(")"))
-                          }
+                                    n = function() dplyr::sql("COUNT(*)"),
+                                    cor = dplyr::sql_prefix("CORR"),
+                                    cov = dplyr::sql_prefix("COVAR_SAMP"),
+                                    sd =  dplyr::sql_prefix("STDDEV_SAMP"),
+                                    var = dplyr::sql_prefix("VAR_SAMP"),
+                                    n_distinct = function(x) {
+                                      dplyr::build_sql(dplyr::sql("COUNT(DISTINCT "), x, dplyr::sql(")"))
+                                    }
     )
   )
 }

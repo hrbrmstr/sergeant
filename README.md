@@ -12,7 +12,7 @@
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
-The package doesn't have a `dplyr`-esque interface yet, but creating one is possible since Drill uses pretty standard SQL for queries. Right now, you need to build Drill SQL queries by hand and issue them with `drill_query()`. It's good to get one's hands dirty with some SQL on occassion (it builds character). The JDBC interface may make it possible to write a `dplyr` wrapper for it.
+<del>The package doesn't have a `dplyr`-esque interface yet, but creating one is possible since Drill uses pretty standard SQL for queries. Right now, you need to build Drill SQL queries by hand and issue them with `drill_query()`. It's good to get one's hands dirty with some SQL on occassion (it builds character). The JDBC interface may make it possible to write a `dplyr` wrapper for it.</del>
 
 I find writing SQL queries to parquet files with Drill on a local 64GB Linux workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
 

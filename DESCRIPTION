@@ -1,5 +1,5 @@
 Package: sergeant
-Title: Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, 
+Title: Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and 'JDBC' Interfaces, 
     Plus 'dplyr' and 'DBI' Interfaces
 Version: 0.3.0.9000
 Authors@R: c(person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")))

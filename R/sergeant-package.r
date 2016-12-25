@@ -1,4 +1,5 @@
-#' Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
+#' Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and 'JDBC' Interfaces,
+#' Plus 'dplyr' and 'DBI' Interfaces
 #'
 #' Drill is an innovative low-latency distributed query engine designed to enable data
 #' exploration and analytics on both relational and non-relational datastores, scaling to
@@ -22,6 +23,9 @@
 #' Drill can maximize data locality during query execution without moving data over the
 #' network or between nodes. Drill uses ZooKeeper to maintain cluster membership and health
 #' check information.
+#'
+#' Methods are provided to work with Drill via the native JDBC & REST APIs along with R
+#' \code{DBI} and \code{dplyr} interfaces.
 #'
 #' @name sergeant
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}

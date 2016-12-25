@@ -4,22 +4,11 @@
 #' fully-qualified "table reference". The vast majority of Drill SQL functions have
 #' also been made available to the \code{dplyr} interface.
 #'
-#' Presently, this is a hack-ish wrapper around the RJDBC JDBCConnection presented by Drill.
-#' While basic functionality works, Drill needs it's own DBI driver to avoid collisions withy
-#' any other JDBC connections you might have open and more work needs to be done under the covers
-#' to deal with quoting properly and exposing more Drill built-in functions.
+#' @note This is a DBI wrapper around the Drill REST API.
 #'
-#' @note A copy of the Drill JDBC driver comes with this package but this is only temporary.
-#'       It will have to be removed before a CRAN submission.
-#'
-#' @param nodes character vector of nodes. If more than one node, you can either have
-#'              a single string with the comma-separated node:port pairs pre-made or
-#'              pass in a character vector with multiple node:port strings and the
-#'              function will make a comma-separated node string for you.
-#' @param cluster_id the cluster id from \code{drill-override.conf}
-#' @param schema an optional schema name to append to the JDBC connection string
-#' @param use_zk are you connecting to a ZooKeeper instance (default: \code{TRUE}) or
-#'               connecting to an individual DrillBit.
+#' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
+#' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
+#' @param ssl use ssl?
 #' @export
 #' @examples \dontrun{
 #' db <- src_drill("localhost:31010", use_zk=FALSE)
@@ -39,9 +28,15 @@
 #'                  rpd = rpad(full_name, 20L),
 #'                 rpdw = rpad_with(full_name, 20L, "*"))
 #' }
-src_drill <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
-  con <- drill_jdbc(nodes=nodes, cluster_id=cluster_id, schema=schema, use_zk=use_zk)
+#' @export
+src_drill <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
+                      port=as.integer(Sys.getenv("DRILL_PORT", 8047L)),
+                      ssl=FALSE) {
+
+  dr <- Drill()
+  con <- dbConnect(dr, host=host, port=port, ssl=ssl)
   src_sql("drill", con)
+
 }
 
 #' @export
@@ -51,15 +46,20 @@ src_tbls.src_drill <- function(x) {
 }
 
 #' @export
-src_desc.src_drill <- function(con) {
+src_desc.src_drill <- function(x) {
 
-  tmp <- dbGetQuery(con$con, "select * from sys.version")
+  tmp <- dbGetQuery(x$con, "SELECT * FROM sys.version")
   version <- tmp$version
-  tmp <- dbGetQuery(con$con, "select direct_max from sys.memory")
+  tmp <- dbGetQuery(x$con, "SELECT direct_max FROM sys.memory")
   memory <- scales::comma(tmp$direct_max)
 
   sprintf("Version: %s; Direct memory: %s bytes", version, memory)
 
+}
+
+#' @export
+sql_escape_ident.DrillConnection <- function(con, x) {
+  sql_quote(x, ' ')
 }
 
 #' @export
@@ -68,16 +68,20 @@ tbl.src_drill <- function(src, from, ...) {
 }
 
 #' @export
-sql_escape_ident.JDBCConnection <- function(con, x) {
-  sql_quote(x, ' ')
+db_query_fields.DrillConnection <- function(con, sql, ...) {
+
+  fields <- dplyr::build_sql(
+    "SELECT * FROM ", sql, " LIMIT 1",
+    con = con
+  )
+  result <- dbSendQuery(con, fields)
+  return(dbListFields(result))
+
 }
 
 #' @export
-db_data_type <- function(con, fields) UseMethod("db_data_type")
-
-#' @export
-db_data_type.JDBCConnection <- function(con, fields, ...) {
-  print("\n\n\nHERE\n\n\n")
+db_data_type.DrillConnection <- function(con, fields, ...) {
+  print("\n\n\ndb_data_type\n\n\n")
   data_type <- function(x) {
     switch(class(x)[1],
            logical = "BOOLEAN",
@@ -95,7 +99,8 @@ db_data_type.JDBCConnection <- function(con, fields, ...) {
 }
 
 #' @export
-sql_translate_env.JDBCConnection <- function(x) {
+sql_translate_env.DrillConnection <- function(con) {
+  x <- con
   dplyr::sql_variant(
     scalar=dplyr::sql_translator(
       .parent = dplyr::base_scalar,
@@ -160,14 +165,4 @@ sql_translate_env.JDBCConnection <- function(x) {
                                     }
     )
   )
-}
-
-#' @export
-db_analyze.JDBCConnection <- function(con, table) {
-  return(TRUE)
-}
-
-#' @export
-db_create_index.JDBCConnectionn <- function(con, table, columns, name = NULL, ...) {
-  return(TRUE)
 }

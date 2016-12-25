@@ -4,13 +4,12 @@
 \alias{drill_settings_reset}
 \title{Changes (optionally, all) session settings back to system defaults}
 \usage{
-drill_settings_reset(..., drill_server = Sys.getenv("DRILL_URL", unset =
-  "http://localhost:8047"))
+drill_settings_reset(drill_con, ...)
 }
 \arguments{
-\item{...}{bare name of system options to reset}
-
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
+
+\item{...}{bare name of system options to reset}
 }
 \description{
 Changes (optionally, all) session settings back to system defaults

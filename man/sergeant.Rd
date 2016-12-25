@@ -4,7 +4,7 @@
 \name{sergeant}
 \alias{sergeant}
 \alias{sergeant-package}
-\title{Tools to Transform and Query Data with the the 'Apache Drill' 'REST API', JDBC Interface & dplyr}
+\title{Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces}
 \description{
 Drill is an innovative low-latency distributed query engine designed to enable data
 exploration and analytics on both relational and non-relational datastores, scaling to

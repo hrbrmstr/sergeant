@@ -61,7 +61,7 @@ drill_set <- function(drill_con, ..., type=c("session", "system")) {
 #' }
 drill_system_reset <- function(drill_con, ..., all=FALSE) {
 
-  if (all) return(invisible(drill_query("ALTER SYSTEM RESET ALL", drill_server=drill_server)))
+  if (all) return(invisible(drill_query(drill_con, "ALTER SYSTEM RESET ALL")))
 
   as.list(substitute(list(...)))[-1L] %>%
   purrr::map(params, ~sprintf("ALTER SYSTEM RESET `%s`", .)) %>%
@@ -92,6 +92,7 @@ drill_system_reset <- function(drill_con, ..., all=FALSE) {
 
 #' Changes (optionally, all) session settings back to system defaults
 #'
+#'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param ... bare name of system options to reset
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
@@ -99,8 +100,7 @@ drill_system_reset <- function(drill_con, ..., all=FALSE) {
 #' @examples \dontrun{
 #' drill_connection() %>% drill_settings_reset(exec.errors.verbose)
 #' }
-drill_settings_reset <- function(...,
-                               drill_server=Sys.getenv("DRILL_URL", unset="http://localhost:8047")) {
+drill_settings_reset <- function(drill_con, ...) {
 
 
   as.list(substitute(list(...)))[-1L] %>%

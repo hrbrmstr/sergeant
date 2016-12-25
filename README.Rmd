@@ -20,11 +20,9 @@ knitr::opts_chunk$set(
 
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
-`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and JDBC Interface
+`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
-
-The package doesn't have a `dplyr`-esque interface yet, but creating one is possible since Drill uses pretty standard SQL for queries. Right now, you need to build Drill SQL queries by hand and issue them with `drill_query()`. It's good to get one's hands dirty with some SQL on occassion (it builds character). The JDBC interface may make it possible to write a `dplyr` wrapper for it. 
 
 I find writing SQL queries to parquet files with Drill on a local 64GB Linux workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
 
@@ -40,11 +38,16 @@ Finally, I run most of this locally and at home, so it's all been coded with no 
 
 The following functions are implemented:
 
-**`dply`r**: (not mentioning the supporting ones)
+**`DBI`**
 
-- `src_drill`: Connect to Drill (using dplyr). 
+- As complete of an R `DBI` driver has been implmented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you
+need more `DBI` functionality.
 
-See `dplyr` for the `dplyr` operations (light testing shows they work in even gnarly SQL cases).
+**`dplyr`**: 
+
+- `src_drill`: Connect to Drill (using dplyr) + supporting functions
+
+See `dplyr` for the `dplyr` operations (light testing shows they work in basic SQL use-cases but Drill's SQL engine has issues with more complex queries).
 
 **Drill APIs**:
 
@@ -83,14 +86,9 @@ options(width=120)
 ### Experimental `dplyr` interface
 
 ```{r message=FALSE}
-library(RJDBC)
-library(dplyr)
 library(sergeant)
 
-ds <- src_drill("drill.local:2181", "jla") 
-# or the following if running drill-embedded
-# ds <- src_drill("localhost:31010", use_zk=FALSE)
-
+ds <- src_drill("drill.local") 
 ds
 
 db <- tbl(ds, "cp.`employee.json`") 
@@ -243,7 +241,7 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 ```{r}
 library(RJDBC)
 
-con <- drill_jdbc("drill.local:2818", "jla") 
+con <- drill_jdbc("drill.local:2181", "jla") 
 # or the following if running drill-embedded
 # con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 
@@ -253,34 +251,6 @@ drill_query(con, "SELECT * FROM cp.`employee.json`")
 dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
   tibble::as_tibble()
 ```
-
-### Use in knitr SQL code chunks
-
-If you install `knit` via GitHub (`devtools::install_github("yihui/knitr")) you can use the `sql` chunk code type with `drill_jdbc()` connections:
-
-    ---
-    output: html_document
-    ---
-
-    ```{r libraries, message=FALSE}
-    library(sergeant)
-    library(DBI)
-    library(RJDBC)
-    ```
-
-    ## Setup JDBC connection
-
-    ```{r conn_setup}
-    dc <- drill_jdbc("drill.local:2818", "jla")
-    ```
-
-    ## Test out a query
-
-    ```{sql, connection=dc}
-    SELECT * FROM cp.`employee.json`
-    ```
-
-Which is (IMO) _way_ better than using the Drill consoles, the Drill Web UI query box or SQLWorkbench.
 
 ### Test Results
 

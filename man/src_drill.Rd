@@ -4,36 +4,23 @@
 \alias{src_drill}
 \title{Connect to Drill (using dplyr).}
 \usage{
-src_drill(nodes = "localhost:2181", cluster_id = NULL, schema = NULL,
-  use_zk = TRUE)
+src_drill(host = Sys.getenv("DRILL_HOST", "localhost"),
+  port = as.integer(Sys.getenv("DRILL_PORT", 8047L)), ssl = FALSE)
 }
 \arguments{
-\item{nodes}{character vector of nodes. If more than one node, you can either have
-a single string with the comma-separated node:port pairs pre-made or
-pass in a character vector with multiple node:port strings and the
-function will make a comma-separated node string for you.}
+\item{host}{Drill host (will pick up the value from \code{DRILL_HOST} env var)}
 
-\item{cluster_id}{the cluster id from \code{drill-override.conf}}
+\item{port}{Drill port (will pick up the value from \code{DRILL_PORT} env var)}
 
-\item{schema}{an optional schema name to append to the JDBC connection string}
-
-\item{use_zk}{are you connecting to a ZooKeeper instance (default: \code{TRUE}) or
-connecting to an individual DrillBit.}
+\item{ssl}{use ssl?}
 }
 \description{
 Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
 fully-qualified "table reference". The vast majority of Drill SQL functions have
 also been made available to the \code{dplyr} interface.
 }
-\details{
-Presently, this is a hack-ish wrapper around the RJDBC JDBCConnection presented by Drill.
-While basic functionality works, Drill needs it's own DBI driver to avoid collisions withy
-any other JDBC connections you might have open and more work needs to be done under the covers
-to deal with quoting properly and exposing more Drill built-in functions.
-}
 \note{
-A copy of the Drill JDBC driver comes with this package but this is only temporary.
-      It will have to be removed before a CRAN submission.
+This is a DBI wrapper around the Drill REST API.
 }
 \examples{
 \dontrun{

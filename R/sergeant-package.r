@@ -1,4 +1,4 @@
-#' Tools to Transform and Query Data with the the 'Apache Drill' 'REST API', JDBC Interface & dplyr
+#' Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
 #'
 #' Drill is an innovative low-latency distributed query engine designed to enable data
 #' exploration and analytics on both relational and non-relational datastores, scaling to
@@ -29,8 +29,11 @@
 #' @author Bob Rudis (bob@@rud.is)
 #' @import httr jsonlite htmltools
 #' @importFrom purrr map map2 map2_df %>%
-#' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter src_sql src_desc src
+#' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter
+#' @importFrom dplyr sql_quote src_sql src_desc src db_data_type sql_translate_env
+#' @importFrom dplyr db_query_fields src_tbls sql_escape_ident build_sql sql_prefix tbl_sql
 #' @import utils RJDBC
+#' @import DBI methods
 #' @importFrom scales comma
 NULL
 

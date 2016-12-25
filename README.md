@@ -8,11 +8,9 @@
 -->
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
-`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface & dplyr
+`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
-
-<del>The package doesn't have a `dplyr`-esque interface yet, but creating one is possible since Drill uses pretty standard SQL for queries. Right now, you need to build Drill SQL queries by hand and issue them with `drill_query()`. It's good to get one's hands dirty with some SQL on occassion (it builds character). The JDBC interface may make it possible to write a `dplyr` wrapper for it</del>.
 
 I find writing SQL queries to parquet files with Drill on a local 64GB Linux workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
 
@@ -28,13 +26,18 @@ Finally, I run most of this locally and at home, so it's all been coded with no 
 
 The following functions are implemented:
 
-**`dplyr`**: (not mentioning the supporting ones)
+**`DBI`**
 
--   `src_drill`: Connect to Drill (using dplyr). 
+-   As complete of an R `DBI` driver has been implmented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
 
-See `dplyr` for the `dplyr` operations (light testing shows they work in even gnarly SQL cases).
+**`dplyr`**:
+
+-   `src_drill`: Connect to Drill (using dplyr) + supporting functions
+
+See `dplyr` for the `dplyr` operations (light testing shows they work in basic SQL use-cases but Drill's SQL engine has issues with more complex queries).
 
 **Drill APIs**:
+
 -   `drill_connection`: Setup parameters for a Drill server/cluster connection
 -   `drill_active`: Test whether Drill HTTP REST API server is up
 -   `drill_cancel`: Cancel the query that has the given queryid
@@ -66,30 +69,28 @@ devtools::install_github("hrbrmstr/sergeant")
 ### Experimental `dplyr` interface
 
 ``` r
-library(RJDBC)
-library(dplyr)
 library(sergeant)
 
-ds <- src_drill("localhost:31010", use_zk=FALSE)
-
+ds <- src_drill("drill.local") 
 ds
-#> src:  Version: 1.9.0; Direct memory: 9,663,676,416 bytes
-#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.root, dfs.tmp, sys
+#> src:  Version: 1.9.0; Direct memory: 34,359,738,368 bytes
+#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.pq, dfs.root, dfs.samsung, dfs.tmp, mongo.local,
+#>   my.information_schema, my.mysql, my.performance_schema, my.test, my, sys
 
 db <- tbl(ds, "cp.`employee.json`") 
 
 # without `collect()`:
 count(db, gender, marital_status)
 #> Source:   query [?? x 3]
-#> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
+#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
 #> Groups: gender
 #> 
-#>   gender marital_status     n
-#>    <chr>          <chr> <dbl>
-#> 1      F              S   297
-#> 2      M              M   278
-#> 3      M              S   276
-#> 4      F              M   304
+#>   marital_status gender     n
+#>            <chr>  <chr> <int>
+#> 1              S      F   297
+#> 2              M      M   278
+#> 3              S      M   276
+#> 4              M      F   304
 
 # ^^ gets translated to:
 # 
@@ -103,12 +104,12 @@ count(db, gender, marital_status) %>% collect()
 #> Source: local data frame [4 x 3]
 #> Groups: gender [2]
 #> 
-#>   gender marital_status     n
-#> *  <chr>          <chr> <dbl>
-#> 1      F              S   297
-#> 2      M              M   278
-#> 3      M              S   276
-#> 4      F              M   304
+#>   marital_status gender     n
+#> *          <chr>  <chr> <int>
+#> 1              S      F   297
+#> 2              M      M   278
+#> 3              S      M   276
+#> 4              M      F   304
 
 # ^^ gets translated to:
 # 
@@ -127,7 +128,7 @@ group_by(db, position_title) %>%
   select(Title=position_title, Gender=full_desc, Count=n)
 #> # A tibble: 30 × 3
 #>                     Title Gender Count
-#> *                   <chr>  <chr> <dbl>
+#> *                   <chr>  <chr> <int>
 #> 1               President Female     1
 #> 2      VP Country Manager   Male     3
 #> 3      VP Country Manager Female     3
@@ -149,33 +150,33 @@ group_by(db, position_title) %>%
 #       GROUP BY  position_title ,  gender )  dcyuypuypb 
 
 arrange(db, desc(employee_id)) %>% print(n=20)
-#> Source:   query [?? x 16]
-#> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
+#> Source:   query [?? x 20]
+#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
 #> 
-#>    employee_id          full_name first_name last_name position_id          position_title store_id department_id
-#>          <chr>              <chr>      <chr>     <chr>       <chr>                   <chr>    <chr>         <chr>
-#> 1          999    Beverly Dittmar    Beverly   Dittmar          17 Store Permanent Stocker        8            17
-#> 2          998  Elizabeth Jantzer  Elizabeth   Jantzer          17 Store Permanent Stocker        8            17
-#> 3          997         John Sweet       John     Sweet          17 Store Permanent Stocker        8            17
-#> 4          996     William Murphy    William    Murphy          17 Store Permanent Stocker        8            17
-#> 5          995      Carol Lindsay      Carol   Lindsay          17 Store Permanent Stocker        8            17
-#> 6          994      Richard Burke    Richard     Burke          17 Store Permanent Stocker        8            17
-#> 7          993      Ethan Bunosky      Ethan   Bunosky          17 Store Permanent Stocker        8            17
-#> 8          992  Claudette Cabrera  Claudette   Cabrera          17 Store Permanent Stocker        8            17
-#> 9          991        Maria Terry      Maria     Terry          17 Store Permanent Stocker        8            17
-#> 10         990        Stacey Case     Stacey      Case          17 Store Permanent Stocker        8            17
-#> 11          99    Elizabeth Horne  Elizabeth     Horne          18 Store Temporary Stocker        6            18
-#> 12         989    Dominick Nutter   Dominick    Nutter          17 Store Permanent Stocker        8            17
-#> 13         988    Brian Willeford      Brian Willeford          17 Store Permanent Stocker        8            17
-#> 14         987 Margaret Clendenen   Margaret Clendenen          17 Store Permanent Stocker        8            17
-#> 15         986         Maeve Wall      Maeve      Wall          17 Store Permanent Stocker        8            17
-#> 16         985     Mildred Morrow    Mildred    Morrow          16 Store Temporary Checker        8            16
-#> 17         984      French Wilson     French    Wilson          16 Store Temporary Checker        8            16
-#> 18         983   Elisabeth Duncan  Elisabeth    Duncan          16 Store Temporary Checker        8            16
-#> 19         982     Linda Anderson      Linda  Anderson          16 Store Temporary Checker        8            16
-#> 20         981      Selene Watson     Selene    Watson          16 Store Temporary Checker        8            16
-#> # ... with more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
-#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
+#>    store_id gender department_id birth_date supervisor_id last_name          position_title  hire_date
+#>       <int>  <chr>         <int>     <date>         <int>     <chr>                   <chr>     <dttm>
+#> 1         8      M            17 1914-02-02           949   Dittmar Store Permanent Stocker 1998-01-01
+#> 2         8      F            17 1914-02-02           949   Jantzer Store Permanent Stocker 1998-01-01
+#> 3         8      F            17 1914-02-02           949     Sweet Store Permanent Stocker 1998-01-01
+#> 4         8      M            17 1914-02-02           949    Murphy Store Permanent Stocker 1998-01-01
+#> 5         8      M            17 1914-02-02           948   Lindsay Store Permanent Stocker 1998-01-01
+#> 6         8      M            17 1914-02-02           948     Burke Store Permanent Stocker 1998-01-01
+#> 7         8      M            17 1914-02-02           948   Bunosky Store Permanent Stocker 1998-01-01
+#> 8         8      F            17 1914-02-02           948   Cabrera Store Permanent Stocker 1998-01-01
+#> 9         8      F            17 1914-02-02           948     Terry Store Permanent Stocker 1998-01-01
+#> 10        8      F            17 1914-02-02           947      Case Store Permanent Stocker 1998-01-01
+#> 11        6      F            18 1976-10-05            56     Horne Store Temporary Stocker 1997-01-01
+#> 12        8      F            17 1914-02-02           947    Nutter Store Permanent Stocker 1998-01-01
+#> 13        8      F            17 1914-02-02           947 Willeford Store Permanent Stocker 1998-01-01
+#> 14        8      M            17 1914-02-02           947 Clendenen Store Permanent Stocker 1998-01-01
+#> 15        8      F            17 1914-02-02           947      Wall Store Permanent Stocker 1998-01-01
+#> 16        8      F            16 1914-02-02           949    Morrow Store Temporary Checker 1998-01-01
+#> 17        8      M            16 1914-02-02           949    Wilson Store Temporary Checker 1998-01-01
+#> 18        8      F            16 1914-02-02           949    Duncan Store Temporary Checker 1998-01-01
+#> 19        8      F            16 1914-02-02           949  Anderson Store Temporary Checker 1998-01-01
+#> 20        8      M            16 1914-02-02           949    Watson Store Temporary Checker 1998-01-01
+#> # ... with more rows, and 8 more variables: management_role <chr>, salary <dbl>, marital_status <chr>, full_name <chr>,
+#> #   employee_id <int>, education_level <chr>, first_name <chr>, position_id <int>
 
 # ^^ gets translated to:
 # 
@@ -194,7 +195,7 @@ mutate(db, position_title=tolower(position_title)) %>%
   collect()
 #> # A tibble: 112 × 2
 #>    supervisor_id underlings_count
-#> *          <chr>            <dbl>
+#> *          <int>            <int>
 #> 1              0                1
 #> 2              1                7
 #> 3              5                9
@@ -219,58 +220,58 @@ mutate(db, position_title=tolower(position_title)) %>%
 
 db2 <- tbl(ds, "dfs.tmp.`/in/c.parquet`")
 db2
-#> Source:   query [?? x 3]
-#> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
+#> Source:   query [?? x 7]
+#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
 #> 
-#>                  car   mpg   cyl
-#>                <chr> <dbl> <chr>
-#> 1          Mazda RX4  21.0     6
-#> 2      Mazda RX4 Wag  21.0     6
-#> 3         Datsun 710  22.8     4
-#> 4     Hornet 4 Drive  21.4     6
-#> 5  Hornet Sportabout  18.7     8
-#> 6            Valiant  18.1     6
-#> 7         Duster 360  14.3     8
-#> 8          Merc 240D  24.4     4
-#> 9           Merc 230  22.8     4
-#> 10          Merc 280  19.2     6
+#>                                fqn      filename          filepath               car   mpg   cyl  suffix
+#>                              <chr>         <chr>             <chr>             <chr> <dbl> <int>   <chr>
+#> 1  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet         Mazda RX4  21.0     6 parquet
+#> 2  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet     Mazda RX4 Wag  21.0     6 parquet
+#> 3  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet        Datsun 710  22.8     4 parquet
+#> 4  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet    Hornet 4 Drive  21.4     6 parquet
+#> 5  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet Hornet Sportabout  18.7     8 parquet
+#> 6  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet           Valiant  18.1     6 parquet
+#> 7  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet        Duster 360  14.3     8 parquet
+#> 8  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet         Merc 240D  24.4     4 parquet
+#> 9  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet          Merc 230  22.8     4 parquet
+#> 10 /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet          Merc 280  19.2     6 parquet
 #> # ... with more rows
 
 db3 <- tbl(ds, "dfs.tmp.`/in/b.json`")
 db3
-#> Source:   query [?? x 3]
-#> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
+#> Source:   query [?? x 7]
+#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
 #> 
-#>                  car  disp    wt
-#>                <chr> <chr> <chr>
-#> 1          Mazda RX4   160  2.62
-#> 2      Mazda RX4 Wag   160 2.875
-#> 3         Datsun 710   108  2.32
-#> 4     Hornet 4 Drive   258 3.215
-#> 5  Hornet Sportabout   360  3.44
-#> 6            Valiant   225  3.46
-#> 7         Duster 360   360  3.57
-#> 8          Merc 240D 146.7  3.19
-#> 9           Merc 230 140.8  3.15
-#> 10          Merc 280 167.6  3.44
+#>               fqn filename filepath               car suffix  disp    wt
+#>             <chr>    <chr>    <chr>             <chr>  <chr> <dbl> <dbl>
+#> 1  /tmp/in/b.json   b.json  /tmp/in         Mazda RX4   json 160.0 2.620
+#> 2  /tmp/in/b.json   b.json  /tmp/in     Mazda RX4 Wag   json 160.0 2.875
+#> 3  /tmp/in/b.json   b.json  /tmp/in        Datsun 710   json 108.0 2.320
+#> 4  /tmp/in/b.json   b.json  /tmp/in    Hornet 4 Drive   json 258.0 3.215
+#> 5  /tmp/in/b.json   b.json  /tmp/in Hornet Sportabout   json 360.0 3.440
+#> 6  /tmp/in/b.json   b.json  /tmp/in           Valiant   json 225.0 3.460
+#> 7  /tmp/in/b.json   b.json  /tmp/in        Duster 360   json 360.0 3.570
+#> 8  /tmp/in/b.json   b.json  /tmp/in         Merc 240D   json 146.7 3.190
+#> 9  /tmp/in/b.json   b.json  /tmp/in          Merc 230   json 140.8 3.150
+#> 10 /tmp/in/b.json   b.json  /tmp/in          Merc 280   json 167.6 3.440
 #> # ... with more rows
 
 left_join(db2, db3)
-#> Source:   query [?? x 5]
-#> Database: Version: 1.9.0; Direct memory: 9,663,676,416 bytes
+#> Source:   query [?? x 9]
+#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
 #> 
-#>                  car   mpg   cyl              car0  disp    wt
-#>                <chr> <dbl> <chr>             <chr> <chr> <chr>
-#> 1          Mazda RX4  21.0     6         Mazda RX4   160  2.62
-#> 2      Mazda RX4 Wag  21.0     6     Mazda RX4 Wag   160 2.875
-#> 3         Datsun 710  22.8     4        Datsun 710   108  2.32
-#> 4     Hornet 4 Drive  21.4     6    Hornet 4 Drive   258 3.215
-#> 5  Hornet Sportabout  18.7     8 Hornet Sportabout   360  3.44
-#> 6            Valiant  18.1     6           Valiant   225  3.46
-#> 7         Duster 360  14.3     8        Duster 360   360  3.57
-#> 8          Merc 240D  24.4     4         Merc 240D 146.7  3.19
-#> 9           Merc 230  22.8     4          Merc 230 140.8  3.15
-#> 10          Merc 280  19.2     6          Merc 280 167.6  3.44
+#>     car0               car   mpg   cyl  disp    wt
+#>    <lgl>             <chr> <dbl> <int> <lgl> <lgl>
+#> 1     NA         Mazda RX4  21.0     6    NA    NA
+#> 2     NA     Mazda RX4 Wag  21.0     6    NA    NA
+#> 3     NA        Datsun 710  22.8     4    NA    NA
+#> 4     NA    Hornet 4 Drive  21.4     6    NA    NA
+#> 5     NA Hornet Sportabout  18.7     8    NA    NA
+#> 6     NA           Valiant  18.1     6    NA    NA
+#> 7     NA        Duster 360  14.3     8    NA    NA
+#> 8     NA         Merc 240D  24.4     4    NA    NA
+#> 9     NA          Merc 230  22.8     4    NA    NA
+#> 10    NA          Merc 280  19.2     6    NA    NA
 #> # ... with more rows
 
 # ^^ gets translated to:
@@ -289,7 +290,7 @@ library(sergeant)
 
 # current verison
 packageVersion("sergeant")
-#> [1] '0.2.0.9000'
+#> [1] '0.3.0.9000'
 
 dc <- drill_connection("localhost") 
 
@@ -466,99 +467,51 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 
 ``` r
 library(RJDBC)
+#> Loading required package: rJava
 
-con <- drill_jdbc("localhost:31010", use_zk=FALSE)
-#> Using [jdbc:drill:drillbit=localhost:31010]...
+con <- drill_jdbc("drill.local:2181", "jla") 
+#> Using [jdbc:drill:zk=drill.local:2181/drill/jla]...
+# or the following if running drill-embedded
+# con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 
 drill_query(con, "SELECT * FROM cp.`employee.json`")
-#> # A tibble: 1,155 × 16
-#>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
-#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
-#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
-#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
-#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
-#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
-#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
-#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
-#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
-#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
-#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
-#> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
-#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
-#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
+#> # A tibble: 1,155 × 20
+#>               fqn      filename filepath suffix employee_id         full_name first_name last_name position_id
+#> *           <chr>         <chr>    <chr>  <chr>       <chr>             <chr>      <chr>     <chr>       <chr>
+#> 1  /employee.json employee.json        /   json           1      Sheri Nowmer      Sheri    Nowmer           1
+#> 2  /employee.json employee.json        /   json           2   Derrick Whelply    Derrick   Whelply           2
+#> 3  /employee.json employee.json        /   json           4    Michael Spence    Michael    Spence           2
+#> 4  /employee.json employee.json        /   json           5    Maya Gutierrez       Maya Gutierrez           2
+#> 5  /employee.json employee.json        /   json           6   Roberta Damstra    Roberta   Damstra           3
+#> 6  /employee.json employee.json        /   json           7  Rebecca Kanagaki    Rebecca  Kanagaki           4
+#> 7  /employee.json employee.json        /   json           8       Kim Brunner        Kim   Brunner          11
+#> 8  /employee.json employee.json        /   json           9   Brenda Blumberg     Brenda  Blumberg          11
+#> 9  /employee.json employee.json        /   json          10      Darren Stanz     Darren     Stanz           5
+#> 10 /employee.json employee.json        /   json          11 Jonathan Murraiin   Jonathan  Murraiin          11
+#> # ... with 1,145 more rows, and 11 more variables: position_title <chr>, store_id <chr>, department_id <chr>,
+#> #   birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>, education_level <chr>, marital_status <chr>,
+#> #   gender <chr>, management_role <chr>
 
 # but it can work via JDBC function calls, too
 dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
   tibble::as_tibble()
-#> # A tibble: 1,155 × 16
-#>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
-#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
-#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
-#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
-#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
-#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
-#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
-#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
-#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
-#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
-#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
-#> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
-#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
-#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
+#> # A tibble: 1,155 × 20
+#>               fqn      filename filepath suffix employee_id         full_name first_name last_name position_id
+#> *           <chr>         <chr>    <chr>  <chr>       <chr>             <chr>      <chr>     <chr>       <chr>
+#> 1  /employee.json employee.json        /   json           1      Sheri Nowmer      Sheri    Nowmer           1
+#> 2  /employee.json employee.json        /   json           2   Derrick Whelply    Derrick   Whelply           2
+#> 3  /employee.json employee.json        /   json           4    Michael Spence    Michael    Spence           2
+#> 4  /employee.json employee.json        /   json           5    Maya Gutierrez       Maya Gutierrez           2
+#> 5  /employee.json employee.json        /   json           6   Roberta Damstra    Roberta   Damstra           3
+#> 6  /employee.json employee.json        /   json           7  Rebecca Kanagaki    Rebecca  Kanagaki           4
+#> 7  /employee.json employee.json        /   json           8       Kim Brunner        Kim   Brunner          11
+#> 8  /employee.json employee.json        /   json           9   Brenda Blumberg     Brenda  Blumberg          11
+#> 9  /employee.json employee.json        /   json          10      Darren Stanz     Darren     Stanz           5
+#> 10 /employee.json employee.json        /   json          11 Jonathan Murraiin   Jonathan  Murraiin          11
+#> # ... with 1,145 more rows, and 11 more variables: position_title <chr>, store_id <chr>, department_id <chr>,
+#> #   birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>, education_level <chr>, marital_status <chr>,
+#> #   gender <chr>, management_role <chr>
 ```
-
-### Use in knitr SQL code chunks
-
-If you install `knit` via GitHub (`devtools::install_github("yihui/knitr")) you can use the`sql`chunk code type with`drill\_jdbc()\` connections:
-
-    ---
-    output: html_document
-    ---
-
-
-    ```r
-    library(sergeant)
-    library(DBI)
-    library(RJDBC)
-    ```
-
-    ## Setup JDBC connection
-
-
-    ```r
-    dc <- drill_jdbc("localhost:31010", use_zk=FALSE)
-    #> Using [jdbc:drill:drillbit=localhost:31010]...
-    ```
-
-    ## Test out a query
-
-
-    ```sql
-    SELECT * FROM cp.`employee.json`
-    ```
-
-
-    <div class="knitsql-table">
-
-
-    Table: Displaying records 1 - 10
-
-    employee_id   full_name           first_name   last_name   position_id   position_title           store_id   department_id   birth_date   hire_date               salary       supervisor_id   education_level    marital_status   gender   management_role   
-    ------------  ------------------  -----------  ----------  ------------  -----------------------  ---------  --------------  -----------  ----------------------  -----------  --------------  -----------------  ---------------  -------  ------------------
-    1             Sheri Nowmer        Sheri        Nowmer      1             President                0          1               1961-08-26   1994-12-01 00:00:00.0   80000.0000   0               Graduate Degree    S                F        Senior Management 
-    2             Derrick Whelply     Derrick      Whelply     2             VP Country Manager       0          1               1915-07-03   1994-12-01 00:00:00.0   40000.0000   1               Graduate Degree    M                M        Senior Management 
-    4             Michael Spence      Michael      Spence      2             VP Country Manager       0          1               1969-06-20   1998-01-01 00:00:00.0   40000.0000   1               Graduate Degree    S                M        Senior Management 
-    5             Maya Gutierrez      Maya         Gutierrez   2             VP Country Manager       0          1               1951-05-10   1998-01-01 00:00:00.0   35000.0000   1               Bachelors Degree   M                F        Senior Management 
-    6             Roberta Damstra     Roberta      Damstra     3             VP Information Systems   0          2               1942-10-08   1994-12-01 00:00:00.0   25000.0000   1               Bachelors Degree   M                F        Senior Management 
-    7             Rebecca Kanagaki    Rebecca      Kanagaki    4             VP Human Resources       0          3               1949-03-27   1994-12-01 00:00:00.0   15000.0000   1               Bachelors Degree   M                F        Senior Management 
-    8             Kim Brunner         Kim          Brunner     11            Store Manager            9          11              1922-08-10   1998-01-01 00:00:00.0   10000.0000   5               Bachelors Degree   S                F        Store Management  
-    9             Brenda Blumberg     Brenda       Blumberg    11            Store Manager            21         11              1979-06-23   1998-01-01 00:00:00.0   17000.0000   5               Graduate Degree    M                F        Store Management  
-    10            Darren Stanz        Darren       Stanz       5             VP Finance               0          5               1949-08-26   1994-12-01 00:00:00.0   50000.0000   1               Partial College    M                M        Senior Management 
-    11            Jonathan Murraiin   Jonathan     Murraiin    11            Store Manager            1          11              1967-06-20   1998-01-01 00:00:00.0   15000.0000   5               Graduate Degree    S                M        Store Management  
-
-    </div>
-
-Which is (IMO) *way* better than using the Drill consoles, the Drill Web UI query box or SQLWorkbench.
 
 ### Test Results
 
@@ -572,7 +525,7 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Dec 19 22:38:36 2016"
+#> [1] "Sat Dec 24 22:35:00 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

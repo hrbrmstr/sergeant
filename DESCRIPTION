@@ -1,16 +1,15 @@
 Package: sergeant
-Title: Tools to Transform and Query Data with the 'Apache Drill' 'REST API', 'JDBC' Interface and `dplyr`
-Version: 0.2.0.9000
+Title: Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, 
+    Plus 'dplyr' and 'DBI' Interfaces
+Version: 0.3.0.9000
 Authors@R: c(person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")))
 Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 
     data exploration and analytics on both relational and non-relational datastores, 
     scaling to petabytes of data. Methods are provided that enable working with 'Apache Drill'
-    instances via the 'REST API' or the JDBC interface. Also has an experimental 'dplyr' interface.
+    instances via the 'REST API', the JDBC interface, 'DBI' 'methods' and 'dplyr'.
 Depends:
     R (>= 3.0.0),
-    rJava,
     DBI,
-    RJDBC,
     dplyr
 License: AGPL + file LICENSE
 Encoding: UTF-8
@@ -22,9 +21,10 @@ Imports:
     readr,
     purrr,
     utils,
-      DBI,
     RJDBC,
-    scales
+    rJava,
+    scales,
+    methods
 Suggests:
     testthat
 RoxygenNote: 5.0.1

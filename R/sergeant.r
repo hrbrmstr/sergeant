@@ -131,8 +131,8 @@ drill_cancel <- function(drill_con, query_id) {
 
 #' Get the list of storage plugin names and configurations
 #'
+#' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param plugin the assigned name in the storage plugin definition.
-#' @param drill_server base URL of the \code{drill} server
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{

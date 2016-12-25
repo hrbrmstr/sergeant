@@ -7,9 +7,9 @@
 drill_storage(drill_con, plugin = NULL)
 }
 \arguments{
-\item{plugin}{the assigned name in the storage plugin definition.}
+\item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
-\item{drill_server}{base URL of the \code{drill} server}
+\item{plugin}{the assigned name in the storage plugin definition.}
 }
 \description{
 Get the list of storage plugin names and configurations

@@ -1,3 +1,9 @@
+# sergeant 0.3.0.9000
+
+* New DBI interface (to the REST API)
+* dplyr interface now uses the DBI interace to the REST API
+* CRAN checks pass besides size (removing JDBC driver in next dev iteration)
+
 # sergeant 0.2.1.9000
 
 * implemented a large subset of Drill SQL Functions <https://drill.apache.org/docs/about-sql-function-examples/>

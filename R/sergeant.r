@@ -53,6 +53,7 @@ drill_active <- function(drill_con) {
 drill_status <- function(drill_con) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/status", drill_server))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   cnt <- htmltools::HTML(cnt)
   htmltools::browsable(cnt)
@@ -68,6 +69,7 @@ drill_status <- function(drill_con) {
 drill_metrics <- function(drill_con) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/status/metrics", drill_server))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt, flatten=TRUE)
 }
@@ -83,6 +85,7 @@ drill_metrics <- function(drill_con) {
 drill_threads <- function(drill_con) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/status/threads", drill_server))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   cnt <- htmltools::HTML(sprintf("<pre>%s</pre>", cnt))
   htmltools::browsable(cnt)
@@ -99,6 +102,7 @@ drill_threads <- function(drill_con) {
 drill_profiles <- function(drill_con) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/profiles.json", drill_server))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
 }
@@ -112,6 +116,7 @@ drill_profiles <- function(drill_con) {
 drill_profile <- function(drill_con, query_id) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/profiles/%s.json", drill_server, query_id))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
 }
@@ -125,6 +130,7 @@ drill_profile <- function(drill_con, query_id) {
 drill_cancel <- function(drill_con, query_id) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/profiles/cancel%s", drill_server, query_id))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
 }
@@ -148,6 +154,8 @@ drill_storage <- function(drill_con, plugin=NULL) {
     res <- httr::GET(sprintf("%s/storage/%s.json", drill_server, plugin))
   }
 
+  httr::stop_for_status(res)
+
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt, flatten=TRUE) %>%
     dplyr::tbl_df()
@@ -166,6 +174,7 @@ drill_storage <- function(drill_con, plugin=NULL) {
 drill_options <- function(drill_con, pattern=NULL) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/options.json", drill_server))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt) %>%
     dplyr::tbl_df() -> out
@@ -184,6 +193,7 @@ drill_options <- function(drill_con, pattern=NULL) {
 drill_stats <- function(drill_con) {
   drill_server <- make_server(drill_con)
   res <- httr::GET(sprintf("%s/stats.json", drill_server))
+  httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
 }

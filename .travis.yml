@@ -1,5 +1,18 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
-sudo: false
+language: r
+r:
+  - oldrel
+  - release
+  - devel
+warnings_are_errors: true
 cache: packages
+r_check_revdep: false
+sudo: required
+
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change

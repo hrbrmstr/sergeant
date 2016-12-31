@@ -1,11 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<!--
-[![Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg)](https://travis-ci.org/hrbrmstr/sergeant) 
-![Project Status: Concept - Minimal or no implementation has been done yet.](http://www.repostatus.org/badges/0.1.0/concept.svg)](http://www.repostatus.org/#concept)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sergeant)](http://cran.r-project.org/web/packages/sergeant) 
-![downloads](http://cranlogs.r-pkg.org/badges/grand-total/sergeant)
--->
+[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant)
+
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
 `sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
@@ -30,6 +26,11 @@ The following functions are implemented:
 
 -   As complete of an R `DBI` driver has been implmented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
 
+***`RJDBC`***
+
+-   `drill_jdbc`: Connect to Drill using JDBC, enabling use of said idioms. See `RJDBC` for more info.
+-   NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar`
+
 **`dplyr`**:
 
 -   `src_drill`: Connect to Drill (using dplyr) + supporting functions
@@ -41,7 +42,7 @@ See `dplyr` for the `dplyr` operations (light testing shows they work in basic S
 -   `drill_connection`: Setup parameters for a Drill server/cluster connection
 -   `drill_active`: Test whether Drill HTTP REST API server is up
 -   `drill_cancel`: Cancel the query that has the given queryid
--   `drill_jdbc`: Connect to Drill using JDBC *(driver included with package until CRAN release)*
+-   `drill_jdbc`: Connect to Drill using JDBC
 -   `drill_metrics`: Get the current memory metrics
 -   `drill_options`: List the name, default, and data type of the system and session options
 -   `drill_profile`: Get the profile of the query that has the given query id
@@ -217,70 +218,6 @@ mutate(db, position_title=tolower(position_title)) %>%
 #                   FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  store_id ,  department_id ,  birth_date ,  hire_date ,  salary ,  supervisor_id ,  education_level ,  marital_status ,  gender ,  management_role , LOWER( position_title ) AS  position_title 
 #                         FROM  cp.`employee.json` )  cnjsqxeick )  bnbnjrubna )  wavfmhkczv )  zaxeyyicxo 
 # GROUP BY  supervisor_id 
-
-db2 <- tbl(ds, "dfs.tmp.`/in/c.parquet`")
-db2
-#> Source:   query [?? x 7]
-#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
-#> 
-#>                                fqn      filename          filepath               car   mpg   cyl  suffix
-#>                              <chr>         <chr>             <chr>             <chr> <dbl> <int>   <chr>
-#> 1  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet         Mazda RX4  21.0     6 parquet
-#> 2  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet     Mazda RX4 Wag  21.0     6 parquet
-#> 3  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet        Datsun 710  22.8     4 parquet
-#> 4  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet    Hornet 4 Drive  21.4     6 parquet
-#> 5  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet Hornet Sportabout  18.7     8 parquet
-#> 6  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet           Valiant  18.1     6 parquet
-#> 7  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet        Duster 360  14.3     8 parquet
-#> 8  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet         Merc 240D  24.4     4 parquet
-#> 9  /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet          Merc 230  22.8     4 parquet
-#> 10 /tmp/in/c.parquet/0_0_0.parquet 0_0_0.parquet /tmp/in/c.parquet          Merc 280  19.2     6 parquet
-#> # ... with more rows
-
-db3 <- tbl(ds, "dfs.tmp.`/in/b.json`")
-db3
-#> Source:   query [?? x 7]
-#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
-#> 
-#>               fqn filename filepath               car suffix  disp    wt
-#>             <chr>    <chr>    <chr>             <chr>  <chr> <dbl> <dbl>
-#> 1  /tmp/in/b.json   b.json  /tmp/in         Mazda RX4   json 160.0 2.620
-#> 2  /tmp/in/b.json   b.json  /tmp/in     Mazda RX4 Wag   json 160.0 2.875
-#> 3  /tmp/in/b.json   b.json  /tmp/in        Datsun 710   json 108.0 2.320
-#> 4  /tmp/in/b.json   b.json  /tmp/in    Hornet 4 Drive   json 258.0 3.215
-#> 5  /tmp/in/b.json   b.json  /tmp/in Hornet Sportabout   json 360.0 3.440
-#> 6  /tmp/in/b.json   b.json  /tmp/in           Valiant   json 225.0 3.460
-#> 7  /tmp/in/b.json   b.json  /tmp/in        Duster 360   json 360.0 3.570
-#> 8  /tmp/in/b.json   b.json  /tmp/in         Merc 240D   json 146.7 3.190
-#> 9  /tmp/in/b.json   b.json  /tmp/in          Merc 230   json 140.8 3.150
-#> 10 /tmp/in/b.json   b.json  /tmp/in          Merc 280   json 167.6 3.440
-#> # ... with more rows
-
-left_join(db2, db3)
-#> Source:   query [?? x 9]
-#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
-#> 
-#>     car0               car   mpg   cyl  disp    wt
-#>    <lgl>             <chr> <dbl> <int> <lgl> <lgl>
-#> 1     NA         Mazda RX4  21.0     6    NA    NA
-#> 2     NA     Mazda RX4 Wag  21.0     6    NA    NA
-#> 3     NA        Datsun 710  22.8     4    NA    NA
-#> 4     NA    Hornet 4 Drive  21.4     6    NA    NA
-#> 5     NA Hornet Sportabout  18.7     8    NA    NA
-#> 6     NA           Valiant  18.1     6    NA    NA
-#> 7     NA        Duster 360  14.3     8    NA    NA
-#> 8     NA         Merc 240D  24.4     4    NA    NA
-#> 9     NA          Merc 230  22.8     4    NA    NA
-#> 10    NA          Merc 280  19.2     6    NA    NA
-#> # ... with more rows
-
-# ^^ gets translated to:
-# 
-# SELECT *
-# FROM (SELECT * FROM  dfs.tmp.`/in/c.parquet` 
-#       LEFT JOIN dfs.tmp.`/in/b.json` 
-#       USING ( car ))  gnyhbahqil 
-# LIMIT 1000
 ```
 
 ### Usage
@@ -301,7 +238,7 @@ drill_version(dc)
 #> [1] "1.9.0"
 
 drill_storage(dc)$name
-#> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"
+#> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "my"    "s3"
 ```
 
 Working with the built-in JSON data sets:
@@ -310,38 +247,33 @@ Working with the built-in JSON data sets:
 drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
 #> Parsed with column specification:
 #> cols(
+#>   .default = col_character(),
 #>   store_id = col_integer(),
-#>   gender = col_character(),
 #>   department_id = col_integer(),
 #>   birth_date = col_date(format = ""),
 #>   supervisor_id = col_integer(),
-#>   last_name = col_character(),
-#>   position_title = col_character(),
 #>   hire_date = col_datetime(format = ""),
-#>   management_role = col_character(),
 #>   salary = col_double(),
-#>   marital_status = col_character(),
-#>   full_name = col_character(),
 #>   employee_id = col_integer(),
-#>   education_level = col_character(),
-#>   first_name = col_character(),
 #>   position_id = col_integer()
 #> )
-#> # A tibble: 100 × 16
-#>    store_id gender department_id birth_date supervisor_id last_name         position_title  hire_date   management_role
-#> *     <int>  <chr>         <int>     <date>         <int>     <chr>                  <chr>     <dttm>             <chr>
-#> 1         0      F             1 1961-08-26             0    Nowmer              President 1994-12-01 Senior Management
-#> 2         0      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01 Senior Management
-#> 3         0      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01 Senior Management
-#> 4         0      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01 Senior Management
-#> 5         0      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01 Senior Management
-#> 6         0      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01 Senior Management
-#> 7         9      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01  Store Management
-#> 8        21      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01  Store Management
-#> 9         0      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01 Senior Management
-#> 10        1      M            11 1967-06-20             5  Murraiin          Store Manager 1998-01-01  Store Management
-#> # ... with 90 more rows, and 7 more variables: salary <dbl>, marital_status <chr>, full_name <chr>, employee_id <int>,
-#> #   education_level <chr>, first_name <chr>, position_id <int>
+#> See spec(...) for full column specifications.
+#> # A tibble: 100 × 20
+#>    store_id            fqn gender department_id birth_date supervisor_id last_name         position_title  hire_date
+#> *     <int>          <chr>  <chr>         <int>     <date>         <int>     <chr>                  <chr>     <dttm>
+#> 1         0 /employee.json      F             1 1961-08-26             0    Nowmer              President 1994-12-01
+#> 2         0 /employee.json      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01
+#> 3         0 /employee.json      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01
+#> 4         0 /employee.json      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01
+#> 5         0 /employee.json      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01
+#> 6         0 /employee.json      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01
+#> 7         9 /employee.json      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01
+#> 8        21 /employee.json      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01
+#> 9         0 /employee.json      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01
+#> 10        1 /employee.json      M            11 1967-06-20             5  Murraiin          Store Manager 1998-01-01
+#> # ... with 90 more rows, and 11 more variables: management_role <chr>, suffix <chr>, salary <dbl>,
+#> #   marital_status <chr>, filename <chr>, full_name <chr>, filepath <chr>, employee_id <int>, education_level <chr>,
+#> #   first_name <chr>, position_id <int>
 
 drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
 #> Parsed with column specification:
@@ -376,9 +308,9 @@ drill_options(dc, "json")
 #>                                                   <chr> <chr>  <chr>   <chr>
 #> 1                     store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN
 #> 2                             store.json.extended_types FALSE SYSTEM BOOLEAN
-#> 3                              store.json.writer.uglify FALSE SYSTEM BOOLEAN
-#> 4                store.json.reader.skip_invalid_records FALSE SYSTEM BOOLEAN
-#> 5 store.json.reader.print_skipped_invalid_record_number FALSE SYSTEM BOOLEAN
+#> 3                              store.json.writer.uglify  TRUE SYSTEM BOOLEAN
+#> 4                store.json.reader.skip_invalid_records  TRUE SYSTEM BOOLEAN
+#> 5 store.json.reader.print_skipped_invalid_record_number  TRUE SYSTEM BOOLEAN
 #> 6                              store.json.all_text_mode  TRUE SYSTEM BOOLEAN
 #> 7                    store.json.writer.skip_null_fields  TRUE SYSTEM BOOLEAN
 ```
@@ -390,19 +322,24 @@ Working with parquet files
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
 #> Parsed with column specification:
 #> cols(
+#>   fqn = col_character(),
+#>   filename = col_character(),
 #>   N_COMMENT = col_character(),
+#>   filepath = col_character(),
 #>   N_NAME = col_character(),
 #>   N_NATIONKEY = col_integer(),
-#>   N_REGIONKEY = col_integer()
+#>   N_REGIONKEY = col_integer(),
+#>   suffix = col_character()
 #> )
-#> # A tibble: 5 × 4
-#>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY
-#> *                <chr>     <chr>       <int>       <int>
-#> 1  haggle. carefully f   ALGERIA           0           0
-#> 2 al foxes promise sly ARGENTINA           1           1
-#> 3 y alongside of the p    BRAZIL           2           1
-#> 4 eas hang ironic, sil    CANADA           3           1
-#> 5 y above the carefull     EGYPT           4           4
+#> # A tibble: 5 × 8
+#>                                           fqn       filename            N_COMMENT                     filepath
+#> *                                       <chr>          <chr>                <chr>                        <chr>
+#> 1 /usr/local/drill/sample-data/nation.parquet nation.parquet  haggle. carefully f /usr/local/drill/sample-data
+#> 2 /usr/local/drill/sample-data/nation.parquet nation.parquet al foxes promise sly /usr/local/drill/sample-data
+#> 3 /usr/local/drill/sample-data/nation.parquet nation.parquet y alongside of the p /usr/local/drill/sample-data
+#> 4 /usr/local/drill/sample-data/nation.parquet nation.parquet eas hang ironic, sil /usr/local/drill/sample-data
+#> 5 /usr/local/drill/sample-data/nation.parquet nation.parquet y above the carefull /usr/local/drill/sample-data
+#> # ... with 4 more variables: N_NAME <chr>, N_NATIONKEY <int>, N_REGIONKEY <int>, suffix <chr>
 ```
 
 Including multiple parquet files in different directories (note the wildcard support):
@@ -411,20 +348,26 @@ Including multiple parquet files in different directories (note the wildcard sup
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
 #> Parsed with column specification:
 #> cols(
+#>   fqn = col_character(),
+#>   filename = col_character(),
 #>   N_COMMENT = col_character(),
+#>   filepath = col_character(),
 #>   N_NAME = col_character(),
 #>   N_NATIONKEY = col_integer(),
 #>   N_REGIONKEY = col_integer(),
-#>   dir0 = col_character()
+#>   dir0 = col_character(),
+#>   suffix = col_character()
 #> )
-#> # A tibble: 5 × 5
-#>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY      dir0
-#> *                <chr>     <chr>       <int>       <int>     <chr>
-#> 1  haggle. carefully f   ALGERIA           0           0 nationsMF
-#> 2 al foxes promise sly ARGENTINA           1           1 nationsMF
-#> 3 y alongside of the p    BRAZIL           2           1 nationsMF
-#> 4 eas hang ironic, sil    CANADA           3           1 nationsMF
-#> 5 y above the carefull     EGYPT           4           4 nationsMF
+#> # A tibble: 5 × 9
+#>                                                        fqn          filename            N_COMMENT
+#> *                                                    <chr>             <chr>                <chr>
+#> 1 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet  haggle. carefully f
+#> 2 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet al foxes promise sly
+#> 3 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet y alongside of the p
+#> 4 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet eas hang ironic, sil
+#> 5 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet y above the carefull
+#> # ... with 6 more variables: filepath <chr>, N_NAME <chr>, N_NATIONKEY <int>, N_REGIONKEY <int>, dir0 <chr>,
+#> #   suffix <chr>
 ```
 
 ### A preview of the built-in support for spatial ops
@@ -447,20 +390,20 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 ")
 #> Parsed with column specification:
 #> cols(
-#>   city = col_character(),
-#>   lon = col_double(),
-#>   lat = col_double()
+#>   ITEM = col_character(),
+#>   ITEM2 = col_double(),
+#>   ITEM1 = col_double()
 #> )
 #> # A tibble: 7 × 3
-#>          city       lon      lat
-#> *       <chr>     <dbl>    <dbl>
-#> 1     Burbank -121.9316 37.32328
-#> 2    San Jose -121.8950 37.33939
-#> 3        Lick -121.8458 37.28716
-#> 4 Willow Glen -121.8897 37.30855
-#> 5 Buena Vista -121.9166 37.32133
-#> 6    Parkmoor -121.9308 37.32105
-#> 7   Fruitdale -121.9327 37.31086
+#>          ITEM    ITEM2     ITEM1
+#> *       <chr>    <dbl>     <dbl>
+#> 1     Burbank 37.32328 -121.9316
+#> 2    San Jose 37.33939 -121.8950
+#> 3        Lick 37.28716 -121.8458
+#> 4 Willow Glen 37.30855 -121.8897
+#> 5 Buena Vista 37.32133 -121.9166
+#> 6    Parkmoor 37.32105 -121.9308
+#> 7   Fruitdale 37.31086 -121.9327
 ```
 
 ### JDBC
@@ -525,11 +468,11 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Sat Dec 24 22:35:00 2016"
+#> [1] "Sat Dec 31 10:47:44 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
-#> OK: 0 SKIPPED: 0 FAILED: 0
+#> OK: 3 SKIPPED: 0 FAILED: 0
 #> 
 #> DONE ===================================================================================================================
 ```

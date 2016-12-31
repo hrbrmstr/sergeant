@@ -1,3 +1,9 @@
+# sergeant 0.3.1.9000
+
+* JDBC driver still in github repo but no longer included in pkg builds. See 
+  README.md or `drill_jdbc()` help for more information on using the JDBC 
+  driver with sergeant.
+
 # sergeant 0.3.0.9000
 
 * New DBI interface (to the REST API)

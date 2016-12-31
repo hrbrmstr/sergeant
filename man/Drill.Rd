@@ -18,6 +18,8 @@ Drill()
 
 \item{port}{port}
 
+\item{ssl}{use ssl?}
+
 \item{...}{Extra optional parameters}
 }
 \description{

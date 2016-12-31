@@ -1,7 +1,8 @@
 #' Connect to Drill using JDBC
 #'
-#' A copy of the Drill JDBC driver comes with this package. You can bypass the REST API
-#' if you use the JDBC connection.
+#' The DRILL JDBC driver fully-qualified path must be placed in the
+#' \code{DRILL_JDBC_JAR} environment variable. This is best done via \code{~/.Renviron}
+#' for interactive work. e.g. \code{DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar}
 #'
 #' @param nodes character vector of nodes. If more than one node, you can either have
 #'              a single string with the comma-separated node:port pairs pre-made or
@@ -26,9 +27,13 @@
 #' }
 drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
 
+  jar_path <- Sys.getenv("DRILL_JDBC_JAR")
+  if (!file.exists(jar_path)) {
+    stop(sprintf("Cannot locate DRILL JDBC JAR [%s]", jar_path))
+  }
+
   drill_jdbc_drv <- RJDBC::JDBC(driverClass="org.apache.drill.jdbc.Driver",
-                                system.file("jars", "drill-jdbc-all-1.9.0.jar", package="sergeant", mustWork=TRUE),
-                                identifier.quote=' ')
+                                classPath=jar_path, identifier.quote=' ')
 
   conn_type <- "drillbit"
   if (use_zk) conn_type <- "zk"

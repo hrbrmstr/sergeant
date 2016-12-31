@@ -54,6 +54,7 @@ setClass(
 #' @rdname Drill
 #' @param host host
 #' @param port port
+#' @param ssl use ssl?
 #' @param ... Extra optional parameters
 #' @export
 setMethod(

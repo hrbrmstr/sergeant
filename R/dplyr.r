@@ -1,10 +1,12 @@
-#' Connect to Drill (using dplyr).
+#' Connect to Drill (using \code{dplyr}).
 #'
 #' Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
 #' fully-qualified "table reference". The vast majority of Drill SQL functions have
-#' also been made available to the \code{dplyr} interface.
+#' also been made available to the \code{dplyr} interface. If you have custom Drill
+#' SQL functions that need to be implemented please file an issue on GitHub.
 #'
 #' @note This is a DBI wrapper around the Drill REST API.
+#' @note TODO username/password support
 #'
 #' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
 #' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
@@ -12,12 +14,14 @@
 #' @export
 #' @examples \dontrun{
 #' db <- src_drill("localhost:31010", use_zk=FALSE)
+#'
 #' print(db)
+#'
 #' emp <- tbl(db, "cp.`employee.json`")
 #'
 #' count(emp, gender, marital_status)
 #'
-#' # Drill custom SQL functions are also available
+#' # Drill-specific SQL functions are also available
 #' select(emp, full_name) %>%
 #'   mutate(        loc = strpos(full_name, "a"),
 #'          first_three = substr(full_name, 1L, 3L),
@@ -39,12 +43,16 @@ src_drill <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
 
 }
 
+#' @rdname src_drill
+#' @keywords internal
 #' @export
 src_tbls.src_drill <- function(x) {
   tmp <- dbGetQuery(x$con, "SHOW DATABASES")
   paste0(unlist(tmp$SCHEMA_NAME, use.names=FALSE), collapse=", ")
 }
 
+#' @rdname src_drill
+#' @keywords internal
 #' @export
 src_desc.src_drill <- function(x) {
 
@@ -57,16 +65,24 @@ src_desc.src_drill <- function(x) {
 
 }
 
+#' @rdname src_drill
+#' @keywords internal
 #' @export
 sql_escape_ident.DrillConnection <- function(con, x) {
   sql_quote(x, ' ')
 }
 
+#' @rdname src_drill
+#' @param src A Drill "src" created with \code{src_drill()}
+#' @param from A Drill view or table specification
+#' @param ... Extra parameters
 #' @export
 tbl.src_drill <- function(src, from, ...) {
   tbl_sql("drill", src=src, from=from, ...)
 }
 
+#' @rdname src_drill
+#' @keywords internal
 #' @export
 db_query_fields.DrillConnection <- function(con, sql, ...) {
 
@@ -79,6 +95,8 @@ db_query_fields.DrillConnection <- function(con, sql, ...) {
 
 }
 
+#' @rdname src_drill
+#' @keywords internal
 #' @export
 db_data_type.DrillConnection <- function(con, fields, ...) {
   print("\n\n\ndb_data_type\n\n\n")
@@ -98,6 +116,8 @@ db_data_type.DrillConnection <- function(con, fields, ...) {
   vapply(fields, data_type, character(1))
 }
 
+#' @rdname src_drill
+#' @keywords internal
 #' @export
 sql_translate_env.DrillConnection <- function(con) {
   x <- con

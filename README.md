@@ -25,8 +25,9 @@ The following functions are implemented:
 **`DBI`**
 
 -   As complete of an R `DBI` driver has been implmented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
+-   This also means that SQL functions unique to Drill have also been "implemented" (i.e. made accessible to the `dplyr` interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub.
 
-***`RJDBC`***
+**`RJDBC`**
 
 -   `drill_jdbc`: Connect to Drill using JDBC, enabling use of said idioms. See `RJDBC` for more info.
 -   NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar`
@@ -245,6 +246,17 @@ Working with the built-in JSON data sets:
 
 ``` r
 drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
+#> 
+Downloading: 16 kB     
+Downloading: 16 kB     
+Downloading: 33 kB     
+Downloading: 33 kB     
+Downloading: 49 kB     
+Downloading: 49 kB     
+Downloading: 63 kB     
+Downloading: 63 kB     
+Downloading: 63 kB     
+Downloading: 63 kB
 #> Parsed with column specification:
 #> cols(
 #>   .default = col_character(),
@@ -276,6 +288,11 @@ drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
 #> #   first_name <chr>, position_id <int>
 
 drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
+#> 
+  |                                                                                                                    
+  |                                                                                                              |   0%
+  |                                                                                                                    
+  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
 #>   gender = col_integer()
@@ -320,6 +337,11 @@ Working with parquet files
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
+#> 
+  |                                                                                                                    
+  |                                                                                                              |   0%
+  |                                                                                                                    
+  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
 #>   fqn = col_character(),
@@ -346,6 +368,11 @@ Including multiple parquet files in different directories (note the wildcard sup
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
+#> 
+  |                                                                                                                    
+  |                                                                                                              |   0%
+  |                                                                                                                    
+  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
 #>   fqn = col_character(),
@@ -388,6 +415,11 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
                 )
             )
 ")
+#> 
+  |                                                                                                                    
+  |                                                                                                              |   0%
+  |                                                                                                                    
+  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
 #>   ITEM = col_character(),
@@ -410,7 +442,6 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 
 ``` r
 library(RJDBC)
-#> Loading required package: rJava
 
 con <- drill_jdbc("drill.local:2181", "jla") 
 #> Using [jdbc:drill:zk=drill.local:2181/drill/jla]...
@@ -461,20 +492,16 @@ dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>%
 ``` r
 library(sergeant)
 library(testthat)
-#> 
-#> Attaching package: 'testthat'
-#> The following object is masked from 'package:dplyr':
-#> 
-#>     matches
 
 date()
-#> [1] "Sat Dec 31 10:47:44 2016"
+#> [1] "Sat Dec 31 11:10:08 2016"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
-#> OK: 3 SKIPPED: 0 FAILED: 0
+#> OK: 0 SKIPPED: 1 FAILED: 0
 #> 
 #> DONE ===================================================================================================================
+#> Woot!
 ```
 
 ### Code of Conduct

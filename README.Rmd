@@ -38,7 +38,7 @@ The following functions are implemented:
 - As complete of an R `DBI` driver has been implmented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
 - This also means that SQL functions unique to Drill have also been "implemented" (i.e. made accessible to the `dplyr` interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub.
 
-***`RJDBC`***
+**`RJDBC`**
 
 - `drill_jdbc`:	Connect to Drill using JDBC, enabling use of said idioms. See `RJDBC` for more info.
 - NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar`

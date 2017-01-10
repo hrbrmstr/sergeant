@@ -102,7 +102,6 @@ drill_system_reset <- function(drill_con, ..., all=FALSE) {
 #' }
 drill_settings_reset <- function(drill_con, ...) {
 
-
   as.list(substitute(list(...)))[-1L] %>%
   purrr::map(params, ~sprintf("ALTER SESSION RESET `%s`", .)) %>%
     purrr::map_df(function(x) {

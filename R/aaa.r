@@ -1,5 +1,5 @@
-utils::globalVariables(c("error", "everything", "isDirectory", "name",
-                         "params", "permissions", "query"))
+utils::globalVariables(c("error", "everything", "isDirectory", "name", "params",
+                         "permissions", "query"))
 
 make_server <- function(drill_con) {
 

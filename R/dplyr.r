@@ -61,7 +61,8 @@ src_desc.src_drill <- function(x) {
   tmp <- dbGetQuery(x$con, "SELECT direct_max FROM sys.memory")
   memory <- scales::comma(tmp$direct_max)
 
-  sprintf("Version: %s; Direct memory: %s bytes", version, memory)
+  sprintf("Host: %s; Port: %d; Version: %s; Direct memory: %s bytes",
+          x@host, x@port, version, memory)
 
 }
 
@@ -73,12 +74,28 @@ sql_escape_ident.DrillConnection <- function(con, x) {
 }
 
 #' @rdname src_drill
+#' @keywords internal
+#' @export
+copy_to.src_drill <- function(dest, df) {
+  stop("Not implemented.", call.=FALSE)
+}
+
+#' @rdname src_drill
 #' @param src A Drill "src" created with \code{src_drill()}
 #' @param from A Drill view or table specification
 #' @param ... Extra parameters
 #' @export
 tbl.src_drill <- function(src, from, ...) {
   tbl_sql("drill", src=src, from=from, ...)
+}
+
+#' @rdname src_drill
+#' @keywords internal
+#' @export
+db_explain.DrillConnection <- function(con, sql, ...) {
+  explain_sql <- dplyr::build_sql("EXPLAIN PLAN FOR ", sql)
+  explanation <- dbGetQuery(con, explain_sql)
+  return(paste(explanation[[1]], collapse = "\n"))
 }
 
 #' @rdname src_drill

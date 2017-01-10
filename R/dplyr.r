@@ -62,7 +62,7 @@ src_desc.src_drill <- function(x) {
   memory <- scales::comma(tmp$direct_max)
 
   sprintf("Host: %s; Port: %d; Version: %s; Direct memory: %s bytes",
-          x@con$host, x@con$port, version, memory)
+          x$con@host, x$con@port, version, memory)
 
 }
 

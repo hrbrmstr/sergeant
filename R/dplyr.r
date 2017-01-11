@@ -58,11 +58,10 @@ src_desc.src_drill <- function(x) {
 
   tmp <- dbGetQuery(x$con, "SELECT * FROM sys.version")
   version <- tmp$version
-  tmp <- dbGetQuery(x$con, "SELECT direct_max FROM sys.memory")
-  memory <- scales::comma(tmp$direct_max)
+  tmp <- dbGetQuery(x$con, "SELECT (direct_max / 1024 / 1024 /1024) AS direct_max FROM sys.memory")
+  memory <- tmp$direct_max
 
-  sprintf("Host: %s; Port: %d; Version: %s; Direct memory: %s bytes",
-          x$con@host, x$con@port, version, memory)
+  sprintf("Drill %s [%s:%d] [%dGB direct memory]", version, x$con@host, x$con@port, memory)
 
 }
 

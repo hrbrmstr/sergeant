@@ -13,7 +13,7 @@
 #' @param ssl use ssl?
 #' @export
 #' @examples \dontrun{
-#' db <- src_drill("localhost:31010", use_zk=FALSE)
+#' db <- src_drill("localhost", "8047")
 #'
 #' print(db)
 #'

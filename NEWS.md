@@ -1,5 +1,6 @@
 # sergeant 0.3.1.9000
 
+* fixed `src_drill()` example
 * JDBC driver still in github repo but no longer included in pkg builds. See 
   README.md or `drill_jdbc()` help for more information on using the JDBC 
   driver with sergeant.

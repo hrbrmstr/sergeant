@@ -60,7 +60,7 @@ TODO username/password support
 }
 \examples{
 \dontrun{
-db <- src_drill("localhost:31010", use_zk=FALSE)
+db <- src_drill("localhost", "8047")
 
 print(db)
 

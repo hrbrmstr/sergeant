@@ -6,7 +6,7 @@
 
 `sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
 
-Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disperate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
+Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
 I find writing SQL queries to parquet files with Drill on a local 64GB Linux workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
 
@@ -24,7 +24,7 @@ The following functions are implemented:
 
 **`DBI`**
 
--   As complete of an R `DBI` driver has been implmented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
+-   As complete of an R `DBI` driver has been implemented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
 -   This also means that SQL functions unique to Drill have also been "implemented" (i.e. made accessible to the `dplyr` interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub.
 
 **`RJDBC`**
@@ -75,16 +75,15 @@ library(sergeant)
 
 ds <- src_drill("drill.local") 
 ds
-#> src:  Version: 1.9.0; Direct memory: 34,359,738,368 bytes
-#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.pq, dfs.root, dfs.samsung, dfs.tmp, mongo.local,
-#>   my.information_schema, my.mysql, my.performance_schema, my.test, my, sys
+#> src:  Drill 1.9.0 [drill.local:8047] [32GB direct memory]
+#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.pq, dfs.root, dfs.tmp, sys
 
 db <- tbl(ds, "cp.`employee.json`") 
 
 # without `collect()`:
 count(db, gender, marital_status)
 #> Source:   query [?? x 3]
-#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
+#> Database: Drill 1.9.0 [drill.local:8047] [32GB direct memory]
 #> Groups: gender
 #> 
 #>   marital_status gender     n
@@ -152,8 +151,8 @@ group_by(db, position_title) %>%
 #       GROUP BY  position_title ,  gender )  dcyuypuypb 
 
 arrange(db, desc(employee_id)) %>% print(n=20)
-#> Source:   query [?? x 20]
-#> Database: Version: 1.9.0; Direct memory: 34,359,738,368 bytes
+#> Source:   query [?? x 16]
+#> Database: Drill 1.9.0 [drill.local:8047] [32GB direct memory]
 #> 
 #>    store_id gender department_id birth_date supervisor_id last_name          position_title  hire_date
 #>       <int>  <chr>         <int>     <date>         <int>     <chr>                   <chr>     <dttm>
@@ -228,7 +227,7 @@ library(sergeant)
 
 # current verison
 packageVersion("sergeant")
-#> [1] '0.3.0.9000'
+#> [1] '0.3.1.9000'
 
 dc <- drill_connection("localhost") 
 
@@ -239,60 +238,49 @@ drill_version(dc)
 #> [1] "1.9.0"
 
 drill_storage(dc)$name
-#> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "my"    "s3"
+#> [1] "cp"    "dfs"   "hbase" "hdfs"  "hive"  "kudu"  "mongo" "my"    "s3"
 ```
 
 Working with the built-in JSON data sets:
 
 ``` r
 drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
-#> 
-Downloading: 16 kB     
-Downloading: 16 kB     
-Downloading: 33 kB     
-Downloading: 33 kB     
-Downloading: 49 kB     
-Downloading: 49 kB     
-Downloading: 63 kB     
-Downloading: 63 kB     
-Downloading: 63 kB     
-Downloading: 63 kB
 #> Parsed with column specification:
 #> cols(
-#>   .default = col_character(),
 #>   store_id = col_integer(),
+#>   gender = col_character(),
 #>   department_id = col_integer(),
 #>   birth_date = col_date(format = ""),
 #>   supervisor_id = col_integer(),
+#>   last_name = col_character(),
+#>   position_title = col_character(),
 #>   hire_date = col_datetime(format = ""),
+#>   management_role = col_character(),
 #>   salary = col_double(),
+#>   marital_status = col_character(),
+#>   full_name = col_character(),
 #>   employee_id = col_integer(),
+#>   education_level = col_character(),
+#>   first_name = col_character(),
 #>   position_id = col_integer()
 #> )
-#> See spec(...) for full column specifications.
-#> # A tibble: 100 × 20
-#>    store_id            fqn gender department_id birth_date supervisor_id last_name         position_title  hire_date
-#> *     <int>          <chr>  <chr>         <int>     <date>         <int>     <chr>                  <chr>     <dttm>
-#> 1         0 /employee.json      F             1 1961-08-26             0    Nowmer              President 1994-12-01
-#> 2         0 /employee.json      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01
-#> 3         0 /employee.json      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01
-#> 4         0 /employee.json      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01
-#> 5         0 /employee.json      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01
-#> 6         0 /employee.json      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01
-#> 7         9 /employee.json      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01
-#> 8        21 /employee.json      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01
-#> 9         0 /employee.json      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01
-#> 10        1 /employee.json      M            11 1967-06-20             5  Murraiin          Store Manager 1998-01-01
-#> # ... with 90 more rows, and 11 more variables: management_role <chr>, suffix <chr>, salary <dbl>,
-#> #   marital_status <chr>, filename <chr>, full_name <chr>, filepath <chr>, employee_id <int>, education_level <chr>,
-#> #   first_name <chr>, position_id <int>
+#> # A tibble: 100 × 16
+#>    store_id gender department_id birth_date supervisor_id last_name         position_title  hire_date   management_role
+#> *     <int>  <chr>         <int>     <date>         <int>     <chr>                  <chr>     <dttm>             <chr>
+#> 1         0      F             1 1961-08-26             0    Nowmer              President 1994-12-01 Senior Management
+#> 2         0      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01 Senior Management
+#> 3         0      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01 Senior Management
+#> 4         0      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01 Senior Management
+#> 5         0      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01 Senior Management
+#> 6         0      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01 Senior Management
+#> 7         9      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01  Store Management
+#> 8        21      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01  Store Management
+#> 9         0      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01 Senior Management
+#> 10        1      M            11 1967-06-20             5  Murraiin          Store Manager 1998-01-01  Store Management
+#> # ... with 90 more rows, and 7 more variables: salary <dbl>, marital_status <chr>, full_name <chr>, employee_id <int>,
+#> #   education_level <chr>, first_name <chr>, position_id <int>
 
 drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
-#> 
-  |                                                                                                                    
-  |                                                                                                              |   0%
-  |                                                                                                                    
-  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
 #>   gender = col_integer()
@@ -337,64 +325,43 @@ Working with parquet files
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
-#> 
-  |                                                                                                                    
-  |                                                                                                              |   0%
-  |                                                                                                                    
-  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
-#>   fqn = col_character(),
-#>   filename = col_character(),
 #>   N_COMMENT = col_character(),
-#>   filepath = col_character(),
 #>   N_NAME = col_character(),
 #>   N_NATIONKEY = col_integer(),
-#>   N_REGIONKEY = col_integer(),
-#>   suffix = col_character()
+#>   N_REGIONKEY = col_integer()
 #> )
-#> # A tibble: 5 × 8
-#>                                           fqn       filename            N_COMMENT                     filepath
-#> *                                       <chr>          <chr>                <chr>                        <chr>
-#> 1 /usr/local/drill/sample-data/nation.parquet nation.parquet  haggle. carefully f /usr/local/drill/sample-data
-#> 2 /usr/local/drill/sample-data/nation.parquet nation.parquet al foxes promise sly /usr/local/drill/sample-data
-#> 3 /usr/local/drill/sample-data/nation.parquet nation.parquet y alongside of the p /usr/local/drill/sample-data
-#> 4 /usr/local/drill/sample-data/nation.parquet nation.parquet eas hang ironic, sil /usr/local/drill/sample-data
-#> 5 /usr/local/drill/sample-data/nation.parquet nation.parquet y above the carefull /usr/local/drill/sample-data
-#> # ... with 4 more variables: N_NAME <chr>, N_NATIONKEY <int>, N_REGIONKEY <int>, suffix <chr>
+#> # A tibble: 5 × 4
+#>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY
+#> *                <chr>     <chr>       <int>       <int>
+#> 1  haggle. carefully f   ALGERIA           0           0
+#> 2 al foxes promise sly ARGENTINA           1           1
+#> 3 y alongside of the p    BRAZIL           2           1
+#> 4 eas hang ironic, sil    CANADA           3           1
+#> 5 y above the carefull     EGYPT           4           4
 ```
 
 Including multiple parquet files in different directories (note the wildcard support):
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
-#> 
-  |                                                                                                                    
-  |                                                                                                              |   0%
-  |                                                                                                                    
-  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
-#>   fqn = col_character(),
-#>   filename = col_character(),
 #>   N_COMMENT = col_character(),
-#>   filepath = col_character(),
 #>   N_NAME = col_character(),
 #>   N_NATIONKEY = col_integer(),
 #>   N_REGIONKEY = col_integer(),
-#>   dir0 = col_character(),
-#>   suffix = col_character()
+#>   dir0 = col_character()
 #> )
-#> # A tibble: 5 × 9
-#>                                                        fqn          filename            N_COMMENT
-#> *                                                    <chr>             <chr>                <chr>
-#> 1 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet  haggle. carefully f
-#> 2 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet al foxes promise sly
-#> 3 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet y alongside of the p
-#> 4 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet eas hang ironic, sil
-#> 5 /usr/local/drill/sample-data/nationsMF/nationsMF.parquet nationsMF.parquet y above the carefull
-#> # ... with 6 more variables: filepath <chr>, N_NAME <chr>, N_NATIONKEY <int>, N_REGIONKEY <int>, dir0 <chr>,
-#> #   suffix <chr>
+#> # A tibble: 5 × 5
+#>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY      dir0
+#> *                <chr>     <chr>       <int>       <int>     <chr>
+#> 1  haggle. carefully f   ALGERIA           0           0 nationsMF
+#> 2 al foxes promise sly ARGENTINA           1           1 nationsMF
+#> 3 y alongside of the p    BRAZIL           2           1 nationsMF
+#> 4 eas hang ironic, sil    CANADA           3           1 nationsMF
+#> 5 y above the carefull     EGYPT           4           4 nationsMF
 ```
 
 ### A preview of the built-in support for spatial ops
@@ -415,33 +382,29 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
                 )
             )
 ")
-#> 
-  |                                                                                                                    
-  |                                                                                                              |   0%
-  |                                                                                                                    
-  |==============================================================================================================| 100%
 #> Parsed with column specification:
 #> cols(
-#>   ITEM = col_character(),
-#>   ITEM2 = col_double(),
-#>   ITEM1 = col_double()
+#>   city = col_character(),
+#>   lon = col_double(),
+#>   lat = col_double()
 #> )
 #> # A tibble: 7 × 3
-#>          ITEM    ITEM2     ITEM1
-#> *       <chr>    <dbl>     <dbl>
-#> 1     Burbank 37.32328 -121.9316
-#> 2    San Jose 37.33939 -121.8950
-#> 3        Lick 37.28716 -121.8458
-#> 4 Willow Glen 37.30855 -121.8897
-#> 5 Buena Vista 37.32133 -121.9166
-#> 6    Parkmoor 37.32105 -121.9308
-#> 7   Fruitdale 37.31086 -121.9327
+#>          city       lon      lat
+#> *       <chr>     <dbl>    <dbl>
+#> 1     Burbank -121.9316 37.32328
+#> 2    San Jose -121.8950 37.33939
+#> 3        Lick -121.8458 37.28716
+#> 4 Willow Glen -121.8897 37.30855
+#> 5 Buena Vista -121.9166 37.32133
+#> 6    Parkmoor -121.9308 37.32105
+#> 7   Fruitdale -121.9327 37.31086
 ```
 
 ### JDBC
 
 ``` r
 library(RJDBC)
+#> Loading required package: rJava
 
 con <- drill_jdbc("drill.local:2181", "jla") 
 #> Using [jdbc:drill:zk=drill.local:2181/drill/jla]...
@@ -449,42 +412,40 @@ con <- drill_jdbc("drill.local:2181", "jla")
 # con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 
 drill_query(con, "SELECT * FROM cp.`employee.json`")
-#> # A tibble: 1,155 × 20
-#>               fqn      filename filepath suffix employee_id         full_name first_name last_name position_id
-#> *           <chr>         <chr>    <chr>  <chr>       <chr>             <chr>      <chr>     <chr>       <chr>
-#> 1  /employee.json employee.json        /   json           1      Sheri Nowmer      Sheri    Nowmer           1
-#> 2  /employee.json employee.json        /   json           2   Derrick Whelply    Derrick   Whelply           2
-#> 3  /employee.json employee.json        /   json           4    Michael Spence    Michael    Spence           2
-#> 4  /employee.json employee.json        /   json           5    Maya Gutierrez       Maya Gutierrez           2
-#> 5  /employee.json employee.json        /   json           6   Roberta Damstra    Roberta   Damstra           3
-#> 6  /employee.json employee.json        /   json           7  Rebecca Kanagaki    Rebecca  Kanagaki           4
-#> 7  /employee.json employee.json        /   json           8       Kim Brunner        Kim   Brunner          11
-#> 8  /employee.json employee.json        /   json           9   Brenda Blumberg     Brenda  Blumberg          11
-#> 9  /employee.json employee.json        /   json          10      Darren Stanz     Darren     Stanz           5
-#> 10 /employee.json employee.json        /   json          11 Jonathan Murraiin   Jonathan  Murraiin          11
-#> # ... with 1,145 more rows, and 11 more variables: position_title <chr>, store_id <chr>, department_id <chr>,
-#> #   birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>, education_level <chr>, marital_status <chr>,
-#> #   gender <chr>, management_role <chr>
+#> # A tibble: 1,155 × 16
+#>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
+#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
+#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
+#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
+#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
+#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
+#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
+#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
+#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
+#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
+#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
+#> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
 
 # but it can work via JDBC function calls, too
 dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
   tibble::as_tibble()
-#> # A tibble: 1,155 × 20
-#>               fqn      filename filepath suffix employee_id         full_name first_name last_name position_id
-#> *           <chr>         <chr>    <chr>  <chr>       <chr>             <chr>      <chr>     <chr>       <chr>
-#> 1  /employee.json employee.json        /   json           1      Sheri Nowmer      Sheri    Nowmer           1
-#> 2  /employee.json employee.json        /   json           2   Derrick Whelply    Derrick   Whelply           2
-#> 3  /employee.json employee.json        /   json           4    Michael Spence    Michael    Spence           2
-#> 4  /employee.json employee.json        /   json           5    Maya Gutierrez       Maya Gutierrez           2
-#> 5  /employee.json employee.json        /   json           6   Roberta Damstra    Roberta   Damstra           3
-#> 6  /employee.json employee.json        /   json           7  Rebecca Kanagaki    Rebecca  Kanagaki           4
-#> 7  /employee.json employee.json        /   json           8       Kim Brunner        Kim   Brunner          11
-#> 8  /employee.json employee.json        /   json           9   Brenda Blumberg     Brenda  Blumberg          11
-#> 9  /employee.json employee.json        /   json          10      Darren Stanz     Darren     Stanz           5
-#> 10 /employee.json employee.json        /   json          11 Jonathan Murraiin   Jonathan  Murraiin          11
-#> # ... with 1,145 more rows, and 11 more variables: position_title <chr>, store_id <chr>, department_id <chr>,
-#> #   birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>, education_level <chr>, marital_status <chr>,
-#> #   gender <chr>, management_role <chr>
+#> # A tibble: 1,155 × 16
+#>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
+#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
+#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
+#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
+#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
+#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
+#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
+#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
+#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
+#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
+#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
+#> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
 ```
 
 ### Test Results
@@ -492,16 +453,20 @@ dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>%
 ``` r
 library(sergeant)
 library(testthat)
+#> 
+#> Attaching package: 'testthat'
+#> The following object is masked from 'package:dplyr':
+#> 
+#>     matches
 
 date()
-#> [1] "Sat Dec 31 11:10:08 2016"
+#> [1] "Mon Jan 23 10:36:57 2017"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
-#> OK: 0 SKIPPED: 1 FAILED: 0
+#> OK: 3 SKIPPED: 0 FAILED: 0
 #> 
 #> DONE ===================================================================================================================
-#> Woot!
 ```
 
 ### Code of Conduct

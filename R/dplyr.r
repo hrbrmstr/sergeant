@@ -158,6 +158,7 @@ sql_translate_env.DrillConnection <- function(con) {
       rand = sql_prefix("RAND", 0),
       rshift = sql_prefix("RSHIFT", 2),
       trunc = sql_prefix("TRUNC", 2),
+      contains = sql_prefix("CONTAINS", 2),
       convert_to = sql_prefix("CONVERT_TO", 2),
       convert_from = sql_prefix("CONVERT_FROM", 2),
       string_binary = sql_prefix("STRING_BINARY", 1),

@@ -27,4 +27,3 @@ Drill
 
 Connect to Drill
 }
-

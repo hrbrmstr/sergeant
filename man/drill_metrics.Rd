@@ -17,4 +17,3 @@ Get the current memory metrics
 drill_connection() \%>\% drill_metrics()
 }
 }
-

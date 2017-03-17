@@ -22,4 +22,3 @@ drill_connection() \%>\% drill_settings_reset(exec.errors.verbose)
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
-

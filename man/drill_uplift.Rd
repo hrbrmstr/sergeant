@@ -21,4 +21,3 @@ Not really intended to be called directly, but useful if you accidentally ran
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
-

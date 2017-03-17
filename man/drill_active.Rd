@@ -17,4 +17,3 @@ This is a very simple test (performs \code{HEAD /} request on the Drill server/c
 drill_connection() \%>\% drill_active()
 }
 }
-

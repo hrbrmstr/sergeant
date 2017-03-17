@@ -17,4 +17,3 @@ Get the profile of the query that has the given queryid
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
-

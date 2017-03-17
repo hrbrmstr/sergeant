@@ -20,4 +20,3 @@ The output of this is in a "viewer" window
 drill_connection() \%>\% drill_threads()
 }
 }
-

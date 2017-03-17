@@ -34,10 +34,9 @@ check information.
 Methods are provided to work with Drill via the native JDBC & REST APIs along with R
 \code{DBI} and \code{dplyr} interfaces.
 }
-\author{
-Bob Rudis (bob@rud.is)
-}
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
-
+\author{
+Bob Rudis (bob@rud.is)
+}

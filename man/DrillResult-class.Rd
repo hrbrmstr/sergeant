@@ -5,9 +5,9 @@
 \alias{DrillResult-class}
 \alias{dbClearResult,DrillResult-method}
 \alias{dbFetch,DrillResult-method}
-\alias{dbGetStatement,DrillResult-method}
 \alias{dbHasCompleted,DrillResult-method}
 \alias{dbListFields,DrillResult,missing-method}
+\alias{dbGetStatement,DrillResult-method}
 \title{Drill results class.}
 \usage{
 \S4method{dbClearResult}{DrillResult}(res, ...)
@@ -35,4 +35,3 @@ Completed
 Statement
 }
 \keyword{internal}
-

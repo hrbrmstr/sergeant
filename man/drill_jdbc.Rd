@@ -43,4 +43,3 @@ con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 \references{
 \url{https://drill.apache.org/docs/using-the-jdbc-driver/#using-the-jdbc-url-for-a-random-drillbit-connection}
 }
-

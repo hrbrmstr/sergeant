@@ -17,4 +17,3 @@
 \description{
 Drill dbDataType
 }
-

@@ -15,4 +15,3 @@ Returns a list of available schemas.
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
-

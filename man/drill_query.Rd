@@ -35,4 +35,3 @@ drill_con() \%>\%
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
-

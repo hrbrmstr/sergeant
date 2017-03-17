@@ -22,4 +22,3 @@ drill_connection() \%>\% drill_storage()
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
-

@@ -26,4 +26,3 @@ Setup a Drill connection
 \examples{
 dc <- drill_connection()
 }
-

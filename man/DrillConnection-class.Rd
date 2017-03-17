@@ -3,9 +3,9 @@
 \docType{class}
 \name{DrillConnection-class}
 \alias{DrillConnection-class}
+\alias{dbSendQuery,DrillConnection,ANY-method}
 \alias{dbIsValid,DrillConnection-method}
 \alias{dbListFields,DrillConnection,character-method}
-\alias{dbSendQuery,DrillConnection,ANY-method}
 \title{Drill connection class.}
 \usage{
 \S4method{dbSendQuery}{DrillConnection,ANY}(conn, statement, ...)
@@ -20,4 +20,3 @@ Drill connection class.
 Send a query to Drill
 }
 \keyword{internal}
-

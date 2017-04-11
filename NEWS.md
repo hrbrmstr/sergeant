@@ -1,3 +1,8 @@
+# sergeant 0.3.2
+
+- Finally got quoting done. I thought I had before but I guess I hadn't.
+- Added documnentation for built-in and custom Drill function that are supported.
+
 # sergeant 0.3.1.9000
 
 * fixed `src_drill()` example

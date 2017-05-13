@@ -3,7 +3,7 @@
 \name{src_drill}
 \alias{src_drill}
 \alias{src_tbls.src_drill}
-\alias{src_desc.src_drill}
+\alias{db_desc.src_drill}
 \alias{sql_escape_ident.DrillConnection}
 \alias{copy_to.src_drill}
 \alias{tbl.src_drill}
@@ -18,7 +18,7 @@ src_drill(host = Sys.getenv("DRILL_HOST", "localhost"),
 
 \method{src_tbls}{src_drill}(x)
 
-\method{src_desc}{src_drill}(x)
+\method{db_desc}{src_drill}(x)
 
 \method{sql_escape_ident}{DrillConnection}(con, x)
 

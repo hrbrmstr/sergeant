@@ -2,7 +2,8 @@ Package: sergeant
 Title: Tools to Transform and Query Data with the 'Apache Drill' 'REST API' and 'JDBC' Interfaces, 
     Plus 'dplyr' and 'DBI' Interfaces
 Version: 0.3.2
-Authors@R: c(person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")))
+Authors@R: c(person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")),
+             person("Edward", "Visel", email = "edward.visel@gmail.com", role = "ctb"))
 Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 
     data exploration and analytics on both relational and non-relational datastores, 
     scaling to petabytes of data. Methods are provided that enable working with 'Apache Drill'
@@ -10,7 +11,8 @@ Description: 'Apache Drill' is a low-latency distributed query engine designed t
 Depends:
     R (>= 3.0.0),
     DBI,
-    dplyr
+    dplyr (>= 0.5.0.9000),
+    dbplyr
 URL: http://github.com/hrbrmstr/sergeant
 BugReports: https://github.com/hrbrmstr/sergeant/issues
 License: AGPL + file LICENSE

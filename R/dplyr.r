@@ -54,7 +54,7 @@ src_tbls.src_drill <- function(x) {
 #' @rdname src_drill
 #' @keywords internal
 #' @export
-src_desc.src_drill <- function(x) {
+db_desc.src_drill <- function(x) {
 
   tmp <- dbGetQuery(x$con, "SELECT * FROM sys.version")
   version <- tmp$version
@@ -92,7 +92,7 @@ tbl.src_drill <- function(src, from, ...) {
 #' @keywords internal
 #' @export
 db_explain.DrillConnection <- function(con, sql, ...) {
-  explain_sql <- dplyr::build_sql("EXPLAIN PLAN FOR ", sql)
+  explain_sql <- dbplyr::build_sql("EXPLAIN PLAN FOR ", sql)
   explanation <- dbGetQuery(con, explain_sql)
   return(paste(explanation[[1]], collapse = "\n"))
 }
@@ -102,7 +102,7 @@ db_explain.DrillConnection <- function(con, sql, ...) {
 #' @export
 db_query_fields.DrillConnection <- function(con, sql, ...) {
 
-  fields <- dplyr::build_sql(
+  fields <- dbplyr::build_sql(
     "SELECT * FROM ", sql, " LIMIT 1",
     con = con
   )
@@ -137,10 +137,10 @@ db_data_type.DrillConnection <- function(con, fields, ...) {
 #' @export
 sql_translate_env.DrillConnection <- function(con) {
   x <- con
-  dplyr::sql_variant(
-    scalar=dplyr::sql_translator(
-      .parent = dplyr::base_scalar,
-      `!=` = dplyr::sql_infix("<>"),
+  dbplyr::sql_variant(
+    scalar=dbplyr::sql_translator(
+      .parent = dbplyr::base_scalar,
+      `!=` = dbplyr::sql_infix("<>"),
       as.numeric = function(x) build_sql("CAST(", x, " AS DOUBLE)"),
       as.character = function(x) build_sql("CAST(", x, " AS CHARACTER)"),
       as.date = function(x) build_sql("CAST(", x, " AS DATE)"),
@@ -191,14 +191,14 @@ sql_translate_env.DrillConnection <- function(con) {
       trim = function(x, y, z) build_sql("TRIM(", x, " ", y, " FROM ", z, ")"),
       upper = sql_prefix("UPPER", 1)
     ),
-    aggregate=dplyr::sql_translator(.parent = dplyr::base_agg,
-                                    n = function() dplyr::sql("COUNT(*)"),
-                                    cor = dplyr::sql_prefix("CORR"),
-                                    cov = dplyr::sql_prefix("COVAR_SAMP"),
-                                    sd =  dplyr::sql_prefix("STDDEV_SAMP"),
-                                    var = dplyr::sql_prefix("VAR_SAMP"),
+    aggregate=dbplyr::sql_translator(.parent = dbplyr::base_agg,
+                                    n = function() dbplyr::sql("COUNT(*)"),
+                                    cor = dbplyr::sql_prefix("CORR"),
+                                    cov = dbplyr::sql_prefix("COVAR_SAMP"),
+                                    sd =  dbplyr::sql_prefix("STDDEV_SAMP"),
+                                    var = dbplyr::sql_prefix("VAR_SAMP"),
                                     n_distinct = function(x) {
-                                      dplyr::build_sql(dplyr::sql("COUNT(DISTINCT "), x, dplyr::sql(")"))
+                                      dbplyr::build_sql(dbplyr::sql("COUNT(DISTINCT "), x, dbplyr::sql(")"))
                                     }
     )
   )

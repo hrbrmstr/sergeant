@@ -33,9 +33,10 @@
 #' @author Bob Rudis (bob@@rud.is)
 #' @import httr jsonlite htmltools
 #' @importFrom purrr map map2 map2_df %>%
-#' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter db_explain
-#' @importFrom dplyr sql_quote src_sql src_desc src db_data_type sql_translate_env copy_to
-#' @importFrom dplyr db_query_fields src_tbls sql_escape_ident build_sql sql_prefix tbl_sql
+#' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter
+#' @importFrom dplyr db_desc src db_data_type db_explain sql_translate_env copy_to
+#' @importFrom dplyr db_query_fields src_tbls sql_escape_ident
+#' @importFrom dbplyr build_sql sql_prefix sql_quote src_sql tbl_sql
 #' @import utils RJDBC
 #' @import DBI methods
 #' @importFrom scales comma

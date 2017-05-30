@@ -88,7 +88,7 @@ options(width=120)
 ```{r message=FALSE}
 library(sergeant)
 
-ds <- src_drill("drill.local") 
+ds <- src_drill("drillex")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
 ds
 
 db <- tbl(ds, "cp.`employee.json`") 
@@ -167,7 +167,7 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 
-dc <- drill_connection("localhost") 
+dc <- drill_connection("drillex") 
 
 drill_active(dc)
 
@@ -225,9 +225,11 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 ```{r}
 library(RJDBC)
 
-con <- drill_jdbc("drill.local:2181", "jla") 
-# or the following if running drill-embedded
-# con <- drill_jdbc("localhost:31010", use_zk=FALSE)
+# Use this if connecting to a cluster with zookeeper
+# con <- drill_jdbc("drill-node:2181", "drillbits1") 
+
+# Use the following if running drill-embedded
+con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 
 drill_query(con, "SELECT * FROM cp.`employee.json`")
 

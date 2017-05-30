@@ -2,37 +2,13 @@
 % Please edit documentation in R/dplyr.r
 \name{src_drill}
 \alias{src_drill}
-\alias{src_tbls.src_drill}
-\alias{db_desc.src_drill}
-\alias{sql_escape_ident.DrillConnection}
-\alias{copy_to.src_drill}
 \alias{tbl.src_drill}
-\alias{db_explain.DrillConnection}
-\alias{db_query_fields.DrillConnection}
-\alias{db_data_type.DrillConnection}
-\alias{sql_translate_env.DrillConnection}
-\title{Connect to Drill (using \code{dplyr}).}
+\title{Connect to Drill (dplyr)}
 \usage{
 src_drill(host = Sys.getenv("DRILL_HOST", "localhost"),
   port = as.integer(Sys.getenv("DRILL_PORT", 8047L)), ssl = FALSE)
 
-\method{src_tbls}{src_drill}(x)
-
-\method{db_desc}{src_drill}(x)
-
-\method{sql_escape_ident}{DrillConnection}(con, x)
-
-\method{copy_to}{src_drill}(dest, df)
-
 \method{tbl}{src_drill}(src, from, ...)
-
-\method{db_explain}{DrillConnection}(con, sql, ...)
-
-\method{db_query_fields}{DrillConnection}(con, sql, ...)
-
-\method{db_data_type}{DrillConnection}(con, fields, ...)
-
-\method{sql_translate_env}{DrillConnection}(con)
 }
 \arguments{
 \item{host}{Drill host (will pick up the value from \code{DRILL_HOST} env var)}
@@ -54,9 +30,7 @@ also been made available to the \code{dplyr} interface. If you have custom Drill
 SQL functions that need to be implemented please file an issue on GitHub.
 }
 \note{
-This is a DBI wrapper around the Drill REST API.
-
-TODO username/password support
+This is a DBI wrapper around the Drill REST API. TODO username/password support
 }
 \examples{
 \dontrun{
@@ -80,4 +54,3 @@ select(emp, full_name) \%>\%
                 rpdw = rpad_with(full_name, 20L, "*"))
 }
 }
-\keyword{internal}

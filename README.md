@@ -73,19 +73,18 @@ devtools::install_github("hrbrmstr/sergeant")
 ``` r
 library(sergeant)
 
-ds <- src_drill("drill.local") 
+ds <- src_drill("drillex")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
 ds
-#> src:  Drill 1.9.0 [drill.local:8047] [32GB direct memory]
-#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.pq, dfs.root, dfs.tmp, sys
+#> src:  DrillConnection
+#> tbls: INFORMATION_SCHEMA, cp.default, dfs.d, dfs.default, dfs.h, dfs.natexp, dfs.p, dfs.root, dfs.tmp, sys
 
 db <- tbl(ds, "cp.`employee.json`") 
 
 # without `collect()`:
 count(db, gender, marital_status)
-#> Source:   query [?? x 3]
-#> Database: Drill 1.9.0 [drill.local:8047] [32GB direct memory]
-#> Groups: gender
-#> 
+#> # Source:   lazy query [?? x 3]
+#> # Database: DrillConnection
+#> # Groups:   gender
 #>   marital_status gender     n
 #>            <chr>  <chr> <int>
 #> 1              S      F   297
@@ -102,9 +101,8 @@ count(db, gender, marital_status)
 # LIMIT 1000
 
 count(db, gender, marital_status) %>% collect()
-#> Source: local data frame [4 x 3]
-#> Groups: gender [2]
-#> 
+#> # A tibble: 4 x 3
+#> # Groups:   gender [2]
 #>   marital_status gender     n
 #> *          <chr>  <chr> <int>
 #> 1              S      F   297
@@ -127,18 +125,18 @@ group_by(db, position_title) %>%
   mutate(full_desc=ifelse(gender=="F", "Female", "Male")) %>% 
   collect() %>% 
   select(Title=position_title, Gender=full_desc, Count=n)
-#> # A tibble: 30 × 3
+#> # A tibble: 30 x 3
 #>                     Title Gender Count
-#> *                   <chr>  <chr> <int>
-#> 1               President Female     1
-#> 2      VP Country Manager   Male     3
-#> 3      VP Country Manager Female     3
-#> 4  VP Information Systems Female     1
-#> 5      VP Human Resources Female     1
-#> 6           Store Manager Female    13
-#> 7              VP Finance   Male     1
-#> 8           Store Manager   Male    11
-#> 9            HQ Marketing Female     2
+#>  *                  <chr>  <chr> <int>
+#>  1              President Female     1
+#>  2     VP Country Manager   Male     3
+#>  3     VP Country Manager Female     3
+#>  4 VP Information Systems Female     1
+#>  5     VP Human Resources Female     1
+#>  6          Store Manager Female    13
+#>  7             VP Finance   Male     1
+#>  8          Store Manager   Male    11
+#>  9           HQ Marketing Female     2
 #> 10 HQ Information Systems Female     4
 #> # ... with 20 more rows
 
@@ -151,31 +149,31 @@ group_by(db, position_title) %>%
 #       GROUP BY  position_title ,  gender )  dcyuypuypb 
 
 arrange(db, desc(employee_id)) %>% print(n=20)
-#> Source:   query [?? x 16]
-#> Database: Drill 1.9.0 [drill.local:8047] [32GB direct memory]
-#> 
-#>    store_id gender department_id birth_date supervisor_id last_name          position_title  hire_date
-#>       <int>  <chr>         <int>     <date>         <int>     <chr>                   <chr>     <dttm>
-#> 1         8      M            17 1914-02-02           949   Dittmar Store Permanent Stocker 1998-01-01
-#> 2         8      F            17 1914-02-02           949   Jantzer Store Permanent Stocker 1998-01-01
-#> 3         8      F            17 1914-02-02           949     Sweet Store Permanent Stocker 1998-01-01
-#> 4         8      M            17 1914-02-02           949    Murphy Store Permanent Stocker 1998-01-01
-#> 5         8      M            17 1914-02-02           948   Lindsay Store Permanent Stocker 1998-01-01
-#> 6         8      M            17 1914-02-02           948     Burke Store Permanent Stocker 1998-01-01
-#> 7         8      M            17 1914-02-02           948   Bunosky Store Permanent Stocker 1998-01-01
-#> 8         8      F            17 1914-02-02           948   Cabrera Store Permanent Stocker 1998-01-01
-#> 9         8      F            17 1914-02-02           948     Terry Store Permanent Stocker 1998-01-01
-#> 10        8      F            17 1914-02-02           947      Case Store Permanent Stocker 1998-01-01
-#> 11        6      F            18 1976-10-05            56     Horne Store Temporary Stocker 1997-01-01
-#> 12        8      F            17 1914-02-02           947    Nutter Store Permanent Stocker 1998-01-01
-#> 13        8      F            17 1914-02-02           947 Willeford Store Permanent Stocker 1998-01-01
-#> 14        8      M            17 1914-02-02           947 Clendenen Store Permanent Stocker 1998-01-01
-#> 15        8      F            17 1914-02-02           947      Wall Store Permanent Stocker 1998-01-01
-#> 16        8      F            16 1914-02-02           949    Morrow Store Temporary Checker 1998-01-01
-#> 17        8      M            16 1914-02-02           949    Wilson Store Temporary Checker 1998-01-01
-#> 18        8      F            16 1914-02-02           949    Duncan Store Temporary Checker 1998-01-01
-#> 19        8      F            16 1914-02-02           949  Anderson Store Temporary Checker 1998-01-01
-#> 20        8      M            16 1914-02-02           949    Watson Store Temporary Checker 1998-01-01
+#> # Source:     table<cp.`employee.json`> [?? x 16]
+#> # Database:   DrillConnection
+#> # Ordered by: desc(employee_id)
+#>    store_id gender department_id birth_date supervisor_id  last_name          position_title  hire_date
+#>       <int>  <chr>         <int>     <date>         <int>      <chr>                   <chr>     <dttm>
+#>  1       18      F            18 1914-02-02          1140      Stand Store Temporary Stocker 1998-01-01
+#>  2       18      M            18 1914-02-02          1140    Burnham Store Temporary Stocker 1998-01-01
+#>  3       18      F            18 1914-02-02          1139  Doolittle Store Temporary Stocker 1998-01-01
+#>  4       18      M            18 1914-02-02          1139     Pirnie Store Temporary Stocker 1998-01-01
+#>  5       18      M            17 1914-02-02          1140     Younce Store Permanent Stocker 1998-01-01
+#>  6       18      F            17 1914-02-02          1140    Biltoft Store Permanent Stocker 1998-01-01
+#>  7       18      M            17 1914-02-02          1139   Detwiler Store Permanent Stocker 1998-01-01
+#>  8       18      F            17 1914-02-02          1139     Ciruli Store Permanent Stocker 1998-01-01
+#>  9       18      F            16 1914-02-02          1140     Bishop Store Temporary Checker 1998-01-01
+#> 10       18      F            16 1914-02-02          1140  Cutwright Store Temporary Checker 1998-01-01
+#> 11       18      F            16 1914-02-02          1139   Anderson Store Temporary Checker 1998-01-01
+#> 12       18      F            16 1914-02-02          1139  Swartwood Store Temporary Checker 1998-01-01
+#> 13       18      M            15 1914-02-02          1140 Curtsinger Store Permanent Checker 1998-01-01
+#> 14       18      F            15 1914-02-02          1140      Quick Store Permanent Checker 1998-01-01
+#> 15       18      M            15 1914-02-02          1139      Souza Store Permanent Checker 1998-01-01
+#> 16       18      M            15 1914-02-02          1139   Compagno Store Permanent Checker 1998-01-01
+#> 17       18      M            11 1961-09-24          1139  Jaramillo  Store Shift Supervisor 1998-01-01
+#> 18       18      M            11 1972-05-12            17     Belsey Store Assistant Manager 1998-01-01
+#> 19       12      M            18 1914-02-02          1069    Eichorn Store Temporary Stocker 1998-01-01
+#> 20       12      F            18 1914-02-02          1069  Geiermann Store Temporary Stocker 1998-01-01
 #> # ... with more rows, and 8 more variables: management_role <chr>, salary <dbl>, marital_status <chr>, full_name <chr>,
 #> #   employee_id <int>, education_level <chr>, first_name <chr>, position_id <int>
 
@@ -194,18 +192,18 @@ mutate(db, position_title=tolower(position_title)) %>%
   group_by(supervisor_id) %>% 
   summarise(underlings_count=n()) %>% 
   collect()
-#> # A tibble: 112 × 2
+#> # A tibble: 112 x 2
 #>    supervisor_id underlings_count
-#> *          <int>            <int>
-#> 1              0                1
-#> 2              1                7
-#> 3              5                9
-#> 4              4                2
-#> 5              2                3
-#> 6             20                2
-#> 7             21                4
-#> 8             22                7
-#> 9              6                4
+#>  *         <int>            <int>
+#>  1             0                1
+#>  2             1                7
+#>  3             5                9
+#>  4             4                2
+#>  5             2                3
+#>  6            20                2
+#>  7            21                4
+#>  8            22                7
+#>  9             6                4
 #> 10            36                2
 #> # ... with 102 more rows
 
@@ -227,18 +225,18 @@ library(sergeant)
 
 # current verison
 packageVersion("sergeant")
-#> [1] '0.3.1.9000'
+#> [1] '0.3.2'
 
-dc <- drill_connection("localhost") 
+dc <- drill_connection("drillex") 
 
 drill_active(dc)
 #> [1] TRUE
 
 drill_version(dc)
-#> [1] "1.9.0"
+#> [1] "1.10.0"
 
 drill_storage(dc)$name
-#> [1] "cp"    "dfs"   "hbase" "hdfs"  "hive"  "kudu"  "mongo" "my"    "s3"
+#> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"
 ```
 
 Working with the built-in JSON data sets:
@@ -264,18 +262,18 @@ drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
 #>   first_name = col_character(),
 #>   position_id = col_integer()
 #> )
-#> # A tibble: 100 × 16
+#> # A tibble: 100 x 16
 #>    store_id gender department_id birth_date supervisor_id last_name         position_title  hire_date   management_role
-#> *     <int>  <chr>         <int>     <date>         <int>     <chr>                  <chr>     <dttm>             <chr>
-#> 1         0      F             1 1961-08-26             0    Nowmer              President 1994-12-01 Senior Management
-#> 2         0      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01 Senior Management
-#> 3         0      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01 Senior Management
-#> 4         0      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01 Senior Management
-#> 5         0      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01 Senior Management
-#> 6         0      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01 Senior Management
-#> 7         9      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01  Store Management
-#> 8        21      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01  Store Management
-#> 9         0      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01 Senior Management
+#>  *    <int>  <chr>         <int>     <date>         <int>     <chr>                  <chr>     <dttm>             <chr>
+#>  1        0      F             1 1961-08-26             0    Nowmer              President 1994-12-01 Senior Management
+#>  2        0      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01 Senior Management
+#>  3        0      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01 Senior Management
+#>  4        0      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01 Senior Management
+#>  5        0      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01 Senior Management
+#>  6        0      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01 Senior Management
+#>  7        9      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01  Store Management
+#>  8       21      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01  Store Management
+#>  9        0      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01 Senior Management
 #> 10        1      M            11 1967-06-20             5  Murraiin          Store Manager 1998-01-01  Store Management
 #> # ... with 90 more rows, and 7 more variables: salary <dbl>, marital_status <chr>, full_name <chr>, employee_id <int>,
 #> #   education_level <chr>, first_name <chr>, position_id <int>
@@ -285,38 +283,38 @@ drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY
 #> cols(
 #>   gender = col_integer()
 #> )
-#> # A tibble: 2 × 1
+#> # A tibble: 2 x 1
 #>   gender
 #> *  <int>
 #> 1    601
 #> 2    554
 
 drill_options(dc)
-#> # A tibble: 105 × 4
+#> # A tibble: 113 x 4
 #>                                              name value   type    kind
-#> *                                           <chr> <chr>  <chr>   <chr>
-#> 1                  planner.enable_hash_single_key  TRUE SYSTEM BOOLEAN
-#> 2              planner.enable_limit0_optimization FALSE SYSTEM BOOLEAN
-#> 3               store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN
-#> 4                 planner.enable_constant_folding  TRUE SYSTEM BOOLEAN
-#> 5                       store.json.extended_types FALSE SYSTEM BOOLEAN
-#> 6    planner.memory.non_blocking_operators_memory    64 SYSTEM    LONG
-#> 7                   planner.enable_multiphase_agg  TRUE SYSTEM BOOLEAN
-#> 8  planner.filter.max_selectivity_estimate_factor     1 SYSTEM  DOUBLE
-#> 9                     planner.enable_mux_exchange  TRUE SYSTEM BOOLEAN
-#> 10                   store.parquet.use_new_reader FALSE SYSTEM BOOLEAN
-#> # ... with 95 more rows
+#>  *                                          <chr> <chr>  <chr>   <chr>
+#>  1                 planner.enable_hash_single_key  TRUE SYSTEM BOOLEAN
+#>  2      store.parquet.reader.pagereader.queuesize     2 SYSTEM    LONG
+#>  3             planner.enable_limit0_optimization FALSE SYSTEM BOOLEAN
+#>  4              store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN
+#>  5                planner.enable_constant_folding  TRUE SYSTEM BOOLEAN
+#>  6                      store.json.extended_types FALSE SYSTEM BOOLEAN
+#>  7   planner.memory.non_blocking_operators_memory    64 SYSTEM    LONG
+#>  8                  planner.enable_multiphase_agg  TRUE SYSTEM BOOLEAN
+#>  9                  exec.query_profile.debug_mode FALSE SYSTEM BOOLEAN
+#> 10 planner.filter.max_selectivity_estimate_factor     1 SYSTEM  DOUBLE
+#> # ... with 103 more rows
 
 drill_options(dc, "json")
-#> # A tibble: 7 × 4
+#> # A tibble: 7 x 4
 #>                                                    name value   type    kind
 #>                                                   <chr> <chr>  <chr>   <chr>
 #> 1                     store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN
 #> 2                             store.json.extended_types FALSE SYSTEM BOOLEAN
-#> 3                              store.json.writer.uglify  TRUE SYSTEM BOOLEAN
-#> 4                store.json.reader.skip_invalid_records  TRUE SYSTEM BOOLEAN
-#> 5 store.json.reader.print_skipped_invalid_record_number  TRUE SYSTEM BOOLEAN
-#> 6                              store.json.all_text_mode  TRUE SYSTEM BOOLEAN
+#> 3                              store.json.writer.uglify FALSE SYSTEM BOOLEAN
+#> 4                store.json.reader.skip_invalid_records FALSE SYSTEM BOOLEAN
+#> 5 store.json.reader.print_skipped_invalid_record_number FALSE SYSTEM BOOLEAN
+#> 6                              store.json.all_text_mode FALSE SYSTEM BOOLEAN
 #> 7                    store.json.writer.skip_null_fields  TRUE SYSTEM BOOLEAN
 ```
 
@@ -332,7 +330,7 @@ drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet`
 #>   N_NATIONKEY = col_integer(),
 #>   N_REGIONKEY = col_integer()
 #> )
-#> # A tibble: 5 × 4
+#> # A tibble: 5 x 4
 #>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY
 #> *                <chr>     <chr>       <int>       <int>
 #> 1  haggle. carefully f   ALGERIA           0           0
@@ -354,14 +352,14 @@ drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nation
 #>   N_REGIONKEY = col_integer(),
 #>   dir0 = col_character()
 #> )
-#> # A tibble: 5 × 5
+#> # A tibble: 5 x 5
 #>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY      dir0
 #> *                <chr>     <chr>       <int>       <int>     <chr>
-#> 1  haggle. carefully f   ALGERIA           0           0 nationsMF
-#> 2 al foxes promise sly ARGENTINA           1           1 nationsMF
-#> 3 y alongside of the p    BRAZIL           2           1 nationsMF
-#> 4 eas hang ironic, sil    CANADA           3           1 nationsMF
-#> 5 y above the carefull     EGYPT           4           4 nationsMF
+#> 1  haggle. carefully f   ALGERIA           0           0 nationsSF
+#> 2 al foxes promise sly ARGENTINA           1           1 nationsSF
+#> 3 y alongside of the p    BRAZIL           2           1 nationsSF
+#> 4 eas hang ironic, sil    CANADA           3           1 nationsSF
+#> 5 y above the carefull     EGYPT           4           4 nationsSF
 ```
 
 ### A preview of the built-in support for spatial ops
@@ -388,7 +386,7 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 #>   lon = col_double(),
 #>   lat = col_double()
 #> )
-#> # A tibble: 7 × 3
+#> # A tibble: 7 x 3
 #>          city       lon      lat
 #> *       <chr>     <dbl>    <dbl>
 #> 1     Burbank -121.9316 37.32328
@@ -406,45 +404,47 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 library(RJDBC)
 #> Loading required package: rJava
 
-con <- drill_jdbc("drill.local:2181", "jla") 
-#> Using [jdbc:drill:zk=drill.local:2181/drill/jla]...
-# or the following if running drill-embedded
-# con <- drill_jdbc("localhost:31010", use_zk=FALSE)
+# Use this if connecting to a cluster with zookeeper
+# con <- drill_jdbc("drill-node:2181", "drillbits1") 
+
+# Use the following if running drill-embedded
+con <- drill_jdbc("localhost:31010", use_zk=FALSE)
+#> Using [jdbc:drill:drillbit=localhost:31010]...
 
 drill_query(con, "SELECT * FROM cp.`employee.json`")
-#> # A tibble: 1,155 × 16
+#> # A tibble: 1,155 x 16
 #>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
-#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
-#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
-#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
-#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
-#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
-#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
-#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
-#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
-#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
-#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
+#>  *       <dbl>             <chr>      <chr>     <chr>       <dbl>                  <chr>    <dbl>         <dbl>
+#>  1           1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
+#>  2           2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
+#>  3           4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
+#>  4           5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
+#>  5           6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
+#>  6           7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
+#>  7           8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
+#>  8           9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
+#>  9          10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
 #> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
-#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <dbl>, supervisor_id <dbl>,
 #> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
 
 # but it can work via JDBC function calls, too
 dbGetQuery(con, "SELECT * FROM cp.`employee.json`") %>% 
   tibble::as_tibble()
-#> # A tibble: 1,155 × 16
+#> # A tibble: 1,155 x 16
 #>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
-#> *        <chr>             <chr>      <chr>     <chr>       <chr>                  <chr>    <chr>         <chr>
-#> 1            1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
-#> 2            2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
-#> 3            4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
-#> 4            5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
-#> 5            6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
-#> 6            7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
-#> 7            8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
-#> 8            9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
-#> 9           10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
+#>  *       <dbl>             <chr>      <chr>     <chr>       <dbl>                  <chr>    <dbl>         <dbl>
+#>  1           1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1
+#>  2           2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1
+#>  3           4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1
+#>  4           5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1
+#>  5           6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2
+#>  6           7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3
+#>  7           8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11
+#>  8           9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11
+#>  9          10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5
 #> 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11
-#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <chr>, supervisor_id <chr>,
+#> # ... with 1,145 more rows, and 8 more variables: birth_date <chr>, hire_date <chr>, salary <dbl>, supervisor_id <dbl>,
 #> #   education_level <chr>, marital_status <chr>, gender <chr>, management_role <chr>
 ```
 
@@ -460,7 +460,7 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Jan 23 10:36:57 2017"
+#> [1] "Tue May 30 17:28:25 2017"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

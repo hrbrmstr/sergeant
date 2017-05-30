@@ -1,3 +1,8 @@
+# sergeant 0.4.0
+
+- Getting ready for new `dplyr` (thx to Edward Visel)
+- Cleaned up roxygen docs so that `src_drill` is exported now.
+
 # sergeant 0.3.2
 
 - Finally got quoting done. I thought I had before but I guess I hadn't.

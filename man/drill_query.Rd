@@ -28,7 +28,7 @@ set is huge).
 }
 \examples{
 \dontrun{
-drill_con() \%>\%
+drill_conection() \%>\%
   drill_query("SELECT * FROM cp.`employee.json` limit 5")
 }
 }

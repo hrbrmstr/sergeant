@@ -26,7 +26,7 @@ a JDBC connection object
 \description{
 The DRILL JDBC driver fully-qualified path must be placed in the
 \code{DRILL_JDBC_JAR} environment variable. This is best done via \code{~/.Renviron}
-for interactive work. e.g. \code{DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar}
+for interactive work. e.g. \code{DRILL_JDBC_JAR=/usr/local/drill/jars/jdbc-driver/drill-jdbc-all-1.10.0.jar}
 }
 \examples{
 \dontrun{

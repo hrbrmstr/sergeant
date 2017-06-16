@@ -14,7 +14,7 @@ Get Drillbit information, such as ports numbers
 }
 \examples{
 \dontrun{
-drill_con() \%>\% drill_stats()
+drill_connection() \%>\% drill_stats()
 }
 }
 \references{

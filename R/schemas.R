@@ -28,7 +28,7 @@ drill_use <- function(drill_con, schema_name) {
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
-#' drill_con() %>% drill_show_files("dfs.tmp")
+#' drill_connection() %>% drill_show_files("dfs.tmp")
 #' }
 drill_show_files <- function(drill_con, schema_spec) {
   query <- sprintf("SHOW FILES IN %s", schema_spec)

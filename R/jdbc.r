@@ -2,7 +2,7 @@
 #'
 #' The DRILL JDBC driver fully-qualified path must be placed in the
 #' \code{DRILL_JDBC_JAR} environment variable. This is best done via \code{~/.Renviron}
-#' for interactive work. e.g. \code{DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar}
+#' for interactive work. e.g. \code{DRILL_JDBC_JAR=/usr/local/drill/jars/jdbc-driver/drill-jdbc-all-1.10.0.jar}
 #'
 #' @param nodes character vector of nodes. If more than one node, you can either have
 #'              a single string with the comma-separated node:port pairs pre-made or
@@ -26,6 +26,10 @@
 #' con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 #' }
 drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
+
+  if (!requireNamespace("RJDBC")) {
+    stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
+  }
 
   jar_path <- Sys.getenv("DRILL_JDBC_JAR")
   if (!file.exists(jar_path)) {

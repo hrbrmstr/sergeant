@@ -17,14 +17,18 @@
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
-#' drill_con() %>%
+#' drill_conection() %>%
 #'   drill_query("SELECT * FROM cp.`employee.json` limit 5")
 #' }
 drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) {
 
   if (inherits(drill_con, "JDBCConnection")) {
 
-    dplyr::tbl_df(RJDBC::dbGetQuery(drill_con, query) )
+    if (!requireNamespace("RJDBC")) {
+      stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
+    }
+
+    dplyr::tbl_df(RJDBC::dbGetQuery(drill_con, query))
 
   } else {
 

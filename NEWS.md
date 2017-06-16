@@ -1,3 +1,7 @@
+# sergeant 0.5.0
+
+- make rJava & RJDBC optional (WIP)
+
 # sergeant 0.4.0
 
 - Getting ready for new `dplyr` (thx to Edward Visel)

@@ -16,7 +16,7 @@ Show files in a file system schema.
 }
 \examples{
 \dontrun{
-drill_con() \%>\% drill_show_files("dfs.tmp")
+drill_connection() \%>\% drill_show_files("dfs.tmp")
 }
 }
 \references{

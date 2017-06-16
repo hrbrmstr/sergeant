@@ -147,6 +147,7 @@ sql_translate_env.DrillConnection <- function(con) {
       as.date = function(x) build_sql("CAST(", x, " AS DATE)"),
       as.posixct = function(x) build_sql("CAST(", x, " AS TIMESTAMP)"),
       as.logical = function(x) build_sql("CAST(", x, " AS BOOLEAN)"),
+      grepl = function(x, y) build_sql("CONTAINS(", x, ", ", y, ")"),
       cbrt = sql_prefix("CBRT", 1),
       degrees = sql_prefix("DEGREES", 1),
       e = sql_prefix("E", 0),

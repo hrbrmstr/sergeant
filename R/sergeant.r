@@ -188,7 +188,7 @@ drill_options <- function(drill_con, pattern=NULL) {
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
-#' drill_con() %>% drill_stats()
+#' drill_connection() %>% drill_stats()
 #' }
 drill_stats <- function(drill_con) {
   drill_server <- make_server(drill_con)

@@ -17,7 +17,7 @@
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
-#' drill_conection() %>%
+#' drill_connection() %>%
 #'   drill_query("SELECT * FROM cp.`employee.json` limit 5")
 #' }
 drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) {

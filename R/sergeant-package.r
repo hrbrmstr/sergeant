@@ -36,7 +36,7 @@
 #' @importFrom dplyr db_desc src db_data_type db_explain sql_translate_env copy_to
 #' @importFrom dplyr db_query_fields src_tbls sql_escape_ident
 #' @importFrom dbplyr build_sql sql_prefix sql_quote src_sql tbl_sql
-#' @import utils RJDBC
+#' @import utils
 #' @import DBI methods
 #' @importFrom scales comma
 NULL

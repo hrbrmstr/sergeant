@@ -3,12 +3,12 @@
 \docType{class}
 \name{DrillConnection-class}
 \alias{DrillConnection-class}
-\alias{dbSendQuery,DrillConnection,ANY-method}
+\alias{dbSendQuery,DrillConnection-method}
 \alias{dbIsValid,DrillConnection-method}
 \alias{dbListFields,DrillConnection,character-method}
 \title{Drill connection class.}
 \usage{
-\S4method{dbSendQuery}{DrillConnection,ANY}(conn, statement, ...)
+\S4method{dbSendQuery}{DrillConnection}(conn, statement, ...)
 
 \S4method{dbIsValid}{DrillConnection}(dbObj, ...)
 

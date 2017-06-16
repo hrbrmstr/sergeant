@@ -27,6 +27,10 @@
 #' }
 drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
 
+  if (!requireNamespace("rJava")) {
+    stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
+  }
+
   if (!requireNamespace("RJDBC")) {
     stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
   }

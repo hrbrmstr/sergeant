@@ -24,6 +24,10 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
 
   if (inherits(drill_con, "JDBCConnection")) {
 
+    if (!requireNamespace("rJava")) {
+      stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
+    }
+
     if (!requireNamespace("RJDBC")) {
       stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
     }

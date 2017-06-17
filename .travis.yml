@@ -20,10 +20,11 @@ before_install:
 before_script:
   - "sudo service zookeeper-server init"
   - "sudo service zookeeper-server start"
-  - "~/apache-drill-1.10.0/drillbit.sh start"
+  - "~/apache-drill-1.10.0/bin/drillbit.sh start"
+  - "sleep 5"
 
 after_script:
-  - "~/apache-drill-1.10.0/drillbit.sh stop"
+  - "~/apache-drill-1.10.0/bin/drillbit.sh stop"
   - "sudo service zookeeper-server stop"
 
 r:

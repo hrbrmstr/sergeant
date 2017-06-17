@@ -1,18 +1,34 @@
 language: r
-r:
-  - oldrel
-  - release
-  - devel
+
 warnings_are_errors: true
+
 cache: packages
-r_check_revdep: false
+
 sudo: required
 
-env:
- global:
-   - CRAN: http://cran.rstudio.com
+before_install:
+  - "curl -s http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh/archive.key | sudo apt-key add -"
+  - "wget http://archive.cloudera.com/cdh4/one-click-install/precise/amd64/cdh4-repository_1.0_all.deb"
+  - "sudo dpkg -i cdh4-repository_1.0_all.deb"
+  - "sudo apt-get update -qq"
+  - "sudo apt-get install -y zookeeper-server"
+  - "curl -o apache-drill-1.10.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.10.0/apache-drill-1.10.0.tar.gz"
+  - "sudo mkdir -p /usr/local"
+  - "sudo chown 777 /usr/local"
+  - "tar -xvzf apache-drill-1.10.0.tar.gz -C /usr/local"
+
+before_script:
+  - "sudo service zookeeper-server init"
+  - "sudo service zookeeper-server start"
+  - "/usr/local/apache-drill-1.10.0/drillbit.sh start"
+
+after_script:
+  - "/usr/local/apache-drill-1.10.0/drillbit.sh stop"
+  - "sudo service zookeeper-server stop"
+
+r:
+ - release
 
 notifications:
   email:
-    on_success: change
-    on_failure: change
+    - bob@rud.is

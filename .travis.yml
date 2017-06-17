@@ -15,15 +15,15 @@ before_install:
   - "curl -o apache-drill-1.10.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.10.0/apache-drill-1.10.0.tar.gz"
   - "sudo mkdir -p /tmp/local"
   - "sudo chown 777 /tmp/local"
-  - "tar -xvzf apache-drill-1.10.0.tar.gz -C /tmp/local"
+  - "tar -xvzf apache-drill-1.10.0.tar.gz"
 
 before_script:
   - "sudo service zookeeper-server init"
   - "sudo service zookeeper-server start"
-  - "/tmp/local/apache-drill-1.10.0/drillbit.sh start"
+  - "~/apache-drill-1.10.0/drillbit.sh start"
 
 after_script:
-  - "/tmp/local/apache-drill-1.10.0/drillbit.sh stop"
+  - "~/apache-drill-1.10.0/drillbit.sh stop"
   - "sudo service zookeeper-server stop"
 
 r:

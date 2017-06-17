@@ -77,7 +77,7 @@ setClass(
   )
 )
 
-#' Create the drill server connection string
+# Create the drill server connection string
 cmake_server <- function(conn) {
   sprintf("%s://%s:%s", ifelse(conn@ssl[1], "https", "http"), conn@host, conn@port)
 }

@@ -17,7 +17,7 @@
 
 \method{sql_escape_ident}{DrillConnection}(con, x)
 
-\method{copy_to}{src_drill}(dest, df)
+\method{copy_to}{src_drill}(dest, df, name, overwrite, ...)
 
 \method{db_explain}{DrillConnection}(con, sql, ...)
 

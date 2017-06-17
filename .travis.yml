@@ -13,17 +13,17 @@ before_install:
   - "sudo apt-get update -qq"
   - "sudo apt-get install -y zookeeper-server"
   - "curl -o apache-drill-1.10.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.10.0/apache-drill-1.10.0.tar.gz"
-  - "sudo mkdir -p /usr/local"
-  - "sudo chown 777 /usr/local"
-  - "tar -xvzf apache-drill-1.10.0.tar.gz -C /usr/local"
+  - "sudo mkdir -p /tmp/local"
+  - "sudo chown 777 /tmp/local"
+  - "tar -xvzf apache-drill-1.10.0.tar.gz -C /tmp/local"
 
 before_script:
   - "sudo service zookeeper-server init"
   - "sudo service zookeeper-server start"
-  - "/usr/local/apache-drill-1.10.0/drillbit.sh start"
+  - "/tmp/local/apache-drill-1.10.0/drillbit.sh start"
 
 after_script:
-  - "/usr/local/apache-drill-1.10.0/drillbit.sh stop"
+  - "/tmp/local/apache-drill-1.10.0/drillbit.sh stop"
   - "sudo service zookeeper-server stop"
 
 r:

@@ -76,7 +76,7 @@ sql_escape_ident.DrillConnection <- function(con, x) {
 #' @rdname src_tbls
 #' @keywords internal
 #' @export
-copy_to.src_drill <- function(dest, df) {
+copy_to.src_drill <- function(dest, df, name, overwrite, ...) {
   stop("Not implemented.", call.=FALSE)
 }
 

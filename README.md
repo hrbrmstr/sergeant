@@ -4,11 +4,11 @@
 
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
-`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
+`sergeant` : Tools to Transform and Query Data with 'Apache' 'Drill'
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
-I find writing SQL queries to parquet files with Drill on a local 64GB Linux workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
+I find writing SQL queries to parquet files with Drill on a local linux or macOS workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
 
 You can download Drill from <https://drill.apache.org/download/> (use "Direct File Download"). I use `/usr/local/drill` as the install directory. `drill-embedded` is a super-easy way to get started playing with Drill on a single workstation and most of my workflows can get by using Drill this way. If there is sufficient desire for an automated downloader and a way to start the `drill-embedded` server from within R, please file an issue.
 
@@ -73,10 +73,10 @@ devtools::install_github("hrbrmstr/sergeant")
 ``` r
 library(sergeant)
 
-ds <- src_drill("drillex")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
+ds <- src_drill("localhost")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
 ds
 #> src:  DrillConnection
-#> tbls: INFORMATION_SCHEMA, cp.default, dfs.d, dfs.default, dfs.h, dfs.natexp, dfs.p, dfs.root, dfs.tmp, sys
+#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.root, dfs.tmp, sys
 
 db <- tbl(ds, "cp.`employee.json`") 
 
@@ -225,9 +225,9 @@ library(sergeant)
 
 # current verison
 packageVersion("sergeant")
-#> [1] '0.3.2'
+#> [1] '0.5.0'
 
-dc <- drill_connection("drillex") 
+dc <- drill_connection("localhost") 
 
 drill_active(dc)
 #> [1] TRUE
@@ -355,11 +355,11 @@ drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nation
 #> # A tibble: 5 x 5
 #>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY      dir0
 #> *                <chr>     <chr>       <int>       <int>     <chr>
-#> 1  haggle. carefully f   ALGERIA           0           0 nationsSF
-#> 2 al foxes promise sly ARGENTINA           1           1 nationsSF
-#> 3 y alongside of the p    BRAZIL           2           1 nationsSF
-#> 4 eas hang ironic, sil    CANADA           3           1 nationsSF
-#> 5 y above the carefull     EGYPT           4           4 nationsSF
+#> 1  haggle. carefully f   ALGERIA           0           0 nationsMF
+#> 2 al foxes promise sly ARGENTINA           1           1 nationsMF
+#> 3 y alongside of the p    BRAZIL           2           1 nationsMF
+#> 4 eas hang ironic, sil    CANADA           3           1 nationsMF
+#> 5 y above the carefull     EGYPT           4           4 nationsMF
 ```
 
 ### A preview of the built-in support for spatial ops
@@ -460,13 +460,9 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Tue May 30 17:28:25 2017"
+#> [1] "Sat Jun 17 20:11:18 2017"
 
-test_dir("tests/")
-#> testthat results ========================================================================================================
-#> OK: 3 SKIPPED: 0 FAILED: 0
-#> 
-#> DONE ===================================================================================================================
+#test_dir("tests/")
 ```
 
 ### Code of Conduct

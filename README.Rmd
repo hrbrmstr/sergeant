@@ -15,11 +15,11 @@ knitr::opts_chunk$set(
 
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
-`sergeant` : Tools to Transform and Query Data with the 'Apache Drill' 'REST API', JDBC Interface, Plus 'dplyr' and 'DBI' Interfaces
+`sergeant` : Tools to Transform and Query Data with 'Apache' 'Drill'
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
-I find writing SQL queries to parquet files with Drill on a local 64GB Linux workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
+I find writing SQL queries to parquet files with Drill on a local linux or macOS workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
 
 You can download Drill from <https://drill.apache.org/download/> (use "Direct File Download"). I use `/usr/local/drill` as the install directory. `drill-embedded` is a super-easy way to get started playing with Drill on a single workstation and most of my workflows can get by using Drill this way. If there is sufficient desire for an automated downloader and a way to start the `drill-embedded` server from within R, please file an issue.
 
@@ -88,7 +88,7 @@ options(width=120)
 ```{r message=FALSE}
 library(sergeant)
 
-ds <- src_drill("drillex")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
+ds <- src_drill("localhost")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
 ds
 
 db <- tbl(ds, "cp.`employee.json`") 
@@ -167,7 +167,7 @@ library(sergeant)
 # current verison
 packageVersion("sergeant")
 
-dc <- drill_connection("drillex") 
+dc <- drill_connection("localhost") 
 
 drill_active(dc)
 

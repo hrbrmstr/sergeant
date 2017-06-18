@@ -28,6 +28,7 @@ after_script:
   - "sudo service zookeeper-server stop"
 
 r:
+ - oldrel
  - release
 
 notifications:

@@ -8,7 +8,7 @@ Description: 'Apache Drill' is a low-latency distributed query engine designed t
     scaling to petabytes of data. Methods are provided that enable working with 'Apache Drill'
     instances via the 'REST API', the JDBC interface, 'DBI' 'methods' and 'dplyr'/'dbplyr'.
 Depends:
-    R (>= 3.0.0),
+    R (>= 3.1.2),
     DBI,
     dplyr (>= 0.7.0),
     dbplyr
@@ -31,5 +31,3 @@ Suggests:
     rJava,
     testthat
 RoxygenNote: 6.0.1
-Remotes:
-    tidyverse/dbplyr

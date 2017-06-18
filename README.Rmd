@@ -246,7 +246,7 @@ library(testthat)
 
 date()
 
-test_dir("tests/")
+devtools::test()
 ```
 
 ### Code of Conduct

@@ -23,14 +23,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -57,7 +60,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="http://github.com/hrbrmstr/sergeant">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -80,34 +88,43 @@ default printing (which can be helpful if you accidentally execute a query and t
 set is huge).</p>
     
 
-    <pre><span class='fu'>drill_query</span>(<span class='no'>drill_con</span>, <span class='no'>query</span>, <span class='kw'>uplift</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fu'>interactive</span>())</pre>
+    <pre class="usage"><span class='fu'>drill_query</span>(<span class='no'>drill_con</span>, <span class='no'>query</span>, <span class='kw'>uplift</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fu'>interactive</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>drill_con</dt>
-      <dd>drill server connection object setup by <code>drill_connection()</code> or
-<code>drill_jdbc()</code>)</dd>
-      <dt>query</dt>
-      <dd>query to run</dd>
-      <dt>uplift</dt>
-      <dd>automatically run <code>drill_uplift()</code> on the result? (default: <code>TRUE</code>,
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>drill_con</th>
+      <td><p>drill server connection object setup by <code>drill_connection()</code> or
+<code>drill_jdbc()</code>)</p></td>
+    </tr>
+    <tr>
+      <th>query</th>
+      <td><p>query to run</p></td>
+    </tr>
+    <tr>
+      <th>uplift</th>
+      <td><p>automatically run <code>drill_uplift()</code> on the result? (default: <code>TRUE</code>,
 ignored if <code>drill_con</code> is a <code>JDBCConnection</code> created by
-<code>drill_jdbc()</code>)</dd>
-      <dt>.progress</dt>
-      <dd>if <code>TRUE</code> (default if in an interactive session) then ask
-<code>httr::POST</code> to display a progress bar</dd>
-    </dl>
+<code>drill_jdbc()</code>)</p></td>
+    </tr>
+    <tr>
+      <th>.progress</th>
+      <td><p>if <code>TRUE</code> (default if in an interactive session) then ask
+<code>httr::POST</code> to display a progress bar</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href = 'Drill documentation'>https://drill.apache.org/docs/</a></p>
+    <p><a href = 'https://drill.apache.org/docs/'>Drill documentation</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># drill_con() %&gt;%</span>
-<span class='co'>#   drill_query("SELECT * FROM cp.`employee.json` limit 5")</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='fu'><a href='drill_connection.html'>drill_connection</a></span>() <span class='kw'>%&gt;%</span>
+    <span class='fu'>drill_query</span>(<span class='st'>"SELECT * FROM cp.`employee.json` limit 5"</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

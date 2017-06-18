@@ -460,9 +460,14 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Sat Jun 17 20:11:18 2017"
+#> [1] "Sat Jun 17 20:48:00 2017"
 
-#test_dir("tests/")
+devtools::test()
+#> Loading sergeant
+#> Testing sergeant
+#> basic functionality: ..
+#> 
+#> DONE ===================================================================================================================
 ```
 
 ### Code of Conduct

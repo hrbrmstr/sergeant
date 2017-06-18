@@ -23,14 +23,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -57,7 +60,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="http://github.com/hrbrmstr/sergeant">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -76,24 +84,33 @@
     <p>Setup a Drill connection</p>
     
 
-    <pre><span class='fu'>drill_connection</span>(<span class='kw'>host</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_HOST"</span>, <span class='st'>"localhost"</span>),
+    <pre class="usage"><span class='fu'>drill_connection</span>(<span class='kw'>host</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_HOST"</span>, <span class='st'>"localhost"</span>),
   <span class='kw'>port</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_PORT"</span>, <span class='fl'>8047</span>), <span class='kw'>ssl</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>user</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_USER"</span>, <span class='st'>""</span>),
   <span class='kw'>password</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_PASSWORD"</span>, <span class='st'>""</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>host</dt>
-      <dd>Drill host (will pick up the value from <code>DRILL_HOST</code> env var)</dd>
-      <dt>port</dt>
-      <dd>Drill port (will pick up the value from <code>DRILL_PORT</code> env var)</dd>
-      <dt>ssl</dt>
-      <dd>use ssl?</dd>
-      <dt>user, password</dt>
-      <dd>NOT IMPLEMENTED YET credentials for username/password auth.
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>host</th>
+      <td><p>Drill host (will pick up the value from <code>DRILL_HOST</code> env var)</p></td>
+    </tr>
+    <tr>
+      <th>port</th>
+      <td><p>Drill port (will pick up the value from <code>DRILL_PORT</code> env var)</p></td>
+    </tr>
+    <tr>
+      <th>ssl</th>
+      <td><p>use ssl?</p></td>
+    </tr>
+    <tr>
+      <th>user, password</th>
+      <td><p>NOT IMPLEMENTED YET credentials for username/password auth.
 (will pick up the values from <code>DRILL_USER</code>/<code>DRILL_PASSWORD</code>
-env vars)</dd>
-    </dl>
+env vars)</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

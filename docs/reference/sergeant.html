@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tools to Transform and Query Data with the &#39;Apache Drill&#39; &#39;REST API&#39; and &#39;JDBC&#39; Interfaces,
- — sergeant • sergeant</title>
+<title>Tools to Transform and Query Data with 'Apache' 'Drill' — sergeant • sergeant</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -24,14 +23,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -58,7 +60,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="http://github.com/hrbrmstr/sergeant">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -70,8 +77,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tools to Transform and Query Data with the &#39;Apache Drill&#39; &#39;REST API&#39; and &#39;JDBC&#39; Interfaces,
-</h1>
+    <h1>Tools to Transform and Query Data with 'Apache' 'Drill'</h1>
     </div>
 
     
@@ -84,31 +90,27 @@ having to create and manage schemas. Some of the key features are:</p>
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><ul>
-<li>Schema-free JSON document model similar to MongoDB and Elasticsearch
-  </li>
-<li>Industry-standard APIs: ANSI SQL, ODBC/JDBC, RESTful APIs
-  </li>
-<li>Extremely user and developer friendly
-  </li>
-<li>Pluggable architecture enables connectivity to multiple datastores
-</li>
-</ul></p>
+    <ul>
+<li><p>Schema-free JSON document model similar to MongoDB and Elasticsearch</p></li>
+<li><p>Industry-standard APIs: ANSI SQL, ODBC/JDBC, RESTful APIs</p></li>
+<li><p>Extremely user and developer friendly</p></li>
+<li><p>Pluggable architecture enables connectivity to multiple datastores</p></li>
+</ul>
     <p>Drill includes a distributed execution environment, purpose built for large-scale data
-processing. At the core of Drill is the &quot;Drillbit&quot; service which is responsible for
+processing. At the core of Drill is the "Drillbit" service which is responsible for
 accepting requests from the client, processing the queries, and returning results to
 the client.</p>
-    <p>You can install and run a Drillbit service on one node or on many nodes to form a
+<p>You can install and run a Drillbit service on one node or on many nodes to form a
 distributed cluster environment. When a Drillbit runs on each data node in a cluster,
 Drill can maximize data locality during query execution without moving data over the
 network or between nodes. Drill uses ZooKeeper to maintain cluster membership and health
 check information.</p>
-    <p>Methods are provided to work with Drill via the native JDBC &amp; REST APIs along with R
+<p>Methods are provided to work with Drill via the native JDBC &amp; REST APIs along with R
 <code>DBI</code> and <code>dplyr</code> interfaces.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href = 'Drill documentation'>https://drill.apache.org/docs/</a></p>
+    <p><a href = 'https://drill.apache.org/docs/'>Drill documentation</a></p>
     
 
   </div>

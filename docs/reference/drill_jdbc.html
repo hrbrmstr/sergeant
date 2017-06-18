@@ -23,14 +23,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -57,7 +60,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="http://github.com/hrbrmstr/sergeant">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -75,27 +83,36 @@
     
     <p>The DRILL JDBC driver fully-qualified path must be placed in the
 <code>DRILL_JDBC_JAR</code> environment variable. This is best done via <code>~/.Renviron</code>
-for interactive work. e.g. <code>DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar</code></p>
+for interactive work. e.g. <code>DRILL_JDBC_JAR=/usr/local/drill/jars/jdbc-driver/drill-jdbc-all-1.10.0.jar</code></p>
     
 
-    <pre><span class='fu'>drill_jdbc</span>(<span class='kw'>nodes</span> <span class='kw'>=</span> <span class='st'>"localhost:2181"</span>, <span class='kw'>cluster_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>schema</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>drill_jdbc</span>(<span class='kw'>nodes</span> <span class='kw'>=</span> <span class='st'>"localhost:2181"</span>, <span class='kw'>cluster_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>schema</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>use_zk</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>nodes</dt>
-      <dd>character vector of nodes. If more than one node, you can either have
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>nodes</th>
+      <td><p>character vector of nodes. If more than one node, you can either have
 a single string with the comma-separated node:port pairs pre-made or
 pass in a character vector with multiple node:port strings and the
-function will make a comma-separated node string for you.</dd>
-      <dt>cluster_id</dt>
-      <dd>the cluster id from <code>drill-override.conf</code></dd>
-      <dt>schema</dt>
-      <dd>an optional schema name to append to the JDBC connection string</dd>
-      <dt>use_zk</dt>
-      <dd>are you connecting to a ZooKeeper instance (default: <code>TRUE</code>) or
-connecting to an individual DrillBit.</dd>
-    </dl>
+function will make a comma-separated node string for you.</p></td>
+    </tr>
+    <tr>
+      <th>cluster_id</th>
+      <td><p>the cluster id from <code>drill-override.conf</code></p></td>
+    </tr>
+    <tr>
+      <th>schema</th>
+      <td><p>an optional schema name to append to the JDBC connection string</p></td>
+    </tr>
+    <tr>
+      <th>use_zk</th>
+      <td><p>are you connecting to a ZooKeeper instance (default: <code>TRUE</code>) or
+connecting to an individual DrillBit.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -107,16 +124,16 @@ connecting to an individual DrillBit.</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># con &lt;- drill_jdbc("localhost:2181", "main")</span>
-<span class='co'># drill_query(con, "SELECT * FROM cp.`employee.json`")</span>
-<span class='co'># </span>
-<span class='co'># # you can also use the connection with RJDBC calls:</span>
-<span class='co'># dbGetQuery(con, "SELECT * FROM cp.`employee.json`")</span>
-<span class='co'># </span>
-<span class='co'># # for local/embedded mode with default configuration info</span>
-<span class='co'># con &lt;- drill_jdbc("localhost:31010", use_zk=FALSE)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>con</span> <span class='kw'>&lt;-</span> <span class='fu'>drill_jdbc</span>(<span class='st'>"localhost:2181"</span>, <span class='st'>"main"</span>)
+  <span class='fu'><a href='drill_query.html'>drill_query</a></span>(<span class='no'>con</span>, <span class='st'>"SELECT * FROM cp.`employee.json`"</span>)
+
+  <span class='co'># you can also use the connection with RJDBC calls:</span>
+  <span class='fu'>dbGetQuery</span>(<span class='no'>con</span>, <span class='st'>"SELECT * FROM cp.`employee.json`"</span>)
+
+  <span class='co'># for local/embedded mode with default configuration info</span>
+  <span class='no'>con</span> <span class='kw'>&lt;-</span> <span class='fu'>drill_jdbc</span>(<span class='st'>"localhost:31010"</span>, <span class='kw'>use_zk</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

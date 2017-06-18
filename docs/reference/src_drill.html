@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Connect to Drill (using  — src_drill • sergeant</title>
+<title>Connect to Drill (dplyr) — src_drill • sergeant</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -23,14 +23,17 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -57,7 +60,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="http://github.com/hrbrmstr/sergeant">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -69,83 +77,77 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Connect to Drill (using </h1>
+    <h1>Connect to Drill (dplyr)</h1>
     </div>
 
     
     <p>Use <code>src_drill()</code> to connect to a Drill cluster and `tbl()` to connect to a
-fully-qualified &quot;table reference&quot;. The vast majority of Drill SQL functions have
+fully-qualified "table reference". The vast majority of Drill SQL functions have
 also been made available to the <code>dplyr</code> interface. If you have custom Drill
 SQL functions that need to be implemented please file an issue on GitHub.</p>
     
 
-    <pre><span class='fu'>src_drill</span>(<span class='kw'>host</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_HOST"</span>, <span class='st'>"localhost"</span>),
+    <pre class="usage"><span class='fu'>src_drill</span>(<span class='kw'>host</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_HOST"</span>, <span class='st'>"localhost"</span>),
   <span class='kw'>port</span> <span class='kw'>=</span> <span class='fu'>as.integer</span>(<span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_PORT"</span>, <span class='fl'>8047L</span>)), <span class='kw'>ssl</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for src_drill</span>
-<span class='fu'>src_tbls</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for src_drill</span>
-<span class='fu'>src_desc</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for DrillConnection</span>
-<span class='fu'>sql_escape_ident</span>(<span class='no'>con</span>, <span class='no'>x</span>)
-
-<span class='co'># S3 method for src_drill</span>
-<span class='fu'>tbl</span>(<span class='no'>src</span>, <span class='no'>from</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for DrillConnection</span>
-<span class='fu'>db_query_fields</span>(<span class='no'>con</span>, <span class='no'>sql</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for DrillConnection</span>
-<span class='fu'>db_data_type</span>(<span class='no'>con</span>, <span class='no'>fields</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for DrillConnection</span>
-<span class='fu'>sql_translate_env</span>(<span class='no'>con</span>)</pre>
+<span class='fu'>tbl</span>(<span class='no'>src</span>, <span class='no'>from</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>host</dt>
-      <dd>Drill host (will pick up the value from <code>DRILL_HOST</code> env var)</dd>
-      <dt>port</dt>
-      <dd>Drill port (will pick up the value from <code>DRILL_PORT</code> env var)</dd>
-      <dt>ssl</dt>
-      <dd>use ssl?</dd>
-      <dt>src</dt>
-      <dd>A Drill &quot;src&quot; created with <code>src_drill()</code></dd>
-      <dt>from</dt>
-      <dd>A Drill view or table specification</dd>
-      <dt>...</dt>
-      <dd>Extra parameters</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>host</th>
+      <td><p>Drill host (will pick up the value from <code>DRILL_HOST</code> env var)</p></td>
+    </tr>
+    <tr>
+      <th>port</th>
+      <td><p>Drill port (will pick up the value from <code>DRILL_PORT</code> env var)</p></td>
+    </tr>
+    <tr>
+      <th>ssl</th>
+      <td><p>use ssl?</p></td>
+    </tr>
+    <tr>
+      <th>src</th>
+      <td><p>A Drill "src" created with <code>src_drill()</code></p></td>
+    </tr>
+    <tr>
+      <th>from</th>
+      <td><p>A Drill view or table specification</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra parameters</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This is a DBI wrapper around the Drill REST API.</p>
-    <p>TODO username/password support</p>
+    <p>This is a DBI wrapper around the Drill REST API. TODO username/password support</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># db &lt;- src_drill("localhost:31010", use_zk=FALSE)</span>
-<span class='co'># </span>
-<span class='co'># print(db)</span>
-<span class='co'># </span>
-<span class='co'># emp &lt;- tbl(db, "cp.`employee.json`")</span>
-<span class='co'># </span>
-<span class='co'># count(emp, gender, marital_status)</span>
-<span class='co'># </span>
-<span class='co'># # Drill-specific SQL functions are also available</span>
-<span class='co'># select(emp, full_name) %&gt;%</span>
-<span class='co'>#   mutate(        loc = strpos(full_name, "a"),</span>
-<span class='co'>#          first_three = substr(full_name, 1L, 3L),</span>
-<span class='co'>#                  len = length(full_name),</span>
-<span class='co'>#                   rx = regexp_replace(full_name, "[aeiouAEIOU]", "*"),</span>
-<span class='co'>#                  rnd = rand(),</span>
-<span class='co'>#                  pos = position("en", full_name),</span>
-<span class='co'>#                  rpd = rpad(full_name, 20L),</span>
-<span class='co'>#                 rpdw = rpad_with(full_name, 20L, "*"))</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>db</span> <span class='kw'>&lt;-</span> <span class='fu'>src_drill</span>(<span class='st'>"localhost"</span>, <span class='st'>"8047"</span>)
+
+  <span class='fu'>print</span>(<span class='no'>db</span>)
+
+  <span class='no'>emp</span> <span class='kw'>&lt;-</span> <span class='fu'>tbl</span>(<span class='no'>db</span>, <span class='st'>"cp.`employee.json`"</span>)
+
+  <span class='fu'>count</span>(<span class='no'>emp</span>, <span class='no'>gender</span>, <span class='no'>marital_status</span>)
+
+  <span class='co'># Drill-specific SQL functions are also available</span>
+  <span class='fu'>select</span>(<span class='no'>emp</span>, <span class='no'>full_name</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>mutate</span>(        <span class='kw'>loc</span> <span class='kw'>=</span> <span class='fu'>strpos</span>(<span class='no'>full_name</span>, <span class='st'>"a"</span>),
+           <span class='kw'>first_three</span> <span class='kw'>=</span> <span class='fu'>substr</span>(<span class='no'>full_name</span>, <span class='fl'>1L</span>, <span class='fl'>3L</span>),
+                   <span class='kw'>len</span> <span class='kw'>=</span> <span class='fu'>length</span>(<span class='no'>full_name</span>),
+                    <span class='kw'>rx</span> <span class='kw'>=</span> <span class='fu'>regexp_replace</span>(<span class='no'>full_name</span>, <span class='st'>"[aeiouAEIOU]"</span>, <span class='st'>"*"</span>),
+                   <span class='kw'>rnd</span> <span class='kw'>=</span> <span class='fu'>rand</span>(),
+                   <span class='kw'>pos</span> <span class='kw'>=</span> <span class='fu'>position</span>(<span class='st'>"en"</span>, <span class='no'>full_name</span>),
+                   <span class='kw'>rpd</span> <span class='kw'>=</span> <span class='fu'>rpad</span>(<span class='no'>full_name</span>, <span class='fl'>20L</span>),
+                  <span class='kw'>rpdw</span> <span class='kw'>=</span> <span class='fu'>rpad_with</span>(<span class='no'>full_name</span>, <span class='fl'>20L</span>, <span class='st'>"*"</span>))
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

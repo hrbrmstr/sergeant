@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Drill results class. — DrillResult-class • sergeant</title>
+<title>src tbls — src_tbls.src_drill • sergeant</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,38 +77,43 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Drill results class.</h1>
+    <h1>src tbls</h1>
     </div>
 
     
-    <p>Drill results class.</p>
-<p>Clear</p>
-<p>Retrieve records from Drill query</p>
-<p>Completed</p>
-<p>Statement</p>
+    <p>"SHOW DATABASES"</p>
     
 
-    <pre class="usage"><span class='co'># S4 method for DrillResult</span>
-<span class='fu'>dbClearResult</span>(<span class='no'>res</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='co'># S3 method for src_drill</span>
+<span class='fu'>src_tbls</span>(<span class='no'>x</span>)
 
-<span class='co'># S4 method for DrillResult</span>
-<span class='fu'>dbFetch</span>(<span class='no'>res</span>, <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for src_drill</span>
+<span class='fu'>db_desc</span>(<span class='no'>x</span>)
 
-<span class='co'># S4 method for DrillResult</span>
-<span class='fu'>dbHasCompleted</span>(<span class='no'>res</span>, <span class='no'>...</span>)
+<span class='co'># S3 method for DrillConnection</span>
+<span class='fu'>sql_escape_ident</span>(<span class='no'>con</span>, <span class='no'>x</span>)
 
-<span class='co'># S4 method for DrillResult,missing</span>
-<span class='fu'>dbListFields</span>(<span class='no'>conn</span>, <span class='no'>name</span>)
+<span class='co'># S3 method for src_drill</span>
+<span class='fu'>copy_to</span>(<span class='no'>dest</span>, <span class='no'>df</span>, <span class='no'>name</span>, <span class='no'>overwrite</span>, <span class='no'>...</span>)
 
-<span class='co'># S4 method for DrillResult</span>
-<span class='fu'>dbGetStatement</span>(<span class='no'>res</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for DrillConnection</span>
+<span class='fu'>db_explain</span>(<span class='no'>con</span>, <span class='no'>sql</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for DrillConnection</span>
+<span class='fu'>db_query_fields</span>(<span class='no'>con</span>, <span class='no'>sql</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for DrillConnection</span>
+<span class='fu'>db_data_type</span>(<span class='no'>con</span>, <span class='no'>fields</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for DrillConnection</span>
+<span class='fu'>sql_translate_env</span>(<span class='no'>con</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.progress</th>
-      <td><p>show data transfer progress?</p></td>
+      <th>x</th>
+      <td><p>x</p></td>
     </tr>
     </table>
     

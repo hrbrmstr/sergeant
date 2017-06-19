@@ -83,8 +83,12 @@ cmake_server <- function(conn) {
 }
 
 #' Send a query to Drill
+#'
 #' @rdname DrillConnection-class
-#' @export
+#' @param conn connection
+#' @param statement SQL statement
+#' @param ... passed on to methods
+#' @aliases dbSendQuery,DrillConnection,character-method
 setMethod(
   "dbSendQuery",
   "DrillConnection",

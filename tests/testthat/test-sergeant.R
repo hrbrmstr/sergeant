@@ -52,16 +52,16 @@ test_that("we can do something", {
 
 })
 
-context("jdbc")
-test_that("we can do something", {
-
- testthat::skip_on_cran()
-
-  dc <- drill_jdbc("localhost:31010", use_zk=FALSE)
-
-  expect_that(dc, is_a("JDBCConnection"))
-
-  expect_that(drill_query(dc, "SELECT * FROM cp.`employee.json`"),
-              is_a("tbl"))
-
-})
+# context("jdbc")
+# test_that("we can do something", {
+#
+#  testthat::skip_on_cran()
+#
+#   dc <- drill_jdbc("localhost:31010", use_zk=FALSE)
+#
+#   expect_that(dc, is_a("JDBCConnection"))
+#
+#   expect_that(drill_query(dc, "SELECT * FROM cp.`employee.json`"),
+#               is_a("tbl"))
+#
+# })

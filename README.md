@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant)
+[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) <!-- [![Coverage Status](https://img.shields.io/codecov/c/github/hrbrmstr/sergeant/master.svg)](https://codecov.io/github/hrbrmstr/sergeant?branch=master) -->
 
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 
@@ -460,12 +460,14 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Sat Jun 17 20:48:00 2017"
+#> [1] "Sun Jun 18 23:52:57 2017"
 
 devtools::test()
 #> Loading sergeant
 #> Testing sergeant
-#> basic functionality: ..
+#> dplyr: ....
+#> rest: ................
+#> jdbc: ..
 #> 
 #> DONE ===================================================================================================================
 ```

@@ -11,7 +11,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant)
+[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) 
+<!-- [![Coverage Status](https://img.shields.io/codecov/c/github/hrbrmstr/sergeant/master.svg)](https://codecov.io/github/hrbrmstr/sergeant?branch=master) -->
 
 <img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
 

@@ -24,13 +24,8 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
 
   if (inherits(drill_con, "JDBCConnection")) {
 
-    if (!requireNamespace("rJava")) {
-      stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
-    }
-
-    if (!requireNamespace("RJDBC")) {
-      stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
-    }
+    try_require("rJava")
+    try_require("RJDBC")
 
     dplyr::tbl_df(RJDBC::dbGetQuery(drill_con, query))
 
@@ -42,13 +37,11 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
       res <- httr::POST(sprintf("%s/query.json", drill_server),
                         encode="json",
                         progress(),
-                        body=list(queryType="SQL",
-                                  query=query))
+                        body=list(queryType="SQL", query=query))
     } else {
       res <- httr::POST(sprintf("%s/query.json", drill_server),
                         encode="json",
-                        body=list(queryType="SQL",
-                                  query=query))
+                        body=list(queryType="SQL", query=query))
     }
 
     out <- jsonlite::fromJSON(httr::content(res, as="text", encoding="UTF-8"), flatten=TRUE)

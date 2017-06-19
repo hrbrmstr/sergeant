@@ -27,13 +27,8 @@
 #' }
 drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use_zk=TRUE) {
 
-  if (!requireNamespace("rJava")) {
-    stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
-  }
-
-  if (!requireNamespace("RJDBC")) {
-    stop("RJDBC & rJava are required to use the Drill JDBC connectors", .call=FALSE)
-  }
+  try_require("rJava")
+  try_require("RJDBC")
 
   jar_path <- Sys.getenv("DRILL_JDBC_JAR")
   if (!file.exists(jar_path)) {
@@ -41,7 +36,7 @@ drill_jdbc <- function(nodes="localhost:2181", cluster_id=NULL, schema=NULL, use
   }
 
   drill_jdbc_drv <- RJDBC::JDBC(driverClass="org.apache.drill.jdbc.Driver",
-                                classPath=jar_path, identifier.quote=' ')
+                                classPath=jar_path, identifier.quote='`')
 
   conn_type <- "drillbit"
   if (use_zk) conn_type <- "zk"

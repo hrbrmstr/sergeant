@@ -4,7 +4,7 @@
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 drill_show_schemas <- function(drill_con) {
-  drill_query(drill_con, "SHOW SCHEMAS")$rows$SCHEMA_NAME
+  drill_query(drill_con, "SHOW SCHEMAS")
 }
 
 #' Change to a particular schema.
@@ -17,7 +17,7 @@ drill_show_schemas <- function(drill_con) {
 drill_use <- function(drill_con, schema_name) {
   query <- sprintf("USE `%s`", schema_name)
   out <- drill_query(drill_con, query)
-  if (!("errorMessage" %in% names(out))) message(out$rows$summary[1])
+  if (!("errorMessage" %in% names(out))) message(out)
   invisible(out)
 }
 

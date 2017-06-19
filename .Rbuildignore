@@ -7,3 +7,4 @@
 ^sergeant.png$
 ^inst/jars$
 ^docs$
+^codecov\.yml$

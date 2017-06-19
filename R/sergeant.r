@@ -129,10 +129,10 @@ drill_profile <- function(drill_con, query_id) {
 #' @export
 drill_cancel <- function(drill_con, query_id) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/profiles/cancel%s", drill_server, query_id))
+  res <- httr::GET(sprintf("%s/profiles/cancel/%s", drill_server, query_id))
   httr::stop_for_status(res)
-  cnt <- httr::content(res, as="text", encoding="UTF-8")
-  jsonlite::fromJSON(cnt)
+  message(httr::content(res, as="text", encoding="UTF-8"))
+  invisible(TRUE)
 }
 
 #' Get the list of storage plugin names and configurations
@@ -192,7 +192,7 @@ drill_options <- function(drill_con, pattern=NULL) {
 #' }
 drill_stats <- function(drill_con) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/stats.json", drill_server))
+  res <- httr::GET(sprintf("%s/cluster.json", drill_server))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)

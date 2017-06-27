@@ -22,6 +22,9 @@
 #' }
 drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) {
 
+  query <- trimws(query)
+  query <- gsub(";$", "", query)
+
   if (inherits(drill_con, "JDBCConnection")) {
 
     try_require("rJava")

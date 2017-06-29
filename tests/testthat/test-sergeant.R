@@ -1,13 +1,11 @@
 context("dplyr")
-test_that("we can do something", {
+test_that("Core dbplyr ops work", {
 
  testthat::skip_on_cran()
 
   db <- src_drill("localhost")
 
   expect_that(db, is_a("src_drill"))
-
-  expect_that(sql_translate_env(db$con), is_a("sql_variant"))
 
   test_dplyr <- tbl(db, "cp.`employee.json`")
 
@@ -17,7 +15,7 @@ test_that("we can do something", {
 })
 
 context("rest")
-test_that("we can do something", {
+test_that("REST API works", {
 
  testthat::skip_on_cran()
 

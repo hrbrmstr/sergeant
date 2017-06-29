@@ -5,15 +5,16 @@
 \title{Drill expressions / custom functions \code{dplyr} translation:}
 \description{
 \itemize{
-\item \code{as.character(x)} : \code{CAST( x AS CHARACTER)}
-\item \code{as.date(x)} : \code{CAST( x AS DATE)}
+\item \code{as.character(x)} : \code{CAST( x AS CHARACTER )}
+\item \code{as.date(x)} : \code{CAST( x AS DATE )}
 \item \code{as.logical(x)} : \code{CAST( x AS BOOLEAN)}
-\item \code{as.numeric(x)} : \code{CAST( x AS DOUBLE)}
-\item \code{as.posixct(x)} : \code{CAST( x AS TIMESTAMP)}
+\item \code{as.numeric(x)} : \code{CAST( x AS DOUBLE )}
+\item \code{as.posixct(x)} : \code{CAST( x AS TIMESTAMP )}
 \item \code{binary_string(x)} : \code{BINARY_STRING( x )}
 \item \code{cbrt(x)} : \code{CBRT( x )}
 \item \code{char_to_timestamp(x, y)} : \code{TO_TIMESTAMP( x, y )}
-\item \code{contains(x, y)} : \code{CONTAINS x, y )}
+\item \code{grepl(y, x)} : \code{CONTAINS( x, y )}
+\item \code{contains(x, y)} : \code{CONTAINS( x, y )}
 \item \code{convert_to(x, y)} : \code{CONVERT_TO( x, y )}
 \item \code{convert_from(x, y)} : \code{CONVERT_FROM( x, y )}
 \item \code{degrees(x)} : \code{DEGREES( x )}
@@ -28,33 +29,30 @@
 \item \code{to_date(x, y)} : \code{TO_DATE( x, y )}
 \item \code{to_number(x, y)} : \code{TO_NUMBER( x, y )}
 \item \code{trunc(x)} : \code{TRUNC( x )}
-}
-}
-\details{
-I'll get these converted into ^^ format:
-\itemize{
-\item \code{double_to_timestamp} = \code{sql_prefix("TO_TIMESTAMP", 1),}
-\item \code{char_length} = \code{sql_prefix("CHAR_LENGTH", 1),}
-\item \code{flatten} = \code{sql_prefix("FLATTEN", 1),}
-\item \code{kvgen} = \code{sql_prefix("KVGEN", 1),}
-\item \code{repeated_count} = \code{sql_prefix("REPEATED_COUNT", 1),}
-\item \code{repeated_contains} = \code{sql_prefix("REPEATED_CONTAINS", 1),}
-\item \code{ilike} = \code{sql_prefix("ILIKE", 2),}
-\item \code{init_cap} = \code{sql_prefix("INIT_CAP", 1),}
-\item \code{length} = \code{sql_prefix("LENGTH", 1),}
-\item \code{lower} = \code{sql_prefix("LOWER", 1),}
-\item \code{ltrim} = \code{sql_prefix("LTRIM", 2),}
-\item \code{nullif} = \code{sql_prefix("NULLIF", 2),}
-\item \code{position} = \code{function(x, y) build_sql("POSITION(", x, " IN ", y, ")"),}
-\item \code{regexp_replace} = \code{sql_prefix("REGEXP_REPLACE", 3),}
-\item \code{rtrim} = \code{sql_prefix("RTRIM", 2),}
-\item \code{rpad} = \code{sql_prefix("RPAD", 2),}
-\item \code{rpad_with} = \code{sql_prefix("RPAD", 3),}
-\item \code{lpad} = \code{sql_prefix("LPAD", 2),}
-\item \code{lpad_with} = \code{sql_prefix("LPAD", 3),}
-\item \code{strpos} = \code{sql_prefix("STRPOS", 2),}
-\item \code{substr} = \code{sql_prefix("SUBSTR", 3),}
-\item \code{trim} = \code{function(x, y, z) build_sql("TRIM(", x, " ", y, " FROM ", z, ")"),}
-\item \code{upper} = \code{sql_prefix("UPPER", 1)}
+\item \code{double_to_timestamp(x)} = \code{TO_TIMESTAMP( x )}
+\item \code{char_length(x)} = \code{CHAR_LENGTH( x )}
+\item \code{flatten(x)} = \code{FLATTEN( x )}
+\item \code{kvgen(x)} = \code{KVGEN( x )}
+\item \code{repeated_count(x)} = \code{REPEATED_COUNT( x )}
+\item \code{repeated_contains(x)} = \code{REPEATED_CONTAINS( x )}
+\item \code{ilike(x, y)} = \code{ILIKE( x, y )}
+\item \code{init_cap(x)} = \code{INIT_CAP( x )}
+\item \code{length(x)} = \code{LENGTH( x )}
+\item \code{lower(x)} = \code{LOWER( x )}
+\item \code{tolower(x)} = \code{LOWER( x )}
+\item \code{ltrim(x, y)} = \code{LTRIM( x, y )}
+\item \code{nullif(x, y} = \code{NULLIF( x, y )}
+\item \code{position(x, y)} = \code{POSITION( x IN y )}
+\item \code{gsub(x, y, z)} = \code{REGEXP_REPLACE( z, x, y )}
+\item \code{regexp_replace(x, y, z)} = \code{REGEXP_REPLACE( x, y, z )}
+\item \code{rtrim(x, y)} = \code{RTRIM( x, y )}
+\item \code{rpad(x, y)} = \code{RPAD( x, y )}
+\item \code{rpad_with(x, y, z)} = \code{RPAD( x, y, z )}
+\item \code{lpad(x, y)} = \code{LPAD( x, y )}
+\item \code{lpad_with(x, y, z)} = \code{LPAD( x, y, z )}
+\item \code{strpos(x, y)} = \code{STRPOS( x, y )}
+\item \code{substr(x, y, z)} = \code{SUBSTR( x, y, z )}
+\item \code{upper(x)} = \code{UPPER(1)}
+\item \code{toupper(x)} = \code{UPPER(1)}
 }
 }

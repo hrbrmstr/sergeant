@@ -64,6 +64,18 @@ setMethod(
   }
 )
 
+#' Disconnect from Drill
+#'
+#' @keywords internal
+#' @export
+setMethod(
+  "dbDisconnect",
+  "DrillConnection", function(conn, ...) {
+    TRUE
+  },
+  valueClass = "logical"
+)
+
 #' Drill results class.
 #'
 #' @keywords internal

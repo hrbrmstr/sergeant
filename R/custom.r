@@ -1,14 +1,15 @@
 #' Drill expressions / custom functions `dplyr` translation:
 #'
-#' - `as.character(x)` : `CAST( x AS CHARACTER)`
-#' - `as.date(x)` : `CAST( x AS DATE)`
-#' - `as.logical(x)` : `CAST( x AS BOOLEAN)`
-#' - `as.numeric(x)` : `CAST( x AS DOUBLE)`
-#' - `as.posixct(x)` : `CAST( x AS TIMESTAMP)`
+#' - `as.character(x)` : `CAST( x AS CHARACTER )`
+#' - `as.date(x)` : `CAST( x AS DATE )`
+#' - `as.logical(x)` : `CAST( x AS BOOLEAN) `
+#' - `as.numeric(x)` : `CAST( x AS DOUBLE )`
+#' - `as.posixct(x)` : `CAST( x AS TIMESTAMP )`
 #' - `binary_string(x)` : `BINARY_STRING( x )`
 #' - `cbrt(x)` : `CBRT( x )`
 #' - `char_to_timestamp(x, y)` : `TO_TIMESTAMP( x, y )`
-#' - `contains(x, y)` : `CONTAINS  x, y )`
+#' - `grepl(y, x)` : `CONTAINS( x, y )`
+#' - `contains(x, y)` : `CONTAINS( x, y )`
 #' - `convert_to(x, y)` : `CONVERT_TO( x, y )`
 #' - `convert_from(x, y)` : `CONVERT_FROM( x, y )`
 #' - `degrees(x)` : `DEGREES( x )`
@@ -23,32 +24,31 @@
 #' - `to_date(x, y)` : `TO_DATE( x, y )`
 #' - `to_number(x, y)` : `TO_NUMBER( x, y )`
 #' - `trunc(x)` : `TRUNC( x )`
-#'
-#' I'll get these converted into ^^ format:
-#'
-#' - `double_to_timestamp` = `sql_prefix("TO_TIMESTAMP", 1),`
-#' - `char_length` = `sql_prefix("CHAR_LENGTH", 1),`
-#' - `flatten` = `sql_prefix("FLATTEN", 1),`
-#' - `kvgen` = `sql_prefix("KVGEN", 1),`
-#' - `repeated_count` = `sql_prefix("REPEATED_COUNT", 1),`
-#' - `repeated_contains` = `sql_prefix("REPEATED_CONTAINS", 1),`
-#' - `ilike` = `sql_prefix("ILIKE", 2),`
-#' - `init_cap` = `sql_prefix("INIT_CAP", 1),`
-#' - `length` = `sql_prefix("LENGTH", 1),`
-#' - `lower` = `sql_prefix("LOWER", 1),`
-#' - `ltrim` = `sql_prefix("LTRIM", 2),`
-#' - `nullif` = `sql_prefix("NULLIF", 2),`
-#' - `position` = `function(x, y) build_sql("POSITION(", x, " IN ", y, ")"),`
-#' - `regexp_replace` = `sql_prefix("REGEXP_REPLACE", 3),`
-#' - `rtrim` = `sql_prefix("RTRIM", 2),`
-#' - `rpad` = `sql_prefix("RPAD", 2),`
-#' - `rpad_with` = `sql_prefix("RPAD", 3),`
-#' - `lpad` = `sql_prefix("LPAD", 2),`
-#' - `lpad_with` = `sql_prefix("LPAD", 3),`
-#' - `strpos` = `sql_prefix("STRPOS", 2),`
-#' - `substr` = `sql_prefix("SUBSTR", 3),`
-#' - `trim` = `function(x, y, z) build_sql("TRIM(", x, " ", y, " FROM ", z, ")"),`
-#' - `upper` = `sql_prefix("UPPER", 1)`
+#' - `double_to_timestamp(x)` = `TO_TIMESTAMP( x )`
+#' - `char_length(x)` = `CHAR_LENGTH( x )`
+#' - `flatten(x)` = `FLATTEN( x )`
+#' - `kvgen(x)` = `KVGEN( x )`
+#' - `repeated_count(x)` = `REPEATED_COUNT( x )`
+#' - `repeated_contains(x)` = `REPEATED_CONTAINS( x )`
+#' - `ilike(x, y)` = `ILIKE( x, y )`
+#' - `init_cap(x)` = `INIT_CAP( x )`
+#' - `length(x)` = `LENGTH( x )`
+#' - `lower(x)` = `LOWER( x )`
+#' - `tolower(x)` = `LOWER( x )`
+#' - `ltrim(x, y)` = `LTRIM( x, y )`
+#' - `nullif(x, y` = `NULLIF( x, y )`
+#' - `position(x, y)` = `POSITION( x IN  y )`
+#' - `gsub(x, y, z)` = `REGEXP_REPLACE( z, x, y )`
+#' - `regexp_replace(x, y, z)` = `REGEXP_REPLACE( x, y, z )`
+#' - `rtrim(x, y)` = `RTRIM( x, y )`
+#' - `rpad(x, y)` = `RPAD( x, y )`
+#' - `rpad_with(x, y, z)` = `RPAD( x, y, z )`
+#' - `lpad(x, y)` = `LPAD( x, y )`
+#' - `lpad_with(x, y, z)` = `LPAD( x, y, z )`
+#' - `strpos(x, y)` = `STRPOS( x, y )`
+#' - `substr(x, y, z)` = `SUBSTR( x, y, z )`
+#' - `upper(x)` = `UPPER(1)`
+#' - `toupper(x)` = `UPPER(1)`
 #'
 #' @md
 #' @name drill_custom_functions

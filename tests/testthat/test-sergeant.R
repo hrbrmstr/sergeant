@@ -1,9 +1,11 @@
+test_host <- Sys.getenv("DRILL_TEST_HOST", "localhost")
+
 context("dplyr")
 test_that("Core dbplyr ops work", {
 
  testthat::skip_on_cran()
 
-  db <- src_drill("localhost")
+  db <- src_drill(test_host)
 
   expect_that(db, is_a("src_drill"))
 
@@ -19,7 +21,7 @@ test_that("REST API works", {
 
  testthat::skip_on_cran()
 
-  dc <- drill_connection("localhost")
+  dc <- drill_connection(test_host)
   expect_that(drill_active(dc), equals(TRUE))
 
   test_rest <- drill_query(dc, "SELECT * FROM cp.`employee.json` limit 10")

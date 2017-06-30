@@ -1,4 +1,20 @@
-#' Drill expressions / custom functions `dplyr` translation:
+#' Drill expressions / custom functions `dplyr` translations
+#'
+#' One benefit of `dplyr` is that it provide a nice DSL over datasbase ops but that
+#' means there needs to be knowlege of functions supported by the host database and
+#' then a translation layer so they can be used in R.
+#'
+#' Similarly, there are functions like `grepl()` in R that don't directly exist in
+#' databases. Yet, one can create a translation for `grepl()` that maps to a
+#' [Drill custom function](https://github.com/parisni/drill-simple-contains) so you
+#' don't have to think differently or rewrite your pipes when switching from core
+#' tidyverse ops and database ops.
+#'
+#' Many functions translate on their own, but it's handy to provide explicit ones,
+#' especially when you want to use parameters in a different order.
+#'
+#' If you want a particular custom function mapped, file a PR or issue request in
+#' the link found in the `DESCRIPTION` file.
 #'
 #' - `as.character(x)` : `CAST( x AS CHARACTER )`
 #' - `as.date(x)` : `CAST( x AS DATE )`
@@ -49,6 +65,12 @@
 #' - `substr(x, y, z)` = `SUBSTR( x, y, z )`
 #' - `upper(x)` = `UPPER(1)`
 #' - `toupper(x)` = `UPPER(1)`
+#'
+#' You can get a compact list of these with:
+#'
+#' `sql_translate_env(src_drill()$con)`
+#'
+#' as well.
 #'
 #' @md
 #' @name drill_custom_functions

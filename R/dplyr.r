@@ -215,7 +215,8 @@ sql_translate_env.DrillConnection <- function(con) {
     ),
 
     window = dbplyr::sql_translator(.parent = dbplyr::base_win,
-      n = function() { dbplyr::win_over(dbplyr::sql("count(*)"), partition = dbplyr::win_current_group()) },
+      n = function() { dbplyr::win_over(dbplyr::sql("count(*)"),
+                                        partition = dbplyr::win_current_group()) },
       cor = dbplyr::win_recycled("corr"),
       cov = dbplyr::win_recycled("covar_samp"),
       sd =  dbplyr::win_recycled("stddev_samp"),

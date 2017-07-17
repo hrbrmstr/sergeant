@@ -34,13 +34,23 @@ This is a DBI wrapper around the Drill REST API. TODO username/password support
 }
 \examples{
 \dontrun{
-db <- src_drill("localhost", "8047")
+db <- src_drill("localhost", 8047L)
 
 print(db)
+## src:  DrillConnection
+## tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.root, dfs.tmp, sys
 
 emp <- tbl(db, "cp.`employee.json`")
 
 count(emp, gender, marital_status)
+## # Source:   lazy query [?? x 3]
+## # Database: DrillConnection
+## # Groups:   gender
+##   marital_status gender     n
+##            <chr>  <chr> <int>
+## 1              S      F   297
+## 2              M      M   278
+## 3              S      M   276
 
 # Drill-specific SQL functions are also available
 select(emp, full_name) \%>\%
@@ -52,5 +62,20 @@ select(emp, full_name) \%>\%
                  pos = position("en", full_name),
                  rpd = rpad(full_name, 20L),
                 rpdw = rpad_with(full_name, 20L, "*"))
+## # Source:   lazy query [?? x 9]
+## # Database: DrillConnection
+##      loc         full_name   len                 rpdw   pos                rx
+##    <int>             <chr> <int>                <chr> <int>             <chr>
+##  1     0      Sheri Nowmer    12 Sheri Nowmer********     0      Sh*r* N*wm*r
+##  2     0   Derrick Whelply    15 Derrick Whelply*****     0   D*rr*ck Wh*lply
+##  3     5    Michael Spence    14 Michael Spence******    11    M*ch**l Sp*nc*
+##  4     2    Maya Gutierrez    14 Maya Gutierrez******     0    M*y* G*t**rr*z
+##  5     7   Roberta Damstra    15 Roberta Damstra*****     0   R*b*rt* D*mstr*
+##  6     7  Rebecca Kanagaki    16 Rebecca Kanagaki****     0  R*b*cc* K*n*g*k*
+##  7     0       Kim Brunner    11 Kim Brunner*********     0       K*m Br*nn*r
+##  8     6   Brenda Blumberg    15 Brenda Blumberg*****     3   Br*nd* Bl*mb*rg
+##  9     2      Darren Stanz    12 Darren Stanz********     5      D*rr*n St*nz
+## 10     4 Jonathan Murraiin    17 Jonathan Murraiin***     0 J*n*th*n M*rr***n
+## # ... with more rows, and 3 more variables: rpd <chr>, rnd <dbl>, first_three <chr>
 }
 }

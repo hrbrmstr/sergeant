@@ -8,7 +8,7 @@
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
-I find writing SQL queries to parquet files with Drill on a local linux or macOS workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
+I find writing SQL queries to parquet files with Drill on a local linux or macOS workstation to be more performant than doing the data ingestion work with R (especially for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
 
 You can download Drill from <https://drill.apache.org/download/> (use "Direct File Download"). I use `/usr/local/drill` as the install directory. `drill-embedded` is a super-easy way to get started playing with Drill on a single workstation and most of my workflows can get by using Drill this way. If there is sufficient desire for an automated downloader and a way to start the `drill-embedded` server from within R, please file an issue.
 
@@ -24,13 +24,13 @@ The following functions are implemented:
 
 **`DBI`**
 
--   As complete of an R `DBI` driver has been implemented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
--   This also means that SQL functions unique to Drill have also been "implemented" (i.e. made accessible to the `dplyr` interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub.
+-   A "just enough" feature complete R `DBI` driver has been implemented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
+-   This also means that SQL functions unique to Drill have also been "implemented" (i.e. made accessible to the `dplyr` interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub. Many should work without it, but some may require a custom interface.
 
 **`RJDBC`**
 
 -   `drill_jdbc`: Connect to Drill using JDBC, enabling use of said idioms. See `RJDBC` for more info.
--   NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar`
+-   NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.10.0.jar`
 
 **`dplyr`**:
 
@@ -72,12 +72,17 @@ devtools::install_github("hrbrmstr/sergeant")
 
 ``` r
 library(sergeant)
+```
 
+``` r
 ds <- src_drill("localhost")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
 ds
-#> src:  DrillConnection
-#> tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.root, dfs.tmp, sys
+```
 
+    #> src:  DrillConnection
+    #> tbls: INFORMATION_SCHEMA, cp.default, dfs.d, dfs.default, dfs.h, dfs.natexp, dfs.p, dfs.root, dfs.tmp, sys
+
+``` r
 db <- tbl(ds, "cp.`employee.json`") 
 
 # without `collect()`:
@@ -225,10 +230,14 @@ library(sergeant)
 
 # current verison
 packageVersion("sergeant")
-#> [1] '0.5.0'
+#> [1] '0.5.2'
+```
 
+``` r
 dc <- drill_connection("localhost") 
+```
 
+``` r
 drill_active(dc)
 #> [1] TRUE
 
@@ -355,11 +364,11 @@ drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nation
 #> # A tibble: 5 x 5
 #>              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY      dir0
 #> *                <chr>     <chr>       <int>       <int>     <chr>
-#> 1  haggle. carefully f   ALGERIA           0           0 nationsMF
-#> 2 al foxes promise sly ARGENTINA           1           1 nationsMF
-#> 3 y alongside of the p    BRAZIL           2           1 nationsMF
-#> 4 eas hang ironic, sil    CANADA           3           1 nationsMF
-#> 5 y above the carefull     EGYPT           4           4 nationsMF
+#> 1  haggle. carefully f   ALGERIA           0           0 nationsSF
+#> 2 al foxes promise sly ARGENTINA           1           1 nationsSF
+#> 3 y alongside of the p    BRAZIL           2           1 nationsSF
+#> 4 eas hang ironic, sil    CANADA           3           1 nationsSF
+#> 5 y above the carefull     EGYPT           4           4 nationsSF
 ```
 
 ### A preview of the built-in support for spatial ops
@@ -408,9 +417,15 @@ library(RJDBC)
 # con <- drill_jdbc("drill-node:2181", "drillbits1") 
 
 # Use the following if running drill-embedded
-con <- drill_jdbc("localhost:31010", use_zk=FALSE)
-#> Using [jdbc:drill:drillbit=localhost:31010]...
+```
 
+``` r
+con <- drill_jdbc("localhost:31010", use_zk=FALSE)
+```
+
+    #> Using [jdbc:drill:drillbit=bigd:31010]...
+
+``` r
 drill_query(con, "SELECT * FROM cp.`employee.json`")
 #> # A tibble: 1,155 x 16
 #>    employee_id         full_name first_name last_name position_id         position_title store_id department_id
@@ -460,12 +475,12 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Jun 19 00:15:05 2017"
+#> [1] "Mon Jul 17 12:23:17 2017"
 
 devtools::test()
 #> Loading sergeant
 #> Testing sergeant
-#> dplyr: ....
+#> dplyr: ...
 #> rest: ................
 #> 
 #> DONE ===================================================================================================================

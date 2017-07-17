@@ -89,9 +89,19 @@ options(width=120)
 ```{r message=FALSE}
 library(sergeant)
 
+```
+
+```{r echo=TRUE, eval=FALSE}
 ds <- src_drill("localhost")  # use localhost if running standalone on same system otherwise the host or IP of your Drill server
 ds
+```
 
+```{r echo=FALSE, eval=TRUE}
+ds <- src_drill("bigd")
+ds
+```
+
+```{r message=FALSE}
 db <- tbl(ds, "cp.`employee.json`") 
 
 # without `collect()`:
@@ -162,14 +172,20 @@ mutate(db, position_title=tolower(position_title)) %>%
 
 ### Usage
 
-```{r}
+```{r message=FALSE}
 library(sergeant)
 
 # current verison
 packageVersion("sergeant")
 
+```
+```{r eval=FALSE}
 dc <- drill_connection("localhost") 
-
+```
+```{r echo=FALSE}
+dc <- drill_connection("bigd") 
+```
+```{r message=FALSE}
 drill_active(dc)
 
 drill_version(dc)
@@ -230,8 +246,14 @@ library(RJDBC)
 # con <- drill_jdbc("drill-node:2181", "drillbits1") 
 
 # Use the following if running drill-embedded
+```
+```{r eval=FALSE}
 con <- drill_jdbc("localhost:31010", use_zk=FALSE)
-
+```
+```{r echo=FALSE}
+con <- drill_jdbc("bigd:31010", use_zk=FALSE)
+```
+```{r message=FALSE}
 drill_query(con, "SELECT * FROM cp.`employee.json`")
 
 # but it can work via JDBC function calls, too

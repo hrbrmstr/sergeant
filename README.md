@@ -2,8 +2,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 [![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
 
-<img src="sergeant.png" width="33" align="left" style="padding-right:20px"/>
-
 `sergeant` : Tools to Transform and Query Data with 'Apache' 'Drill'
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
@@ -475,7 +473,7 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Jul 17 12:23:17 2017"
+#> [1] "Mon Jul 17 12:35:05 2017"
 
 devtools::test()
 #> Loading sergeant

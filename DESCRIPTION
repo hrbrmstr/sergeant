@@ -5,30 +5,31 @@ Authors@R: c(person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")
              person("Edward", "Visel", email = "edward.visel@gmail.com", role = "ctb"))
 Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 
     data exploration and analytics on both relational and non-relational datastores, 
-    scaling to petabytes of data. Methods are provided that enable working with 'Apache Drill'
-    instances via the 'REST API', the 'JDBC' interface, 'DBI' 'methods' and 'dplyr'/'dbplyr'.
+    scaling to petabytes of data. Methods are provided that enable working with 'Apache' 
+    'Drill' instances via the 'REST' 'API', 'JDBC' interface (optional), 'DBI' 'methods'
+    and using 'dplyr'/'dbplyr' idioms.
 Depends:
     R (>= 3.1.2),
-    DBI,
+    DBI (>= 0.7),
     dplyr (>= 0.7.0),
-    dbplyr
+    dbplyr (>= 1.1.0)
 URL: https://github.com/hrbrmstr/sergeant
 BugReports: https://github.com/hrbrmstr/sergeant/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    httr,
-    jsonlite,
-    htmltools,
-    readr,
-    purrr,
+    httr (>= 1.2.1),
+    jsonlite (>= 1.5.0),
+    htmltools (>= 0.3.6),
+    readr (>= 1.1.1),
+    purrr (>= 0.2.2),
+    scales (>= 0.4.1),
     utils,
-    scales,
     methods
 Suggests:
-    RJDBC,
-    rJava,
-    testthat,
-    covr
+    RJDBC (>= 0.2-5),
+    rJava (>= 0.9-8),
+    testthat (>= 1.0.2),
+    covr (>= 3.0.0)
 RoxygenNote: 6.0.1

@@ -10,3 +10,4 @@
 ^codecov\.yml$
 ^apache-drill-1\.10\.0\.tar\.gz$
 ^cdh4-repository_1\.0_all\.deb$
+^cran-comments\.md$

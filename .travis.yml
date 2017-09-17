@@ -15,13 +15,8 @@ before_install:
   - "tar -xvzf apache-drill-1.11.0.tar.gz -C $HOME/local"
 
 before_script:
-  - "sudo service zookeeper start"
   - "$HOME/local/apache-drill-1.11.0/bin/drillbit.sh start"
   - "sleep 5"
-
-after_script:
-  - "$HOME/local/apache-drill-1.11.0/bin/drillbit.sh stop"
-  - "sudo service zookeeper stop"
 
 after_success:
   - Rscript -e 'covr::codecov()'

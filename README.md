@@ -473,44 +473,13 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Sun Sep 17 13:29:35 2017"
+#> [1] "Sun Sep 17 13:31:23 2017"
 
 devtools::test()
 #> Loading sergeant
 #> Testing sergeant
-#> dplyr: .1
-#> rest: 23
-#> 
-#> Failed -----------------------------------------------------------------------------------------------------------------
-#> 1. Error: Core dbplyr ops work (@test-sergeant.R#12) -------------------------------------------------------------------
-#> Failed to connect to localhost port 8047: Connection refused
-#> 1: tbl(db, "cp.`employee.json`") at /Users/bob/packages/sergeant/tests/testthat/test-sergeant.R:12
-#> 2: tbl.src_drill(db, "cp.`employee.json`")
-#> 3: tbl_sql("drill", src = src, from = from, ...) at /Users/bob/packages/sergeant/R/dplyr.r:114
-#> 4: db_query_fields(src$con, from)
-#> 5: db_query_fields.DrillConnection(src$con, from)
-#> 6: dbListFields(result) at /Users/bob/packages/sergeant/R/dplyr.r:136
-#> 7: dbListFields(result)
-#> 8: .local(conn, name, ...)
-#> 9: httr::POST(sprintf("%s/query.json", conn@drill_server), encode = "json", body = list(queryType = "SQL", query = conn@statement)) at /Users/bob/packages/sergeant/R/dbi.r:216
-#> 10: request_perform(req, hu$handle$handle)
-#> 11: request_fetch(req$output, req$url, handle)
-#> 12: request_fetch.write_memory(req$output, req$url, handle)
-#> 13: curl::curl_fetch_memory(url, handle = handle)
-#> 
-#> 2. Failure: REST API works (@test-sergeant.R#25) -----------------------------------------------------------------------
-#> drill_active(dc) not equal to TRUE.
-#> 1 element mismatch
-#> 
-#> 
-#> 3. Error: REST API works (@test-sergeant.R#27) -------------------------------------------------------------------------
-#> Failed to connect to localhost port 8047: Connection refused
-#> 1: drill_query(dc, "SELECT * FROM cp.`employee.json` limit 10") at /Users/bob/packages/sergeant/tests/testthat/test-sergeant.R:27
-#> 2: httr::POST(sprintf("%s/query.json", drill_server), encode = "json", body = list(queryType = "SQL", query = query)) at /Users/bob/packages/sergeant/R/query.r:45
-#> 3: request_perform(req, hu$handle$handle)
-#> 4: request_fetch(req$output, req$url, handle)
-#> 5: request_fetch.write_memory(req$output, req$url, handle)
-#> 6: curl::curl_fetch_memory(url, handle = handle)
+#> dplyr: ...
+#> rest: ................
 #> 
 #> DONE ===================================================================================================================
 ```

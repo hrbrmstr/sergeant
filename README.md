@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
+[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
 
 `sergeant` : Tools to Transform and Query Data with 'Apache' 'Drill'
 
@@ -240,7 +240,7 @@ drill_active(dc)
 #> [1] TRUE
 
 drill_version(dc)
-#> [1] "1.10.0"
+#> [1] "1.11.0"
 
 drill_storage(dc)$name
 #> [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"
@@ -297,7 +297,7 @@ drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY
 #> 2    554
 
 drill_options(dc)
-#> # A tibble: 113 x 4
+#> # A tibble: 124 x 4
 #>                                              name value   type    kind
 #>  *                                          <chr> <chr>  <chr>   <chr>
 #>  1                 planner.enable_hash_single_key  TRUE SYSTEM BOOLEAN
@@ -310,7 +310,7 @@ drill_options(dc)
 #>  8                  planner.enable_multiphase_agg  TRUE SYSTEM BOOLEAN
 #>  9                  exec.query_profile.debug_mode FALSE SYSTEM BOOLEAN
 #> 10 planner.filter.max_selectivity_estimate_factor     1 SYSTEM  DOUBLE
-#> # ... with 103 more rows
+#> # ... with 114 more rows
 
 drill_options(dc, "json")
 #> # A tibble: 7 x 4
@@ -473,13 +473,44 @@ library(testthat)
 #>     matches
 
 date()
-#> [1] "Mon Jul 17 12:35:05 2017"
+#> [1] "Sun Sep 17 13:29:35 2017"
 
 devtools::test()
 #> Loading sergeant
 #> Testing sergeant
-#> dplyr: ...
-#> rest: ................
+#> dplyr: .1
+#> rest: 23
+#> 
+#> Failed -----------------------------------------------------------------------------------------------------------------
+#> 1. Error: Core dbplyr ops work (@test-sergeant.R#12) -------------------------------------------------------------------
+#> Failed to connect to localhost port 8047: Connection refused
+#> 1: tbl(db, "cp.`employee.json`") at /Users/bob/packages/sergeant/tests/testthat/test-sergeant.R:12
+#> 2: tbl.src_drill(db, "cp.`employee.json`")
+#> 3: tbl_sql("drill", src = src, from = from, ...) at /Users/bob/packages/sergeant/R/dplyr.r:114
+#> 4: db_query_fields(src$con, from)
+#> 5: db_query_fields.DrillConnection(src$con, from)
+#> 6: dbListFields(result) at /Users/bob/packages/sergeant/R/dplyr.r:136
+#> 7: dbListFields(result)
+#> 8: .local(conn, name, ...)
+#> 9: httr::POST(sprintf("%s/query.json", conn@drill_server), encode = "json", body = list(queryType = "SQL", query = conn@statement)) at /Users/bob/packages/sergeant/R/dbi.r:216
+#> 10: request_perform(req, hu$handle$handle)
+#> 11: request_fetch(req$output, req$url, handle)
+#> 12: request_fetch.write_memory(req$output, req$url, handle)
+#> 13: curl::curl_fetch_memory(url, handle = handle)
+#> 
+#> 2. Failure: REST API works (@test-sergeant.R#25) -----------------------------------------------------------------------
+#> drill_active(dc) not equal to TRUE.
+#> 1 element mismatch
+#> 
+#> 
+#> 3. Error: REST API works (@test-sergeant.R#27) -------------------------------------------------------------------------
+#> Failed to connect to localhost port 8047: Connection refused
+#> 1: drill_query(dc, "SELECT * FROM cp.`employee.json` limit 10") at /Users/bob/packages/sergeant/tests/testthat/test-sergeant.R:27
+#> 2: httr::POST(sprintf("%s/query.json", drill_server), encode = "json", body = list(queryType = "SQL", query = query)) at /Users/bob/packages/sergeant/R/query.r:45
+#> 3: request_perform(req, hu$handle$handle)
+#> 4: request_fetch(req$output, req$url, handle)
+#> 5: request_fetch.write_memory(req$output, req$url, handle)
+#> 6: curl::curl_fetch_memory(url, handle = handle)
 #> 
 #> DONE ===================================================================================================================
 ```

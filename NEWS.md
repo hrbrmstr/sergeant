@@ -1,6 +1,8 @@
-# sergeant 0.5.0
+# sergeant 0.5.2
 
-- make rJava & RJDBC optional (WIP)
+- Make rJava & RJDBC optional (WIP)
+- Hack to remove ";" at end of queries sent to `drill_query()`
+- Added `dbplyr` windows functions to `sql_translate_env`
 
 # sergeant 0.4.0
 

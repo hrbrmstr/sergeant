@@ -6,7 +6,8 @@
 \title{Connect to Drill (dplyr)}
 \usage{
 src_drill(host = Sys.getenv("DRILL_HOST", "localhost"),
-  port = as.integer(Sys.getenv("DRILL_PORT", 8047L)), ssl = FALSE)
+  port = as.integer(Sys.getenv("DRILL_PORT", 8047L)), ssl = FALSE,
+  username = NULL, password = NULL)
 
 \method{tbl}{src_drill}(src, from, ...)
 }
@@ -17,6 +18,8 @@ src_drill(host = Sys.getenv("DRILL_HOST", "localhost"),
 
 \item{ssl}{use ssl?}
 
+\item{username, password}{if not \code{NULL} the credentials for the Drill service.}
+
 \item{src}{A Drill "src" created with \code{src_drill()}}
 
 \item{from}{A Drill view or table specification}
@@ -24,7 +27,7 @@ src_drill(host = Sys.getenv("DRILL_HOST", "localhost"),
 \item{...}{Extra parameters}
 }
 \description{
-Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
+Use \code{src_drill()} to connect to a Drill cluster and \code{tbl()} to connect to a
 fully-qualified "table reference". The vast majority of Drill SQL functions have
 also been made available to the \code{dplyr} interface. If you have custom Drill
 SQL functions that need to be implemented please file an issue on GitHub.

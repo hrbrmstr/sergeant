@@ -9,7 +9,7 @@
 Drill()
 
 \S4method{dbConnect}{DrillDriver}(drv, host = "localhost", port = 8047L,
-  ssl = FALSE, ...)
+  ssl = FALSE, username = NULL, password = NULL, ...)
 }
 \arguments{
 \item{drv}{An object created by \code{Drill()}}

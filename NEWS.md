@@ -1,3 +1,7 @@
+# sergeant 0.6.0
+
+- Authentication support
+
 # sergeant 0.5.2
 
 - Make rJava & RJDBC optional (WIP)

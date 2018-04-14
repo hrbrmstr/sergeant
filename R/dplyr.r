@@ -5,9 +5,11 @@
 #' also been made available to the \code{dplyr} interface. If you have custom Drill
 #' SQL functions that need to be implemented please file an issue on GitHub.
 #'
+#' @md
 #' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
 #' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
 #' @param ssl use ssl?
+#' @param username,password if not `NULL` the credentials for the Drill service.
 #' @note This is a DBI wrapper around the Drill REST API. TODO username/password support
 #' @export
 #' @examples \dontrun{
@@ -55,12 +57,24 @@
 #' ## 10     4 Jonathan Murraiin    17 Jonathan Murraiin***     0 J*n*th*n M*rr***n
 #' ## # ... with more rows, and 3 more variables: rpd <chr>, rnd <dbl>, first_three <chr>
 #' }
-src_drill <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
-                      port=as.integer(Sys.getenv("DRILL_PORT", 8047L)),
-                      ssl=FALSE) {
+src_drill <- function(host  = Sys.getenv("DRILL_HOST", "localhost"),
+                      port = as.integer(Sys.getenv("DRILL_PORT", 8047L)),
+                      ssl = FALSE, username = NULL, password = NULL) {
 
   dr <- Drill()
-  con <- dbConnect(dr, host=host, port=port, ssl=ssl)
+
+  if (!is.null(username)) {
+    auth_drill(ssl, host, port, username, password)
+  } else {
+    username <- ""
+    password <- ""
+  }
+
+  con <- dbConnect(
+    dr, host = host, port = port, ssl = ssl,
+    username = username, password = password
+  )
+
   src_sql("drill", con)
 
 }
@@ -143,16 +157,17 @@ db_query_fields.DrillConnection <- function(con, sql, ...) {
 db_data_type.DrillConnection <- function(con, fields, ...) {
   print("\n\n\ndb_data_type\n\n\n")
   data_type <- function(x) {
-    switch(class(x)[1],
-           logical = "BOOLEAN",
-           integer = "INTEGER",
-           numeric = "DOUBLE",
-           factor =  "CHARACTER",
-           character = "CHARACTER",
-           Date = "DATE",
-           POSIXct = "TIMESTAMP",
-           stop("Can't map type ", paste(class(x), collapse = "/"),
-                " to a supported database type.")
+    switch(
+      class(x)[1],
+      logical = "BOOLEAN",
+      integer = "INTEGER",
+      numeric = "DOUBLE",
+      factor =  "CHARACTER",
+      character = "CHARACTER",
+      Date = "DATE",
+      POSIXct = "TIMESTAMP",
+      stop("Can't map type ", paste(class(x), collapse = "/"),
+           " to a supported database type.")
     )
   }
   vapply(fields, data_type, character(1))
@@ -167,7 +182,8 @@ sql_translate_env.DrillConnection <- function(con) {
 
   dbplyr::sql_variant(
 
-    scalar = dbplyr::sql_translator(.parent = dbplyr::base_scalar,
+    scalar = dbplyr::sql_translator(
+      .parent = dbplyr::base_scalar,
       `!=` = dbplyr::sql_infix("<>"),
       as.numeric = function(x) build_sql("CAST(", x, " AS DOUBLE)"),
       as.character = function(x) build_sql("CAST(", x, " AS CHARACTER)"),
@@ -228,7 +244,8 @@ sql_translate_env.DrillConnection <- function(con) {
       toupper = sql_prefix("UPPER", 1)
     ),
 
-    aggregate = dbplyr::sql_translator(.parent = dbplyr::base_agg,
+    aggregate = dbplyr::sql_translator(
+      .parent = dbplyr::base_agg,
       n = function() dbplyr::sql("COUNT(*)"),
       cor = dbplyr::sql_prefix("CORR"),
       cov = dbplyr::sql_prefix("COVAR_SAMP"),
@@ -239,7 +256,8 @@ sql_translate_env.DrillConnection <- function(con) {
       }
     ),
 
-    window = dbplyr::sql_translator(.parent = dbplyr::base_win,
+    window = dbplyr::sql_translator(
+      .parent = dbplyr::base_win,
       n = function() { dbplyr::win_over(dbplyr::sql("count(*)"),
                                         partition = dbplyr::win_current_group()) },
       cor = dbplyr::win_recycled("corr"),

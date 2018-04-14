@@ -59,8 +59,22 @@ setClass(
 #' @export
 setMethod(
   "dbConnect",
-  "DrillDriver", function(drv, host = "localhost", port = 8047L, ssl = FALSE, ...) {
-    new("DrillConnection", host = host, port = port, ssl = ssl, ...)
+  "DrillDriver", function(drv, host = "localhost", port = 8047L, ssl = FALSE,
+                          username = NULL, password = NULL, ...) {
+
+    #curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k -c cookies.txt -s -d "j_username=mapr" -d "j_password=mapr" https://localhost:8047/j_security_check
+
+    # if (!is.null(username)) {
+    #   auth_drill(ssl, host, port, username, password)
+    # }
+
+    new(
+      "DrillConnection",
+      host = host, port = port, ssl = ssl,
+      username = username, password = password,
+      ...
+    )
+
   }
 )
 
@@ -134,13 +148,29 @@ setMethod(
   function(res, .progress=FALSE, ...) {
 
     if (.progress) {
-      res <- httr::POST(sprintf("%s/query.json", res@drill_server),
-                        encode="json", progress(),
-                        body=list(queryType="SQL", query=res@statement))
+
+      res <- httr::POST(
+        url = res@drill_server,
+        path = "/query.json",
+        encode = "json",
+        progress(),
+        body = list(
+          queryType = "SQL",
+          query = res@statement
+        )
+      )
+
     } else {
-      res <- httr::POST(sprintf("%s/query.json", res@drill_server),
-                        encode="json",
-                        body=list(queryType="SQL", query=res@statement))
+
+      res <- httr::POST(
+        url = res@drill_server,
+        path = "/query.json",
+        encode="json",
+        body=list(
+          queryType = "SQL",
+          query = res@statement
+        )
+      )
     }
 
     if (httr::status_code(res) != 200) {
@@ -213,9 +243,12 @@ setMethod(
   'dbListFields',
   signature(conn='DrillResult', name='missing'),
   function(conn, name) {
-    res <- httr::POST(sprintf("%s/query.json", conn@drill_server),
-                      encode="json",
-                      body=list(queryType="SQL", query=conn@statement))
+    res <- httr::POST(
+      sprintf("%s/query.json", conn@drill_server),
+      encode = "json",
+      body = list(queryType="SQL", query=conn@statement
+      )
+    )
     out <- jsonlite::fromJSON(httr::content(res, as="text", encoding="UTF-8"), flatten=TRUE)
     out <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows)))
     colnames(out)

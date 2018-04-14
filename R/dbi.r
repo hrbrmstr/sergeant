@@ -62,11 +62,13 @@ setMethod(
   "DrillDriver", function(drv, host = "localhost", port = 8047L, ssl = FALSE,
                           username = NULL, password = NULL, ...) {
 
-    #curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -k -c cookies.txt -s -d "j_username=mapr" -d "j_password=mapr" https://localhost:8047/j_security_check
 
-    # if (!is.null(username)) {
-    #   auth_drill(ssl, host, port, username, password)
-    # }
+    if (!is.null(username)) {
+      auth_drill(ssl, host, port, username, password)
+    } else {
+      username <- ""
+      password <- ""
+    }
 
     new(
       "DrillConnection",

@@ -63,13 +63,6 @@ src_drill <- function(host  = Sys.getenv("DRILL_HOST", "localhost"),
 
   dr <- Drill()
 
-  if (!is.null(username)) {
-    auth_drill(ssl, host, port, username, password)
-  } else {
-    username <- ""
-    password <- ""
-  }
-
   con <- dbConnect(
     dr, host = host, port = port, ssl = ssl,
     username = username, password = password

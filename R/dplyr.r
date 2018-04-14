@@ -10,7 +10,7 @@
 #' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
 #' @param ssl use ssl?
 #' @param username,password if not `NULL` the credentials for the Drill service.
-#' @note This is a DBI wrapper around the Drill REST API. TODO username/password support
+#' @note This is a DBI wrapper around the Drill REST API.
 #' @export
 #' @examples \dontrun{
 #' db <- src_drill("localhost", 8047L)

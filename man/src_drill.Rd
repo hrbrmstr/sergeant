@@ -33,7 +33,7 @@ also been made available to the \code{dplyr} interface. If you have custom Drill
 SQL functions that need to be implemented please file an issue on GitHub.
 }
 \note{
-This is a DBI wrapper around the Drill REST API. TODO username/password support
+This is a DBI wrapper around the Drill REST API.
 }
 \examples{
 \dontrun{

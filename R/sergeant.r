@@ -27,7 +27,7 @@ drill_connection <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
 
   class(out) <- c("drill_conn", class(out))
 
-  if (user != "") auth_drill(ssl, host, port, username, password)
+  if (user != "") auth_drill(ssl, host, port, user, password)
 
   out
 

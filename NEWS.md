@@ -1,6 +1,6 @@
 # sergeant 0.6.0
 
-- Authentication support
+- Authentication support for DBI/dplyr and `drill_connection()` pure REST interface
 
 # sergeant 0.5.2
 

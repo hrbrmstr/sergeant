@@ -16,12 +16,14 @@ drill_connection(host = Sys.getenv("DRILL_HOST", "localhost"),
 
 \item{ssl}{use ssl?}
 
-\item{user, password}{NOT IMPLEMENTED YET credentials for username/password auth.
-(will pick up the values from \code{DRILL_USER}/\code{DRILL_PASSWORD}
-env vars)}
+\item{user, password}{(will pick up the values from \code{DRILL_USER}/\code{DRILL_PASSWORD} env vars)}
 }
 \description{
 Setup a Drill connection
+}
+\note{
+If \code{user}/\code{password} are set this function will make a \code{POST} to the REST
+interface immediately to prime the cookie-jar with the session id.
 }
 \examples{
 dc <- drill_connection()

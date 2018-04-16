@@ -2,27 +2,32 @@ s_head <- purrr::safely(httr::HEAD)
 
 #' Setup a Drill connection
 #'
-#' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
-#' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
+#' @md
+#' @param host Drill host (will pick up the value from `DRILL_HOST` env var)
+#' @param port Drill port (will pick up the value from `DRILL_PORT` env var)
 #' @param ssl use ssl?
-#' @param user,password NOT IMPLEMENTED YET credentials for username/password auth.
-#'                      (will pick up the values from \code{DRILL_USER}/\code{DRILL_PASSWORD}
-#'                      env vars)
+#' @param user,password (will pick up the values from `DRILL_USER`/`DRILL_PASSWORD` env vars)
+#' @note If `user`/`password` are set this function will make a `POST` to the REST
+#'       interface immediately to prime the cookie-jar with the session id.
 #' @export
 #' @examples
 #' dc <- drill_connection()
 drill_connection <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
-                      port=Sys.getenv("DRILL_PORT", 8047),
-                      ssl=FALSE,
-                      user=Sys.getenv("DRILL_USER", ""),
-                      password=Sys.getenv("DRILL_PASSWORD", "")) {
-  list(host=host,
-       port=port,
-       ssl=ssl,
-       user=ifelse(user[1]=="", NA, user[1]),
-       password=ifelse(password[1]=="", NA, password[1])) -> out
+                             port=Sys.getenv("DRILL_PORT", 8047),
+                             ssl=FALSE,
+                             user=Sys.getenv("DRILL_USER", ""),
+                             password=Sys.getenv("DRILL_PASSWORD", "")) {
+  list(
+    host = host,
+    port = port,
+    ssl = ssl,
+    user = ifelse(user[1] == "", NA, user[1]),
+    password = ifelse(password[1] == "", NA, password[1])
+  ) -> out
 
   class(out) <- c("drill_conn", class(out))
+
+  if (user != "") auth_drill(ssl, host, port, username, password)
 
   out
 

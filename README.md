@@ -1,6 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1248912.svg)](https://doi.org/10.5281/zenodo.1248912) 
+[![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) 
+[![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
 
 `sergeant` : Tools to Transform and Query Data with 'Apache' 'Drill'
 

@@ -1,9 +1,12 @@
 Package: sergeant
 Title: Tools to Transform and Query Data with 'Apache' 'Drill'
 Version: 0.6.0
-Authors@R: c(person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre")),
-             person("Edward", "Visel", email = "edward.visel@gmail.com", role = "ctb"),
-             person("Andy", "Hine", email = "andyyhine@gmail.com", role = "ctb"))
+Authors@R: c(
+      person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
+             comment = c(ORCID = "0000-0001-5670-2640")),
+      person("Edward", "Visel", email = "edward.visel@gmail.com", role = "ctb"),
+      person("Andy", "Hine", email = "andyyhine@gmail.com", role = "ctb")
+    )
 Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 
     data exploration and 'analytics' on both relational and non-relational 'datastores', 
     scaling to petabytes of data. Methods are provided that enable working with 'Apache' 

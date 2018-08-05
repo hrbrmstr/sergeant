@@ -167,8 +167,8 @@ setMethod(
       res <- httr::POST(
         url = res@drill_server,
         path = "/query.json",
-        encode="json",
-        body=list(
+        encode = "json",
+        body = list(
           queryType = "SQL",
           query = res@statement
         )
@@ -179,12 +179,14 @@ setMethod(
       warning(content(res, as="parsed"))
       dplyr::data_frame()
     } else {
-      out <- jsonlite::fromJSON(httr::content(res, as="text", encoding="UTF-8"), flatten=TRUE)
-      out <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows)))
+      out <- httr::content(res, as="text", encoding="UTF-8")
+      out <- jsonlite::fromJSON(out, flatten=TRUE)
+      out <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows, na=character())))
       out
     }
 
   }
+
 )
 
 #' Drill dbDataType

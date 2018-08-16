@@ -1,3 +1,14 @@
+.verify.JDBC.result <- function (result, ...) {
+  if (is.jnull(result)) {
+    x <- .jgetEx(TRUE)
+    if (is.jnull(x))
+      stop(...)
+    else
+      stop(...," (",.jcall(x, "S", "getMessage"),")")
+  }
+}
+
+
 try_require <- function(package, fun) {
   if (requireNamespace(package, quietly = TRUE)) {
     library(package, character.only = TRUE)

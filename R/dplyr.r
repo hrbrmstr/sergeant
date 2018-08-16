@@ -140,7 +140,7 @@ db_query_fields.DrillConnection <- function(con, sql, ...) {
     con = con
   )
   result <- dbSendQuery(con, fields)
-  return(dbListFields(result))
+  return(unique(c(dbListFields(result), con@implicits)))
 
 }
 

@@ -44,7 +44,8 @@ setClass(
     port = "integer",
     ssl = "logical",
     username = "character",
-    password = "character"
+    password = "character",
+    implicits = "character"
   )
 )
 
@@ -70,10 +71,14 @@ setMethod(
       password <- ""
     }
 
+    dc <- drill_connection(host, port, ssl, username, password)
+    dops <- drill_options(dc, "drill.exec.storage.implicit")
+
     new(
       "DrillConnection",
       host = host, port = port, ssl = ssl,
       username = username, password = password,
+      implicits = dops$value,
       ...
     )
 

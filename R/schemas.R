@@ -33,5 +33,5 @@ drill_use <- function(drill_con, schema_name) {
 drill_show_files <- function(drill_con, schema_spec) {
   query <- sprintf("SHOW FILES IN %s", schema_spec)
   drill_query(drill_con, query, uplift=TRUE) %>%
-    dplyr::select(name, isDirectory, permissions, everything())
+    dplyr::select(name, isDirectory, permissions, dplyr::everything())
 }

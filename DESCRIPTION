@@ -1,6 +1,6 @@
 Package: sergeant
 Title: Tools to Transform and Query Data with 'Apache' 'Drill'
-Version: 0.6.0
+Version: 0.7.0
 Authors@R: c(
       person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-5670-2640")),
@@ -19,7 +19,7 @@ BugReports: https://github.com/hrbrmstr/sergeant/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports:
+Imports: 
     DBI (>= 0.7),
     dplyr (>= 0.7.0),
     dbplyr (>= 1.1.0),
@@ -29,10 +29,11 @@ Imports:
     readr (>= 1.1.1),
     purrr (>= 0.2.2),
     scales (>= 0.4.1),
-    utils,
-    methods
-Suggests:
     RJDBC (>= 0.2-5),
+    utils,
+    methods,
+    magrittr
+Suggests:
     rJava (>= 0.9-8),
     testthat (>= 1.0.2),
     covr (>= 3.0.0)

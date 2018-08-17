@@ -1,10 +1,10 @@
 .verify.JDBC.result <- function (result, ...) {
-  if (is.jnull(result)) {
-    x <- .jgetEx(TRUE)
-    if (is.jnull(x))
+  if (rJava::is.jnull(result)) {
+    x <- rJava::.jgetEx(TRUE)
+    if (rJava::is.jnull(x))
       stop(...)
     else
-      stop(...," (",.jcall(x, "S", "getMessage"),")")
+      stop(...," (",rJava::.jcall(x, "S", "getMessage"),")")
   }
 }
 

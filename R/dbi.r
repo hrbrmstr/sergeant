@@ -56,6 +56,7 @@ setClass(
 #' @param host host
 #' @param port port
 #' @param ssl use ssl?
+#' @param username,password credentials
 #' @param ... Extra optional parameters
 #' @export
 setMethod(

@@ -20,6 +20,8 @@ Drill()
 
 \item{ssl}{use ssl?}
 
+\item{username, password}{credentials}
+
 \item{...}{Extra optional parameters}
 }
 \description{

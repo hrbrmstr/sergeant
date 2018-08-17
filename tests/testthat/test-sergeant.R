@@ -12,7 +12,7 @@ test_that("Core dbplyr ops work", {
   test_dplyr <- tbl(db, "cp.`employee.json`")
 
   expect_that(test_dplyr, is_a("tbl"))
-  expect_that(count(test_dplyr, gender), is_a("tbl"))
+  expect_that(dplyr::count(test_dplyr, gender), is_a("tbl"))
 
 })
 

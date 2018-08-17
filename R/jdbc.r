@@ -34,7 +34,7 @@ setMethod(
   signature = "DrillJDBCDriver",
   definition = function(drv, url, user='', password='', ...) {
 
-    .jcall(
+    rJava::.jcall(
       "java/sql/DriverManager",
       "Ljava/sql/Connection;",
       "getConnection",
@@ -44,27 +44,27 @@ setMethod(
       check = FALSE
     ) -> jc
 
-    if (is.jnull(jc) && !is.jnull(drv@jdrv)) {
+    if (rJava::is.jnull(jc) && !rJava::is.jnull(drv@jdrv)) {
       # ok one reason for this to fail is its interaction with rJava's
       # class loader. In that case we try to load the driver directly.
-      oex <- .jgetEx(TRUE)
+      oex <- rJava::.jgetEx(TRUE)
 
-      p <- .jnew("java/util/Properties")
+      p <- rJava::.jnew("java/util/Properties")
 
       if (length(user)==1 && nchar(user)) {
-        .jcall(p,"Ljava/lang/Object;","setProperty","user",user)
+        rJava::.jcall(p,"Ljava/lang/Object;","setProperty","user",user)
       }
 
       if (length(password)==1 && nchar(password)) {
-        .jcall(p,"Ljava/lang/Object;","setProperty","password",password)
+        rJava::.jcall(p,"Ljava/lang/Object;","setProperty","password",password)
       }
 
       l <- list(...)
       if (length(names(l))) for (n in names(l)) {
-        .jcall(p, "Ljava/lang/Object;", "setProperty", n, as.character(l[[n]]))
+        rJava::.jcall(p, "Ljava/lang/Object;", "setProperty", n, as.character(l[[n]]))
       }
 
-      jc <- .jcall(drv@jdrv, "Ljava/sql/Connection;", "connect", as.character(url)[1], p)
+      jc <- rJava::.jcall(drv@jdrv, "Ljava/sql/Connection;", "connect", as.character(url)[1], p)
 
     }
 
@@ -88,21 +88,21 @@ DrillJDBC <- function() {
   ## expand all paths in the classPath
   classPath <- path.expand(unlist(strsplit(Sys.getenv("DRILL_JDBC_JAR"), .Platform$path.sep)))
 
-  ## this is benign in that it's equivalent to .jaddClassPath if a JVM is running
-  .jinit(classPath)
+  ## this is benign in that it's equivalent to rJava::.jaddClassPath if a JVM is running
+  rJava::.jinit(classPath)
 
-  .jaddClassPath(system.file("java", "RJDBC.jar", package="RJDBC"))
-  .jaddClassPath(system.file("java", "slf4j-nop-1.7.25.jar", package = "sergeant"))
+  rJava::.jaddClassPath(system.file("java", "RJDBC.jar", package="RJDBC"))
+  rJava::.jaddClassPath(system.file("java", "slf4j-nop-1.7.25.jar", package = "sergeant"))
 
-  if (nchar(driverClass) && is.jnull(.jfindClass(as.character(driverClass)[1]))) {
+  if (nchar(driverClass) && rJava::is.jnull(rJava::.jfindClass(as.character(driverClass)[1]))) {
     stop("Cannot find JDBC driver class ",driverClass)
   }
 
-  jdrv <- .jnew(driverClass, check=FALSE)
+  jdrv <- rJava::.jnew(driverClass, check=FALSE)
 
-  .jcheck(TRUE)
+  rJava::.jcheck(TRUE)
 
-  if (is.jnull(jdrv)) jdrv <- .jnull()
+  if (rJava::is.jnull(jdrv)) jdrv <- rJava::.jnull()
 
   new("DrillJDBCDriver", identifier.quote = "`", jdrv = jdrv)
 
@@ -232,6 +232,7 @@ sql_translate_env.DrillJDBCConnection <- function(con) {
       date_part = function(x, y) build_sql("DATE_PART(", x, ",", y ,")"),
       grepl = function(x, y) build_sql("CONTAINS(", y, ", ", x, ")"),
       gsub = function(x, y, z) build_sql("REGEXP_REPLACE(", z, ", ", x, ",", y ,")"),
+      str_replace = function(x, y, z) build_sql("REGEXP_REPLACE(", x, ", ", y, ",", z ,")"),
       trimws = function(x) build_sql("TRIM(both ' ' FROM ", x, ")"),
       cbrt = sql_prefix("CBRT", 1),
       degrees = sql_prefix("DEGREES", 1),
@@ -266,6 +267,7 @@ sql_translate_env.DrillJDBCConnection <- function(con) {
       init_cap = sql_prefix("INIT_CAP", 1),
       length = sql_prefix("LENGTH", 1),
       lower = sql_prefix("LOWER", 1),
+      str_to_lower = sql_prefix("LOWER", 1),
       tolower = sql_prefix("LOWER", 1),
       ltrim = sql_prefix("LTRIM", 2),
       nullif = sql_prefix("NULLIF", 2),
@@ -278,8 +280,10 @@ sql_translate_env.DrillJDBCConnection <- function(con) {
       lpad_with = sql_prefix("LPAD", 3),
       strpos = sql_prefix("STRPOS", 2),
       substr = sql_prefix("SUBSTR", 3),
+      str_sub = sql_prefix("SUBSTR", 3),
       trim = function(x, y, z) build_sql("TRIM(", x, " ", y, " FROM ", z, ")"),
       upper = sql_prefix("UPPER", 1),
+      str_to_upper = sql_prefix("UPPER", 1),
       toupper = sql_prefix("UPPER", 1)
     ),
 

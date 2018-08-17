@@ -4,6 +4,7 @@
 \alias{db_data_type.DrillJDBCConnection}
 \alias{sql_escape_ident.DrillJDBCConnection}
 \alias{sql_translate_env.DrillJDBCConnection}
+\alias{src_tbls.src_dbi}
 \title{Drill internals}
 \usage{
 \method{db_data_type}{DrillJDBCConnection}(con, fields, ...)
@@ -11,8 +12,13 @@
 \method{sql_escape_ident}{DrillJDBCConnection}(con, x)
 
 \method{sql_translate_env}{DrillJDBCConnection}(con)
+
+\method{src_tbls}{src_dbi}(x)
+}
+\arguments{
+\item{x}{x}
 }
 \description{
-Drill internals
+"SHOW DATABASES"
 }
 \keyword{internal}

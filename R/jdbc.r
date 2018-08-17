@@ -1,15 +1,33 @@
+#' JDBC Driver for Drill database.
+#'
+#' @keywords internal
 #' @export
 setClass(
   Class = "DrillJDBCDriver",
   contains = "JDBCDriver"
 )
 
+#' Drill JDBC connection class.
+#'
+#' @export
+#' @keywords internal
 #' @export
 setClass(
   Class = "DrillJDBCConnection",
   contains = "JDBCConnection"
 )
 
+#' Connect to Drill JDBC with your own connection string
+#'
+#' You should really use [drill_jdbc()] as it handles some cruft for
+#' you, but you can specify the full JDBC connection string
+#'
+#' @md
+#' @param drv what you get back from [DrillJDBC()]
+#' @param url your Drill connection strinfg
+#' @param user,password username & password (leave as-is for no-auth)
+#' @param ... additional `name=val` properties which will be set with Java's
+#'        `SetProperty` method.
 #' @export
 setMethod(
   f = "dbConnect",
@@ -60,6 +78,8 @@ setMethod(
 
 )
 
+#' Drill's JDBC driver main class loader
+#'
 #' @export
 DrillJDBC <- function() {
 
@@ -93,6 +113,9 @@ DrillJDBC <- function() {
 #' The DRILL JDBC driver fully-qualified path must be placed in the
 #' \code{DRILL_JDBC_JAR} environment variable. This is best done via \code{~/.Renviron}
 #' for interactive work. e.g. \code{DRILL_JDBC_JAR=/usr/local/drill/jars/jdbc-driver/drill-jdbc-all-1.10.0.jar}
+#'
+#' [src_drill_jdbc()] wraps the JDBC [dbConnect()] connection instantation in
+#' [dbplyr::src_dbi()] to return the equivalent of the REST driver's [src_drill()].
 #'
 #' @param nodes character vector of nodes. If more than one node, you can either have
 #'              a single string with the comma-separated node:port pairs pre-made or
@@ -144,6 +167,17 @@ drill_jdbc <- function(nodes = "localhost:2181", cluster_id = NULL,
   message(sprintf("Using [%s]...", conn_str))
 
   dbConnect(drill_jdbc_drv, conn_str)
+
+}
+
+#' @rdname drill_jdbc
+#' @export
+src_drill_jdbc <- function(nodes = "localhost:2181", cluster_id = NULL,
+                           schema = NULL, use_zk = TRUE) {
+
+  con <- drill_jdbc(nodes, cluster_id, schema, use_zk)
+
+  dbplyr::src_dbi(con)
 
 }
 
@@ -275,4 +309,17 @@ sql_translate_env.DrillJDBCConnection <- function(con) {
 
   )
 
+}
+
+#' src tbls
+#'
+#' "SHOW DATABASES"
+#'
+#' @rdname drill_jdbc_internals
+#' @keywords internal
+#' @param x x
+#' @export
+src_tbls.src_dbi <- function(x) {
+  tmp <- dbGetQuery(x$con, "SHOW DATABASES")
+  paste0(unlist(tmp$SCHEMA_NAME, use.names=FALSE), collapse=", ")
 }

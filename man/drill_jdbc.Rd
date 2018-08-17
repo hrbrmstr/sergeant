@@ -2,9 +2,13 @@
 % Please edit documentation in R/jdbc.r
 \name{drill_jdbc}
 \alias{drill_jdbc}
+\alias{src_drill_jdbc}
 \title{Connect to Drill using JDBC}
 \usage{
 drill_jdbc(nodes = "localhost:2181", cluster_id = NULL, schema = NULL,
+  use_zk = TRUE)
+
+src_drill_jdbc(nodes = "localhost:2181", cluster_id = NULL, schema = NULL,
   use_zk = TRUE)
 }
 \arguments{
@@ -27,6 +31,10 @@ a JDBC connection object
 The DRILL JDBC driver fully-qualified path must be placed in the
 \code{DRILL_JDBC_JAR} environment variable. This is best done via \code{~/.Renviron}
 for interactive work. e.g. \code{DRILL_JDBC_JAR=/usr/local/drill/jars/jdbc-driver/drill-jdbc-all-1.10.0.jar}
+}
+\details{
+[src_drill_jdbc()] wraps the JDBC [dbConnect()] connection instantation in
+[dbplyr::src_dbi()] to return the equivalent of the REST driver's [src_drill()].
 }
 \examples{
 \dontrun{

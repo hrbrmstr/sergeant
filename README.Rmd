@@ -16,7 +16,15 @@ knitr::opts_chunk$set(
 [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
 
-`sergeant` : Tools to Transform and Query Data with 'Apache' 'Drill'
+# sergeant
+
+Tools to Transform and Query Data with 'Apache' 'Drill'
+
+## NOTE
+
+Version 0.7.0 re-introduces an `RJDBC` (and, as such, an `rJava` depedency). If you desire this to be put into a sibling package, [cast your vote](https://github.com/hrbrmstr/sergeant/issues/20).
+
+## Description
 
 Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
@@ -30,23 +38,27 @@ The package has been written with retrieval of rectangular data sources in mind.
 
 Some of the more "controlling vs data ops" REST API functions aren't implemented. Please file a PR if you need those.
 
-Finally, I run most of this locally and at home, so it's all been coded with no authentication or encryption in mind. If you want/need support for that, please file an issue. If there is demand for this, it will change the R API a bit (I've already thought out what to do but have no need for it right now).
-
 The following functions are implemented:
 
-**`DBI`**
+**`DBI`** (REST)
 
 - A "just enough" feature complete R `DBI` driver has been implemented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
 - This also means that SQL functions unique to Drill have also been "implemented" (i.e. made accessible to the `dplyr` interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub. Many should work without it, but some may require a custom interface. 
 
-**`RJDBC`**
+**`DBI`** (RJDBC)
 
 - `drill_jdbc`:	Connect to Drill using JDBC, enabling use of said idioms. See `RJDBC` for more info.
-- NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.10.0.jar`
+- NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.14.0.jar`
 
-**`dplyr`**: 
+**`dplyr`**: (REST)
 
 - `src_drill`: Connect to Drill (using dplyr) + supporting functions
+
+See `dplyr` for the `dplyr` operations (light testing shows they work in basic SQL use-cases but Drill's SQL engine has issues with more complex queries).
+
+**`dplyr`**: (RJDBC)
+
+- `src_drill_jdbc`: Connect to Drill (using dplyr & RJDBC) + supporting functions
 
 See `dplyr` for the `dplyr` operations (light testing shows they work in basic SQL use-cases but Drill's SQL engine has issues with more complex queries).
 

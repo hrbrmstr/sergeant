@@ -272,7 +272,13 @@ date()
 devtools::test()
 ```
 
-### Code of Conduct
+## sergeant Metrics
+
+```{r echo=FALSE}
+cloc::cloc_pkg_md()
+```
+
+## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). 
 By participating in this project you agree to abide by its terms.

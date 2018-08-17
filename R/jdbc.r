@@ -72,6 +72,7 @@ DrillJDBC <- function() {
   .jinit(classPath)
 
   .jaddClassPath(system.file("java", "RJDBC.jar", package="RJDBC"))
+  .jaddClassPath(system.file("java", "slf4j-nop-1.7.25.jar", package = "sergeant"))
 
   if (nchar(driverClass) && is.jnull(.jfindClass(as.character(driverClass)[1]))) {
     stop("Cannot find JDBC driver class ",driverClass)

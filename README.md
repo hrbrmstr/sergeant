@@ -5,7 +5,39 @@
 [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
 
-.0.jar`
+# sergeant
+
+Tools to Transform and Query Data with 'Apache' 'Drill'
+
+## NOTE
+
+Version 0.7.0 re-introduces an `RJDBC` (and, as such, an `rJava` depedency). If you desire this to be put into a sibling package, [cast your vote](https://github.com/hrbrmstr/sergeant/issues/20).
+
+## Description
+
+Drill + `sergeant` is (IMO) a nice alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
+
+I find writing SQL queries to parquet files with Drill on a local linux or macOS workstation to be more performant than doing the data ingestion work with R (especially for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.
+
+You can download Drill from <https://drill.apache.org/download/> (use "Direct File Download"). I use `/usr/local/drill` as the install directory. `drill-embedded` is a super-easy way to get started playing with Drill on a single workstation and most of my workflows can get by using Drill this way. If there is sufficient desire for an automated downloader and a way to start the `drill-embedded` server from within R, please file an issue.
+
+There are a few convenience wrappers for various informational SQL queries (like `drill_version()`). Please file an PR if you add more.
+
+The package has been written with retrieval of rectangular data sources in mind. If you need/want a version of `drill_query()` that will enable returning of non-rectangular data (which is possible with Drill) then please file an issue.
+
+Some of the more "controlling vs data ops" REST API functions aren't implemented. Please file a PR if you need those.
+
+The following functions are implemented:
+
+**`DBI`** (REST)
+
+- A "just enough" feature complete R `DBI` driver has been implemented using the Drill REST API, mostly to facilitate the `dplyr` interface. Use the `RJDBC` driver interface if you need more `DBI` functionality.
+- This also means that SQL functions unique to Drill have also been "implemented" (i.e. made accessible to the `dplyr` interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub. Many should work without it, but some may require a custom interface. 
+
+**`DBI`** (RJDBC)
+
+- `drill_jdbc`:	Connect to Drill using JDBC, enabling use of said idioms. See `RJDBC` for more info.
+- NOTE: The DRILL JDBC driver fully-qualified path must be placed in the `DRILL_JDBC_JAR` environment variable. This is best done via `~/.Renviron` for interactive work. i.e. `DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.14.0.jar`
 
 **`dplyr`**: (REST)
 

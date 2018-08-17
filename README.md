@@ -5,7 +5,7 @@
 [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
 
-# sergeant
+# 💂 sergeant
 
 Tools to Transform and Query Data with 'Apache' 'Drill'
 

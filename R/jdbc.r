@@ -78,6 +78,27 @@ setMethod(
 
 )
 
+#' Drill JDBC dbDataType
+#'
+#' @param dbObj A \code{\linkS4class{DrillJDBCDriver}} object
+#' @param obj Any R object
+#' @param ... Extra optional parameters
+#' @export
+setMethod(
+  "dbDataType",
+  "DrillJDBCConnection",
+  function(dbObj, obj, ...) {
+    if (is.integer(obj)) "INTEGER"
+    else if (inherits(obj, "Date")) "DATE"
+    else if (identical(class(obj), "times")) "TIME"
+    else if (inherits(obj, "POSIXct")) "TIMESTAMP"
+    else if (is.numeric(obj)) "DOUBLE"
+    else "VARCHAR(255)"
+  },
+  valueClass = "character"
+)
+
+
 #' Drill's JDBC driver main class loader
 #'
 #' @export
@@ -176,9 +197,17 @@ src_drill_jdbc <- function(nodes = "localhost:2181", cluster_id = NULL,
                            schema = NULL, use_zk = TRUE) {
 
   con <- drill_jdbc(nodes, cluster_id, schema, use_zk)
+  src_sql("drill_jdbc", con)
 
-  dbplyr::src_dbi(con)
+}
 
+#' @rdname drill_jdbc
+#' @param src A Drill "src" created with \code{src_drill()}
+#' @param from A Drill view or table specification
+#' @param ... Extra parameters
+#' @export
+tbl.src_drill_jdbc <- function(src, from, ...) {
+  tbl_sql("drill_jdbc", src=src, from=from, ...)
 }
 
 #' Drill internals
@@ -187,7 +216,6 @@ src_drill_jdbc <- function(nodes = "localhost:2181", cluster_id = NULL,
 #' @keywords internal
 #' @export
 db_data_type.DrillJDBCConnection <- function(con, fields, ...) {
-  print("\n\n\ndb_data_type\n\n\n")
   data_type <- function(x) {
     switch(
       class(x)[1],
@@ -204,6 +232,52 @@ db_data_type.DrillJDBCConnection <- function(con, fields, ...) {
   }
   vapply(fields, data_type, character(1))
 }
+
+#' Drill internals
+#'
+#' @rdname drill_jdbc_internals
+#' @keywords internal
+#' @export
+db_data_type.tbl_drill_jdbc <- db_data_type.DrillJDBCConnection
+
+#' @rdname drill_jdbc_internals
+#' @keywords internal
+#' @export
+setClass("DrillJDBCResult", representation("JDBCResult", jr="jobjRef", md="jobjRef", stat="jobjRef", pull="jobjRef"))
+
+#' @rdname drill_jdbc_internals
+#' @keywords internal
+#' @export
+setMethod(
+  f = "dbSendQuery",
+  signature = signature(conn="DrillJDBCConnection", statement="character"),
+  definition = function(conn, statement, ..., list=NULL) {
+    statement <- as.character(statement)[1L]
+    ## if the statement starts with {call or {?= call then we use CallableStatement
+    if (isTRUE(as.logical(grepl("^\\{(call|\\?= *call)", statement)))) {
+      s <- rJava::.jcall(conn@jc, "Ljava/sql/CallableStatement;", "prepareCall", statement, check=FALSE)
+      .verify.JDBC.result(s, "Unable to execute JDBC callable statement ",statement)
+      if (length(list(...))) .fillStatementParameters(s, list(...))
+      if (!is.null(list)) .fillStatementParameters(s, list)
+      r <- rJava::.jcall(s, "Ljava/sql/ResultSet;", "executeQuery", check=FALSE)
+      .verify.JDBC.result(r, "Unable to retrieve JDBC result set for ",statement)
+    } else if (length(list(...)) || length(list)) { ## use prepared statements if there are additional arguments
+      s <- rJava::.jcall(conn@jc, "Ljava/sql/PreparedStatement;", "prepareStatement", statement, check=FALSE)
+      .verify.JDBC.result(s, "Unable to execute JDBC prepared statement ", statement)
+      if (length(list(...))) .fillStatementParameters(s, list(...))
+      if (!is.null(list)) .fillStatementParameters(s, list)
+      r <- rJava::.jcall(s, "Ljava/sql/ResultSet;", "executeQuery", check=FALSE)
+      .verify.JDBC.result(r, "Unable to retrieve JDBC result set for ",statement)
+    } else { ## otherwise use a simple statement some DBs fail with the above)
+      s <- rJava::.jcall(conn@jc, "Ljava/sql/Statement;", "createStatement")
+      .verify.JDBC.result(s, "Unable to create simple JDBC statement ",statement)
+      r <- rJava::.jcall(s, "Ljava/sql/ResultSet;", "executeQuery", as.character(statement)[1], check=FALSE)
+      .verify.JDBC.result(r, "Unable to retrieve JDBC result set for ",statement)
+    }
+    md <- rJava::.jcall(r, "Ljava/sql/ResultSetMetaData;", "getMetaData", check=FALSE)
+    .verify.JDBC.result(md, "Unable to retrieve JDBC result set meta data for ",statement, " in dbSendQuery")
+    new("DrillJDBCResult", jr=r, md=md, stat=s, pull=.jnull())
+  })
 
 #' @rdname drill_jdbc_internals
 #' @keywords internal

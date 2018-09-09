@@ -148,6 +148,28 @@ drill_cancel <- function(drill_con, query_id) {
 #' @export
 #' @examples \dontrun{
 #' drill_connection() %>% drill_storage()
+#'
+#' drill_connection() %>%
+#'   drill_mod_storage(
+#'     name = "drilldat",
+#'     config = '
+#' {
+#'   "config" : {
+#'     "connection" : "file:///",
+#'     "enabled" : true,
+#'     "formats" : null,
+#'     "type" : "file",
+#'     "workspaces" : {
+#'       "root" : {
+#'         "location" : "/Users/hrbrmstr/drilldat",
+#'         "writable" : true,
+#'         "defaultInputFormat": null
+#'       }
+#'     }
+#'   },
+#'   "name" : "drilldat"
+#' }
+#' ')
 #' }
 drill_storage <- function(drill_con, plugin=NULL) {
 
@@ -164,6 +186,48 @@ drill_storage <- function(drill_con, plugin=NULL) {
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt, flatten=TRUE) %>%
     dplyr::tbl_df()
+
+}
+
+#' @md
+#' @rdname drill_storage
+#' @param name name of the storage plugin configuration to create/update/remove
+#' @param config a `list` or raw character, valid JSON of a complete storage
+#'        spec
+#' @export
+drill_mod_storage <- function(drill_con, name, config) {
+
+  drill_server <- make_server(drill_con)
+
+  httr::POST(
+    url = sprintf("%s/storage/%s.json", drill_server, name),
+    httr::content_type_json(),
+    body = config
+  ) -> res
+
+  httr::stop_for_status(res)
+
+  cnt <- httr::content(res, as="text", encoding="UTF-8")
+  jsonlite::fromJSON(cnt, flatten=TRUE)
+
+}
+
+#' @md
+#' @rdname drill_storage
+#' @export
+drill_rm_storage <- function(drill_con, name) {
+
+  drill_server <- make_server(drill_con)
+
+  httr::DELETE(
+    url = sprintf("%s/storage/%s.json", drill_server, name),
+    httr::content_type_json()
+  ) -> res
+
+  httr::stop_for_status(res)
+
+  cnt <- httr::content(res, as="text", encoding="UTF-8")
+  jsonlite::fromJSON(cnt, flatten=TRUE)
 
 }
 

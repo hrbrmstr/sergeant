@@ -2,14 +2,25 @@
 % Please edit documentation in R/sergeant.r
 \name{drill_storage}
 \alias{drill_storage}
+\alias{drill_mod_storage}
+\alias{drill_rm_storage}
 \title{Get the list of storage plugin names and configurations}
 \usage{
 drill_storage(drill_con, plugin = NULL)
+
+drill_mod_storage(drill_con, name, config)
+
+drill_rm_storage(drill_con, name)
 }
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
 \item{plugin}{the assigned name in the storage plugin definition.}
+
+\item{name}{name of the storage plugin configuration to create/update/remove}
+
+\item{config}{a \code{list} or raw character, valid JSON of a complete storage
+spec}
 }
 \description{
 Get the list of storage plugin names and configurations
@@ -17,6 +28,28 @@ Get the list of storage plugin names and configurations
 \examples{
 \dontrun{
 drill_connection() \%>\% drill_storage()
+
+drill_connection() \%>\%
+  drill_mod_storage(
+    name = "drilldat",
+    config = '
+{
+  "config" : {
+    "connection" : "file:///",
+    "enabled" : true,
+    "formats" : null,
+    "type" : "file",
+    "workspaces" : {
+      "root" : {
+        "location" : "/Users/hrbrmstr/drilldat",
+        "writable" : true,
+        "defaultInputFormat": null
+      }
+    }
+  },
+  "name" : "drilldat"
+}
+')
 }
 }
 \references{

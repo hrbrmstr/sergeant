@@ -3,6 +3,7 @@
 \name{drill_jdbc}
 \alias{drill_jdbc}
 \alias{src_drill_jdbc}
+\alias{tbl.src_drill_jdbc}
 \title{Connect to Drill using JDBC}
 \usage{
 drill_jdbc(nodes = "localhost:2181", cluster_id = NULL, schema = NULL,
@@ -10,6 +11,8 @@ drill_jdbc(nodes = "localhost:2181", cluster_id = NULL, schema = NULL,
 
 src_drill_jdbc(nodes = "localhost:2181", cluster_id = NULL, schema = NULL,
   use_zk = TRUE)
+
+\method{tbl}{src_drill_jdbc}(src, from, ...)
 }
 \arguments{
 \item{nodes}{character vector of nodes. If more than one node, you can either have
@@ -23,6 +26,12 @@ function will make a comma-separated node string for you.}
 
 \item{use_zk}{are you connecting to a ZooKeeper instance (default: \code{TRUE}) or
 connecting to an individual DrillBit.}
+
+\item{src}{A Drill "src" created with \code{src_drill()}}
+
+\item{from}{A Drill view or table specification}
+
+\item{...}{Extra parameters}
 }
 \value{
 a JDBC connection object

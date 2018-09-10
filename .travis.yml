@@ -6,6 +6,9 @@ cache: packages
 
 sudo: required
 
+services:
+  - docker
+
 jdk:
   - oraclejdk8
 
@@ -15,16 +18,12 @@ addons:
       - oracle-java8-set-default
 
 before_install:
-  - "sudo apt-get update -qq"
-  - "sudo apt-get install zookeeperd"
-  - "curl -o apache-drill-1.13.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.13.0/apache-drill-1.13.0.tar.gz"
-  - "sudo mkdir $HOME/local"
-  - "sudo chmod 777 $HOME/local"
-  - "tar -xvzf apache-drill-1.13.0.tar.gz -C $HOME/local"
+  - docker pull drill/apache-drill:1.14.0
+  - docker run -i --name drill-1.14.0 -p 8047:8047 --detach -t drill/apache-drill:1.14.0 /bin/bash
+  - docker ps -a
 
 before_script:
-  - "$HOME/local/apache-drill-1.13.0/bin/drillbit.sh start"
-  - "sleep 5"
+  - sleep 5
 
 after_success:
   - Rscript -e 'covr::codecov()'

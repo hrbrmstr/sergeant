@@ -1,3 +1,18 @@
+.fillStatementParameters <- function(s, l) {
+  for (i in 1:length(l)) {
+    v <- l[[i]]
+    if (is.na(v)) { # map NAs to NULLs (courtesy of Axel Klenk)
+      sqlType <- if (is.integer(v)) 4 else if (is.numeric(v)) 8 else 12
+      rJava::.jcall(s, "V", "setNull", i, as.integer(sqlType))
+    } else if (is.integer(v))
+      rJava::.jcall(s, "V", "setInt", i, v[1])
+    else if (is.numeric(v))
+      rJava::.jcall(s, "V", "setDouble", i, as.double(v)[1])
+    else
+      rJava::.jcall(s, "V", "setString", i, as.character(v)[1])
+  }
+}
+
 #' JDBC Driver for Drill database.
 #'
 #' @keywords internal
@@ -276,7 +291,7 @@ setMethod(
     }
     md <- rJava::.jcall(r, "Ljava/sql/ResultSetMetaData;", "getMetaData", check=FALSE)
     .verify.JDBC.result(md, "Unable to retrieve JDBC result set meta data for ",statement, " in dbSendQuery")
-    new("DrillJDBCResult", jr=r, md=md, stat=s, pull=.jnull())
+    new("DrillJDBCResult", jr=r, md=md, stat=s, pull=rJava::.jnull())
   })
 
 #' @rdname drill_jdbc_internals

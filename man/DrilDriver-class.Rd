@@ -15,3 +15,10 @@
 \description{
 Unload driver
 }
+\seealso{
+Other Drill REST DBI API: \code{\link{DrillConnection-class}},
+  \code{\link{DrillDriver-class}},
+  \code{\link{DrillResult-class}}, \code{\link{Drill}},
+  \code{\link{dbDataType,DrillConnection-method}}
+}
+\concept{Drill REST DBI API}

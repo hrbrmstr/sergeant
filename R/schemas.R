@@ -2,6 +2,7 @@
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
+#' @family Dill direct REST API Interface
 #' @export
 drill_show_schemas <- function(drill_con) {
   drill_query(drill_con, "SHOW SCHEMAS")
@@ -13,6 +14,7 @@ drill_show_schemas <- function(drill_con) {
 #' @param schema_name A unique name for a Drill schema. A schema in Drill is a configured
 #'                   storage plugin, such as hive, or a storage plugin and workspace.
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
+#' @family Dill direct REST API Interface
 #' @export
 drill_use <- function(drill_con, schema_name) {
   query <- sprintf("USE `%s`", schema_name)
@@ -27,6 +29,7 @@ drill_use <- function(drill_con, schema_name) {
 #' @param schema_spec properly quoted "filesystem.directory_name" reference path
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
+#' @family Dill direct REST API Interface
 #' @examples \dontrun{
 #' drill_connection() %>% drill_show_files("dfs.tmp")
 #' }

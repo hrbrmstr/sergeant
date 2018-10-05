@@ -17,3 +17,20 @@ Get the current memory metrics
 drill_connection() \%>\% drill_metrics()
 }
 }
+\seealso{
+Other Dill direct REST API Interface: \code{\link{drill_active}},
+  \code{\link{drill_cancel}},
+  \code{\link{drill_connection}},
+  \code{\link{drill_options}},
+  \code{\link{drill_profiles}},
+  \code{\link{drill_profile}}, \code{\link{drill_query}},
+  \code{\link{drill_settings_reset}},
+  \code{\link{drill_set}}, \code{\link{drill_show_files}},
+  \code{\link{drill_show_schemas}},
+  \code{\link{drill_stats}}, \code{\link{drill_status}},
+  \code{\link{drill_storage}},
+  \code{\link{drill_system_reset}},
+  \code{\link{drill_threads}}, \code{\link{drill_use}},
+  \code{\link{drill_version}}
+}
+\concept{Dill direct REST API Interface}

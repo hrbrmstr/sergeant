@@ -30,4 +30,11 @@
 \description{
 "SHOW DATABASES"
 }
+\seealso{
+Other Drill JDBC API: \code{\link{DrillJDBC}},
+  \code{\link{dbConnect,DrillJDBCDriver-method}},
+  \code{\link{dbDataType,DrillJDBCConnection-method}},
+  \code{\link{drill_jdbc}}
+}
+\concept{Drill JDBC API}
 \keyword{internal}

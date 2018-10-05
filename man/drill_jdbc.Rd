@@ -60,3 +60,20 @@ con <- drill_jdbc("localhost:31010", use_zk=FALSE)
 \references{
 \url{https://drill.apache.org/docs/using-the-jdbc-driver/#using-the-jdbc-url-for-a-random-drillbit-connection}
 }
+\seealso{
+Other Drill JDBC API: \code{\link{DrillJDBC}},
+  \code{\link{dbConnect,DrillJDBCDriver-method}},
+  \code{\link{dbDataType,DrillJDBCConnection-method}},
+  \code{\link{db_data_type.DrillJDBCConnection}}
+
+Other Drill JDBC API: \code{\link{DrillJDBC}},
+  \code{\link{dbConnect,DrillJDBCDriver-method}},
+  \code{\link{dbDataType,DrillJDBCConnection-method}},
+  \code{\link{db_data_type.DrillJDBCConnection}}
+
+Other Drill JDBC API: \code{\link{DrillJDBC}},
+  \code{\link{dbConnect,DrillJDBCDriver-method}},
+  \code{\link{dbDataType,DrillJDBCConnection-method}},
+  \code{\link{db_data_type.DrillJDBCConnection}}
+}
+\concept{Drill JDBC API}

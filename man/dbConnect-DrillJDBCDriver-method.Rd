@@ -22,3 +22,10 @@
 You should really use \code{\link[=drill_jdbc]{drill_jdbc()}} as it handles some cruft for
 you, but you can specify the full JDBC connection string
 }
+\seealso{
+Other Drill JDBC API: \code{\link{DrillJDBC}},
+  \code{\link{dbDataType,DrillJDBCConnection-method}},
+  \code{\link{db_data_type.DrillJDBCConnection}},
+  \code{\link{drill_jdbc}}
+}
+\concept{Drill JDBC API}

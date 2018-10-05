@@ -3,6 +3,7 @@ s_head <- purrr::safely(httr::HEAD)
 #' Driver for Drill database.
 #'
 #' @keywords internal
+#' @family Drill REST DBI API
 #' @export
 setClass(
   "DrillDriver",
@@ -14,6 +15,7 @@ setClass(
 #' @rdname DrilDriver-class
 #' @param drv driver
 #' @param ... Extra optional parameters
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   "dbUnloadDriver",
@@ -27,6 +29,7 @@ setMethod("show", "DrillDriver", function(object) {
 
 #' Drill
 #'
+#' @family Drill REST DBI API
 #' @export
 Drill <- function() {
   new("DrillDriver")
@@ -58,6 +61,7 @@ setClass(
 #' @param ssl use ssl?
 #' @param username,password credentials
 #' @param ... Extra optional parameters
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   "dbConnect",
@@ -122,6 +126,7 @@ cmake_server <- function(conn) {
 #' @param conn connection
 #' @param statement SQL statement
 #' @param ... passed on to methods
+#' @family Drill REST DBI API
 #' @aliases dbSendQuery,DrillConnection,character-method
 setMethod(
   "dbSendQuery",
@@ -138,6 +143,7 @@ setMethod(
 #' Clear
 #'
 #' @rdname DrillResult-class
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   "dbClearResult",
@@ -149,6 +155,7 @@ setMethod(
 #'
 #' @rdname DrillResult-class
 #' @param .progress show data transfer progress?
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   "dbFetch",
@@ -200,6 +207,7 @@ setMethod(
 #' @param dbObj A \code{\linkS4class{DrillDriver}} object
 #' @param obj Any R object
 #' @param ... Extra optional parameters
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   "dbDataType",
@@ -218,6 +226,7 @@ setMethod(
 #' Completed
 #'
 #' @rdname DrillResult-class
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   "dbHasCompleted",
@@ -226,6 +235,7 @@ setMethod(
 )
 
 #' @rdname DrillConnection-class
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   'dbIsValid',
@@ -237,6 +247,7 @@ setMethod(
 )
 
 #' @rdname DrillConnection-class
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   'dbListFields',
@@ -248,6 +259,7 @@ setMethod(
 )
 
 #' @rdname DrillResult-class
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   'dbListFields',
@@ -268,6 +280,7 @@ setMethod(
 #' Statement
 #'
 #' @rdname DrillResult-class
+#' @family Drill REST DBI API
 #' @export
 setMethod(
   'dbGetStatement',

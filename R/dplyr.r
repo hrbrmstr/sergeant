@@ -9,6 +9,7 @@
 #' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
 #' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
 #' @param ssl use ssl?
+#' @family Drill REST `dplyr` API
 #' @param username,password if not `NULL` the credentials for the Drill service.
 #' @note This is a DBI wrapper around the Drill REST API.
 #' @export
@@ -78,6 +79,7 @@ src_drill <- function(host  = Sys.getenv("DRILL_HOST", "localhost"),
 #'
 #' @rdname src_tbls
 #' @param x x
+#' @family Drill REST `dplyr` API
 #' @export
 src_tbls.src_drill <- function(x) {
   tmp <- dbGetQuery(x$con, "SHOW DATABASES")
@@ -115,6 +117,7 @@ copy_to.src_drill <- function(dest, df, name, overwrite, ...) {
 #' @rdname src_drill
 #' @param src A Drill "src" created with \code{src_drill()}
 #' @param from A Drill view or table specification
+#' @family Drill REST `dplyr` API
 #' @param ... Extra parameters
 #' @export
 tbl.src_drill <- function(src, from, ...) {

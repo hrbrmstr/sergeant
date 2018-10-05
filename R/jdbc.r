@@ -38,6 +38,7 @@ setClass(
 #' you, but you can specify the full JDBC connection string
 #'
 #' @md
+#' @family Drill JDBC API
 #' @param drv what you get back from [DrillJDBC()]
 #' @param url your Drill connection strinfg
 #' @param user,password username & password (leave as-is for no-auth)
@@ -98,6 +99,7 @@ setMethod(
 #' @param dbObj A \code{\linkS4class{DrillJDBCDriver}} object
 #' @param obj Any R object
 #' @param ... Extra optional parameters
+#' @family Drill JDBC API
 #' @export
 setMethod(
   "dbDataType",
@@ -116,6 +118,7 @@ setMethod(
 
 #' Drill's JDBC driver main class loader
 #'
+#' @family Drill JDBC API
 #' @export
 DrillJDBC <- function() {
 
@@ -161,6 +164,7 @@ DrillJDBC <- function() {
 #' @param schema an optional schema name to append to the JDBC connection string
 #' @param use_zk are you connecting to a ZooKeeper instance (default: \code{TRUE}) or
 #'               connecting to an individual DrillBit.
+#' @family Drill JDBC API
 #' @return a JDBC connection object
 #' @references \url{https://drill.apache.org/docs/using-the-jdbc-driver/#using-the-jdbc-url-for-a-random-drillbit-connection}
 #' @export
@@ -207,6 +211,7 @@ drill_jdbc <- function(nodes = "localhost:2181", cluster_id = NULL,
 }
 
 #' @rdname drill_jdbc
+#' @family Drill JDBC API
 #' @export
 src_drill_jdbc <- function(nodes = "localhost:2181", cluster_id = NULL,
                            schema = NULL, use_zk = TRUE) {
@@ -220,6 +225,7 @@ src_drill_jdbc <- function(nodes = "localhost:2181", cluster_id = NULL,
 #' @param src A Drill "src" created with \code{src_drill()}
 #' @param from A Drill view or table specification
 #' @param ... Extra parameters
+#' @family Drill JDBC API
 #' @export
 tbl.src_drill_jdbc <- function(src, from, ...) {
   tbl_sql("drill_jdbc", src=src, from=from, ...)
@@ -409,6 +415,7 @@ sql_translate_env.DrillJDBCConnection <- function(con) {
 #' "SHOW DATABASES"
 #'
 #' @rdname drill_jdbc_internals
+#' @family Drill JDBC API
 #' @keywords internal
 #' @param x x
 #' @export

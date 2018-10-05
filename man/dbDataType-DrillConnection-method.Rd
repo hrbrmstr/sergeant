@@ -17,3 +17,10 @@
 \description{
 Drill dbDataType
 }
+\seealso{
+Other Drill REST DBI API: \code{\link{DrillConnection-class}},
+  \code{\link{DrillDriver-class}},
+  \code{\link{DrillResult-class}}, \code{\link{Drill}},
+  \code{\link{dbUnloadDriver,DrillDriver-method}}
+}
+\concept{Drill REST DBI API}

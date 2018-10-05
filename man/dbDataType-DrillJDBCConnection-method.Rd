@@ -17,3 +17,10 @@
 \description{
 Drill JDBC dbDataType
 }
+\seealso{
+Other Drill JDBC API: \code{\link{DrillJDBC}},
+  \code{\link{dbConnect,DrillJDBCDriver-method}},
+  \code{\link{db_data_type.DrillJDBCConnection}},
+  \code{\link{drill_jdbc}}
+}
+\concept{Drill JDBC API}

@@ -78,3 +78,8 @@ You can get a compact list of these with:
 
 as well.
 }
+\seealso{
+Other Drill REST `dplyr` API: \code{\link{src_drill}},
+  \code{\link{src_tbls.src_drill}}
+}
+\concept{Drill REST `dplyr` API}

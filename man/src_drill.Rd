@@ -82,3 +82,11 @@ select(emp, full_name) \%>\%
 ## # ... with more rows, and 3 more variables: rpd <chr>, rnd <dbl>, first_three <chr>
 }
 }
+\seealso{
+Other Drill REST `dplyr` API: \code{\link{drill_custom_functions}},
+  \code{\link{src_tbls.src_drill}}
+
+Other Drill REST `dplyr` API: \code{\link{drill_custom_functions}},
+  \code{\link{src_tbls.src_drill}}
+}
+\concept{Drill REST `dplyr` API}

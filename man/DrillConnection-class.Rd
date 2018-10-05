@@ -27,4 +27,21 @@ Drill connection class.
 
 Send a query to Drill
 }
+\seealso{
+Other Drill REST DBI API: \code{\link{DrillDriver-class}},
+  \code{\link{DrillResult-class}}, \code{\link{Drill}},
+  \code{\link{dbDataType,DrillConnection-method}},
+  \code{\link{dbUnloadDriver,DrillDriver-method}}
+
+Other Drill REST DBI API: \code{\link{DrillDriver-class}},
+  \code{\link{DrillResult-class}}, \code{\link{Drill}},
+  \code{\link{dbDataType,DrillConnection-method}},
+  \code{\link{dbUnloadDriver,DrillDriver-method}}
+
+Other Drill REST DBI API: \code{\link{DrillDriver-class}},
+  \code{\link{DrillResult-class}}, \code{\link{Drill}},
+  \code{\link{dbDataType,DrillConnection-method}},
+  \code{\link{dbUnloadDriver,DrillDriver-method}}
+}
+\concept{Drill REST DBI API}
 \keyword{internal}

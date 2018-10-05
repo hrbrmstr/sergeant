@@ -276,5 +276,15 @@ drill_stats <- function(drill_con) {
 #' drill_connection() %>% drill_version()
 #' }
 drill_version <- function(drill_con) {
-  drill_query(drill_con, "SELECT version FROM sys.version", uplift=FALSE, .progress=FALSE)$rows$version[1]
+  if (inherits(drill_con, "src_drill")) {
+    dplyr::collect(
+      dplyr::tbl(drill_con, dplyr::sql("(SELECT version FROM sys.version)"))
+    )$version[1]
+  } else {
+    drill_query(drill_con, "SELECT version FROM sys.version", uplift=FALSE, .progress=FALSE)$rows$version[1]
+  }
 }
+
+
+
+

@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Setup a Drill connection — drill_connection" />
+
+<meta property="og:description" content="Setup a Drill connection" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,26 +59,37 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">sergeant</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sergeant</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/hrbrmstr/sergeant">
+  <a href="https://github.com/hrbrmstr/sergeant">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -74,22 +97,26 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Setup a Drill connection</h1>
+    <small class="dont-index">Source: <a href='https://github.com/hrbrmstr/sergeant/blob/master/R/sergeant.r'><code>R/sergeant.r</code></a></small>
+    <div class="hidden name"><code>drill_connection.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Setup a Drill connection</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>drill_connection</span>(<span class='kw'>host</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_HOST"</span>, <span class='st'>"localhost"</span>),
   <span class='kw'>port</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_PORT"</span>, <span class='fl'>8047</span>), <span class='kw'>ssl</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>user</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_USER"</span>, <span class='st'>""</span>),
   <span class='kw'>password</span> <span class='kw'>=</span> <span class='fu'>Sys.getenv</span>(<span class='st'>"DRILL_PASSWORD"</span>, <span class='st'>""</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -106,11 +133,30 @@
     </tr>
     <tr>
       <th>user, password</th>
-      <td><p>NOT IMPLEMENTED YET credentials for username/password auth.
-(will pick up the values from <code>DRILL_USER</code>/<code>DRILL_PASSWORD</code>
-env vars)</p></td>
+      <td><p>(will pick up the values from <code>DRILL_USER</code>/<code>DRILL_PASSWORD</code> env vars)</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>If <code>user</code>/<code>password</code> are set this function will make a <code>POST</code> to the REST
+interface immediately to prime the cookie-jar with the session id.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other Dill direct REST API Interface: <code><a href='drill_active.html'>drill_active</a></code>,
+  <code><a href='drill_cancel.html'>drill_cancel</a></code>, <code><a href='drill_metrics.html'>drill_metrics</a></code>,
+  <code><a href='drill_options.html'>drill_options</a></code>,
+  <code><a href='drill_profiles.html'>drill_profiles</a></code>,
+  <code><a href='drill_profile.html'>drill_profile</a></code>, <code><a href='drill_query.html'>drill_query</a></code>,
+  <code><a href='drill_settings_reset.html'>drill_settings_reset</a></code>,
+  <code><a href='drill_set.html'>drill_set</a></code>, <code><a href='drill_show_files.html'>drill_show_files</a></code>,
+  <code><a href='drill_show_schemas.html'>drill_show_schemas</a></code>,
+  <code><a href='drill_stats.html'>drill_stats</a></code>, <code><a href='drill_status.html'>drill_status</a></code>,
+  <code><a href='drill_storage.html'>drill_storage</a></code>,
+  <code><a href='drill_system_reset.html'>drill_system_reset</a></code>,
+  <code><a href='drill_threads.html'>drill_threads</a></code>, <code><a href='drill_use.html'>drill_use</a></code>,
+  <code><a href='drill_version.html'>drill_version</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -120,7 +166,11 @@ env vars)</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#note">Note</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -133,11 +183,14 @@ env vars)</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

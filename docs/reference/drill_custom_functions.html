@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Drill expressions / custom functions <code>dplyr</code> translation: — drill_custom_functions • sergeant</title>
+<title>Drill expressions / custom functions <code>dplyr</code> translations — drill_custom_functions • sergeant</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,27 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Drill expressions / custom functions <code>dplyr</code> translations — drill_custom_functions" />
+
+<meta property="og:description" content="One benefit of dplyr is that it provide a nice DSL over datasbase ops but that
+means there needs to be knowlege of functions supported by the host database and
+then a translation layer so they can be used in R." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,26 +61,37 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">sergeant</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sergeant</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/hrbrmstr/sergeant">
+  <a href="https://github.com/hrbrmstr/sergeant">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -74,23 +99,44 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Drill expressions / custom functions <code>dplyr</code> translation:</h1>
+    <h1>Drill expressions / custom functions <code>dplyr</code> translations</h1>
+    <small class="dont-index">Source: <a href='https://github.com/hrbrmstr/sergeant/blob/master/R/custom.r'><code>R/custom.r</code></a></small>
+    <div class="hidden name"><code>drill_custom_functions.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <ul>
-<li><p><code>as.character(x)</code> : <code>CAST( x AS CHARACTER)</code></p></li>
-<li><p><code>as.date(x)</code> : <code>CAST( x AS DATE)</code></p></li>
+    <p>One benefit of <code>dplyr</code> is that it provide a nice DSL over datasbase ops but that
+means there needs to be knowlege of functions supported by the host database and
+then a translation layer so they can be used in R.</p>
+    
+    </div>
+
+        
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Similarly, there are functions like <code>grepl()</code> in R that don't directly exist in
+databases. Yet, one can create a translation for <code>grepl()</code> that maps to a
+<a href='https://github.com/parisni/drill-simple-contains'>Drill custom function</a> so you
+don't have to think differently or rewrite your pipes when switching from core
+tidyverse ops and database ops.</p>
+<p>Many functions translate on their own, but it's handy to provide explicit ones,
+especially when you want to use parameters in a different order.</p>
+<p>If you want a particular custom function mapped, file a PR or issue request in
+the link found in the <code>DESCRIPTION</code> file.</p><ul>
+<li><p><code>as.character(x)</code> : <code>CAST( x AS CHARACTER )</code></p></li>
+<li><p><code>as.date(x)</code> : <code>CAST( x AS DATE )</code></p></li>
 <li><p><code>as.logical(x)</code> : <code>CAST( x AS BOOLEAN)</code></p></li>
-<li><p><code>as.numeric(x)</code> : <code>CAST( x AS DOUBLE)</code></p></li>
-<li><p><code>as.posixct(x)</code> : <code>CAST( x AS TIMESTAMP)</code></p></li>
+<li><p><code>as.numeric(x)</code> : <code>CAST( x AS DOUBLE )</code></p></li>
+<li><p><code>as.posixct(x)</code> : <code>CAST( x AS TIMESTAMP )</code></p></li>
 <li><p><code>binary_string(x)</code> : <code>BINARY_STRING( x )</code></p></li>
 <li><p><code>cbrt(x)</code> : <code>CBRT( x )</code></p></li>
 <li><p><code>char_to_timestamp(x, y)</code> : <code>TO_TIMESTAMP( x, y )</code></p></li>
-<li><p><code>contains(x, y)</code> : <code>CONTAINS x, y )</code></p></li>
+<li><p><code>grepl(y, x)</code> : <code>CONTAINS( x, y )</code></p></li>
+<li><p><code>contains(x, y)</code> : <code>CONTAINS( x, y )</code></p></li>
 <li><p><code>convert_to(x, y)</code> : <code>CONVERT_TO( x, y )</code></p></li>
 <li><p><code>convert_from(x, y)</code> : <code>CONVERT_FROM( x, y )</code></p></li>
 <li><p><code>degrees(x)</code> : <code>DEGREES( x )</code></p></li>
@@ -105,37 +151,40 @@
 <li><p><code>to_date(x, y)</code> : <code>TO_DATE( x, y )</code></p></li>
 <li><p><code>to_number(x, y)</code> : <code>TO_NUMBER( x, y )</code></p></li>
 <li><p><code>trunc(x)</code> : <code>TRUNC( x )</code></p></li>
+<li><p><code>double_to_timestamp(x)</code> = <code>TO_TIMESTAMP( x )</code></p></li>
+<li><p><code>char_length(x)</code> = <code>CHAR_LENGTH( x )</code></p></li>
+<li><p><code>flatten(x)</code> = <code>FLATTEN( x )</code></p></li>
+<li><p><code>kvgen(x)</code> = <code>KVGEN( x )</code></p></li>
+<li><p><code>repeated_count(x)</code> = <code>REPEATED_COUNT( x )</code></p></li>
+<li><p><code>repeated_contains(x)</code> = <code>REPEATED_CONTAINS( x )</code></p></li>
+<li><p><code>ilike(x, y)</code> = <code>ILIKE( x, y )</code></p></li>
+<li><p><code>init_cap(x)</code> = <code>INIT_CAP( x )</code></p></li>
+<li><p><code>length(x)</code> = <code>LENGTH( x )</code></p></li>
+<li><p><code>lower(x)</code> = <code>LOWER( x )</code></p></li>
+<li><p><code>tolower(x)</code> = <code>LOWER( x )</code></p></li>
+<li><p><code>ltrim(x, y)</code> = <code>LTRIM( x, y )</code></p></li>
+<li><p><code>nullif(x, y</code> = <code>NULLIF( x, y )</code></p></li>
+<li><p><code>position(x, y)</code> = <code>POSITION( x IN y )</code></p></li>
+<li><p><code>gsub(x, y, z)</code> = <code>REGEXP_REPLACE( z, x, y )</code></p></li>
+<li><p><code>regexp_replace(x, y, z)</code> = <code>REGEXP_REPLACE( x, y, z )</code></p></li>
+<li><p><code>rtrim(x, y)</code> = <code>RTRIM( x, y )</code></p></li>
+<li><p><code>rpad(x, y)</code> = <code>RPAD( x, y )</code></p></li>
+<li><p><code>rpad_with(x, y, z)</code> = <code>RPAD( x, y, z )</code></p></li>
+<li><p><code>lpad(x, y)</code> = <code>LPAD( x, y )</code></p></li>
+<li><p><code>lpad_with(x, y, z)</code> = <code>LPAD( x, y, z )</code></p></li>
+<li><p><code>strpos(x, y)</code> = <code>STRPOS( x, y )</code></p></li>
+<li><p><code>substr(x, y, z)</code> = <code>SUBSTR( x, y, z )</code></p></li>
+<li><p><code>upper(x)</code> = <code>UPPER(1)</code></p></li>
+<li><p><code>toupper(x)</code> = <code>UPPER(1)</code></p></li>
 </ul>
+    <p>You can get a compact list of these with:</p>
+<p><code>sql_translate_env(src_drill()$con)</code></p>
+<p>as well.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-        
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>I'll get these converted into ^^ format:</p><ul>
-<li><p><code>double_to_timestamp</code> = <code>sql_prefix("TO_TIMESTAMP", 1),</code></p></li>
-<li><p><code>char_length</code> = <code>sql_prefix("CHAR_LENGTH", 1),</code></p></li>
-<li><p><code>flatten</code> = <code>sql_prefix("FLATTEN", 1),</code></p></li>
-<li><p><code>kvgen</code> = <code>sql_prefix("KVGEN", 1),</code></p></li>
-<li><p><code>repeated_count</code> = <code>sql_prefix("REPEATED_COUNT", 1),</code></p></li>
-<li><p><code>repeated_contains</code> = <code>sql_prefix("REPEATED_CONTAINS", 1),</code></p></li>
-<li><p><code>ilike</code> = <code>sql_prefix("ILIKE", 2),</code></p></li>
-<li><p><code>init_cap</code> = <code>sql_prefix("INIT_CAP", 1),</code></p></li>
-<li><p><code>length</code> = <code>sql_prefix("LENGTH", 1),</code></p></li>
-<li><p><code>lower</code> = <code>sql_prefix("LOWER", 1),</code></p></li>
-<li><p><code>ltrim</code> = <code>sql_prefix("LTRIM", 2),</code></p></li>
-<li><p><code>nullif</code> = <code>sql_prefix("NULLIF", 2),</code></p></li>
-<li><p><code>position</code> = <code>function(x, y) build_sql("POSITION(", x, " IN ", y, ")"),</code></p></li>
-<li><p><code>regexp_replace</code> = <code>sql_prefix("REGEXP_REPLACE", 3),</code></p></li>
-<li><p><code>rtrim</code> = <code>sql_prefix("RTRIM", 2),</code></p></li>
-<li><p><code>rpad</code> = <code>sql_prefix("RPAD", 2),</code></p></li>
-<li><p><code>rpad_with</code> = <code>sql_prefix("RPAD", 3),</code></p></li>
-<li><p><code>lpad</code> = <code>sql_prefix("LPAD", 2),</code></p></li>
-<li><p><code>lpad_with</code> = <code>sql_prefix("LPAD", 3),</code></p></li>
-<li><p><code>strpos</code> = <code>sql_prefix("STRPOS", 2),</code></p></li>
-<li><p><code>substr</code> = <code>sql_prefix("SUBSTR", 3),</code></p></li>
-<li><p><code>trim</code> = <code>function(x, y, z) build_sql("TRIM(", x, " ", y, " FROM ", z, ")"),</code></p></li>
-<li><p><code>upper</code> = <code>sql_prefix("UPPER", 1)</code></p></li>
-</ul>
+    <div class='dont-index'><p>Other Drill REST `dplyr` API: <code><a href='src_drill.html'>src_drill</a></code>,
+  <code><a href='src_tbls.html'>src_tbls.src_drill</a></code></p></div>
     
 
   </div>
@@ -144,6 +193,8 @@
     <ul class="nav nav-pills nav-stacked">
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>
@@ -155,11 +206,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

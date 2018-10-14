@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • sergeant</title>
+<title>Changelog • sergeant</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Changelog" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,26 +56,37 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">sergeant</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sergeant</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/hrbrmstr/sergeant">
+  <a href="https://github.com/hrbrmstr/sergeant">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -74,48 +94,81 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/hrbrmstr/sergeant/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="contents">
-    <div id="sergeant-0-5-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-5-0" class="anchor"></a>sergeant 0.5.0</h1>
+    <div id="sergeant-0-7-0-beta" class="section level1">
+<h1 class="page-header">
+<a href="#sergeant-0-7-0-beta" class="anchor"></a>sergeant 0.7.0-BETA<small> Unreleased </small>
+</h1>
 <ul>
-<li>make rJava &amp; RJDBC optional (WIP)</li>
+<li>separated out Java-based functions into a sibling package</li>
+</ul>
+</div>
+    <div id="sergeant-0-7-0-alpha" class="section level1">
+<h1 class="page-header">
+<a href="#sergeant-0-7-0-alpha" class="anchor"></a>sergeant 0.7.0-ALPHA<small> Unreleased </small>
+</h1>
+<ul>
+<li>enhanced JDBC connectivity</li>
+<li>updated REST API to handle new features in Drill 1.14.0</li>
+</ul>
+</div>
+    <div id="sergeant-0-6-0" class="section level1">
+<h1 class="page-header">
+<a href="#sergeant-0-6-0" class="anchor"></a>sergeant 0.6.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>Authentication support for DBI/dplyr and <code><a href="../reference/drill_connection.html">drill_connection()</a></code> pure REST interface</li>
+</ul>
+</div>
+    <div id="sergeant-0-5-2" class="section level1">
+<h1 class="page-header">
+<a href="#sergeant-0-5-2" class="anchor"></a>sergeant 0.5.2<small> 2017-07-17 </small>
+</h1>
+<ul>
+<li>Make rJava &amp; RJDBC optional (WIP)</li>
+<li>Hack to remove “;” at end of queries sent to <code><a href="../reference/drill_query.html">drill_query()</a></code>
+</li>
+<li>Added <code>dbplyr</code> windows functions to <code>sql_translate_env</code>
+</li>
 </ul>
 </div>
     <div id="sergeant-0-4-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-4-0" class="anchor"></a>sergeant 0.4.0</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-4-0" class="anchor"></a>sergeant 0.4.0<small> Unreleased </small>
+</h1>
 <ul>
 <li>Getting ready for new <code>dplyr</code> (thx to Edward Visel)</li>
 <li>Cleaned up roxygen docs so that <code>src_drill</code> is exported now.</li>
 </ul>
 </div>
     <div id="sergeant-0-3-2" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-3-2" class="anchor"></a>sergeant 0.3.2</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-3-2" class="anchor"></a>sergeant 0.3.2<small> Unreleased </small>
+</h1>
 <ul>
 <li>Finally got quoting done. I thought I had before but I guess I hadn’t.</li>
 <li>Added documnentation for built-in and custom Drill function that are supported.</li>
 </ul>
 </div>
     <div id="sergeant-0-3-1-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-3-1-9000" class="anchor"></a>sergeant 0.3.1.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-3-1-9000" class="anchor"></a>sergeant 0.3.1.9000<small> Unreleased </small>
+</h1>
 <ul>
 <li>fixed <code><a href="../reference/src_drill.html">src_drill()</a></code> example</li>
-<li>JDBC driver still in github repo but no longer included in pkg builds. See README.md or <code><a href="../reference/drill_jdbc.html">drill_jdbc()</a></code> help for more information on using the JDBC driver with sergeant.</li>
+<li>JDBC driver still in github repo but no longer included in pkg builds. See README.md or <code>drill_jdbc()</code> help for more information on using the JDBC driver with sergeant.</li>
 </ul>
 </div>
     <div id="sergeant-0-3-0-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-3-0-9000" class="anchor"></a>sergeant 0.3.0.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-3-0-9000" class="anchor"></a>sergeant 0.3.0.9000<small> Unreleased </small>
+</h1>
 <ul>
 <li>New DBI interface (to the REST API)</li>
 <li>dplyr interface now uses the DBI interace to the REST API</li>
@@ -123,61 +176,69 @@
 </ul>
 </div>
     <div id="sergeant-0-2-1-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-2-1-9000" class="anchor"></a>sergeant 0.2.1.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-2-1-9000" class="anchor"></a>sergeant 0.2.1.9000<small> Unreleased </small>
+</h1>
 <ul>
 <li>implemented a large subset of Drill SQL Functions <a href="https://drill.apache.org/docs/about-sql-function-examples/" class="uri">https://drill.apache.org/docs/about-sql-function-examples/</a>
 </li>
 </ul>
 </div>
     <div id="sergeant-0-2-0-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-2-0-9000" class="anchor"></a>sergeant 0.2.0.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-2-0-9000" class="anchor"></a>sergeant 0.2.0.9000<small> Unreleased </small>
+</h1>
 <ul>
 <li>experimental alpha dplyr driver</li>
 </ul>
 </div>
     <div id="sergeant-0-1-2-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-1-2-9000" class="anchor"></a>sergeant 0.1.2.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-1-2-9000" class="anchor"></a>sergeant 0.1.2.9000<small> Unreleased </small>
+</h1>
 <ul>
-<li>can pass RJDBC connections made with <code><a href="../reference/drill_jdbc.html">drill_jdbc()</a></code> to <code><a href="../reference/drill_query.html">drill_query()</a></code>
+<li>can pass RJDBC connections made with <code>drill_jdbc()</code> to <code><a href="../reference/drill_query.html">drill_query()</a></code>
 </li>
 <li>finally enaled <code>nodes</code> parameter to be a multi-element character vector as it said in the function description</li>
 </ul>
 </div>
     <div id="sergeant-0-1-2-9000-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-1-2-9000-1" class="anchor"></a>sergeant 0.1.2.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-1-2-9000-1" class="anchor"></a>sergeant 0.1.2.9000<small> Unreleased </small>
+</h1>
 <ul>
 <li>support embedded drill JDBC connection</li>
 </ul>
 </div>
     <div id="sergeant-0-1-1-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-1-1-9000" class="anchor"></a>sergeant 0.1.1.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-1-1-9000" class="anchor"></a>sergeant 0.1.1.9000<small> Unreleased </small>
+</h1>
 <ul>
 <li>tweaked <code><a href="../reference/drill_query.html">drill_query()</a></code> and <code><a href="../reference/drill_version.html">drill_version()</a></code>
 </li>
 </ul>
 </div>
     <div id="sergeant-0-1-0-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sergeant-0-1-0-9000" class="anchor"></a>sergeant 0.1.0.9000</h1>
+<h1 class="page-header">
+<a href="#sergeant-0-1-0-9000" class="anchor"></a>sergeant 0.1.0.9000<small> Unreleased </small>
+</h1>
 <ul>
 <li>Added JDBC connector and included JDBC driver in the package (for now)</li>
 <li>Changed idiom to piping in a connection object</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#sergeant-0-5-0">0.5.0</a></li>
+        <li><a href="#sergeant-0-7-0-beta">0.7.0</a></li>
+        <li><a href="#sergeant-0-7-0-alpha">0.7.0</a></li>
+        <li><a href="#sergeant-0-6-0">0.6.0</a></li>
+        <li><a href="#sergeant-0-5-2">0.5.2</a></li>
         <li><a href="#sergeant-0-4-0">0.4.0</a></li>
         <li><a href="#sergeant-0-3-2">0.3.2</a></li>
         <li><a href="#sergeant-0-3-1-9000">0.3.1.9000</a></li>
@@ -200,11 +261,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

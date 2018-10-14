@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Function reference" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,26 +56,37 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">sergeant</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">sergeant</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/hrbrmstr/sergeant">
+  <a href="https://github.com/hrbrmstr/sergeant">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -74,202 +94,192 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.5.0</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="dbDataType-DrillConnection-method.html">dbDataType</a></code> </p>
-          </td>
-          <td><p>Drill dbDataType</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="DrilDriver-class.html">dbUnloadDriver</a></code> </p>
-          </td>
-          <td><p>Unload driver</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_active.html">drill_active</a></code> </p>
-          </td>
-          <td><p>Test whether Drill HTTP REST API server is up</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_cancel.html">drill_cancel</a></code> </p>
-          </td>
-          <td><p>Cancel the query that has the given queryid</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_connection.html">drill_connection</a></code> </p>
-          </td>
-          <td><p>Setup a Drill connection</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_custom_functions.html">drill_custom_functions</a></code> </p>
-          </td>
-          <td><p>Drill expressions / custom functions <code>dplyr</code> translation:</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_jdbc.html">drill_jdbc</a></code> </p>
-          </td>
-          <td><p>Connect to Drill using JDBC</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_metrics.html">drill_metrics</a></code> </p>
-          </td>
-          <td><p>Get the current memory metrics</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_options.html">drill_options</a></code> </p>
-          </td>
-          <td><p>List the name, default, and data type of the system and session options</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_profile.html">drill_profile</a></code> </p>
-          </td>
-          <td><p>Get the profile of the query that has the given queryid</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_profiles.html">drill_profiles</a></code> </p>
-          </td>
-          <td><p>Get the profiles of running and completed queries</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_query.html">drill_query</a></code> </p>
-          </td>
-          <td><p>Submit a query and return results</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_set.html">drill_set</a></code> </p>
-          </td>
-          <td><p>Set Drill SYSTEM or SESSION options</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_settings_reset.html">drill_settings_reset</a></code> </p>
-          </td>
-          <td><p>Changes (optionally, all) session settings back to system defaults</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_show_files.html">drill_show_files</a></code> </p>
-          </td>
-          <td><p>Show files in a file system schema.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_show_schemas.html">drill_show_schemas</a></code> </p>
-          </td>
-          <td><p>Returns a list of available schemas.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_stats.html">drill_stats</a></code> </p>
-          </td>
-          <td><p>Get Drillbit information, such as ports numbers</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_status.html">drill_status</a></code> </p>
-          </td>
-          <td><p>Get the status of Drill</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_storage.html">drill_storage</a></code> </p>
-          </td>
-          <td><p>Get the list of storage plugin names and configurations</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_system_reset.html">drill_system_reset</a></code> </p>
-          </td>
-          <td><p>Changes (optionally, all) system settings back to system defaults</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_threads.html">drill_threads</a></code> </p>
-          </td>
-          <td><p>Get information about threads</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_uplift.html">drill_uplift</a></code> </p>
-          </td>
-          <td><p>Turn columnar query results into a type-converted tbl</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_use.html">drill_use</a></code> </p>
-          </td>
-          <td><p>Change to a particular schema.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="drill_version.html">drill_version</a></code> </p>
-          </td>
-          <td><p>Identify the version of Drill running</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="Drill.html">Drill</a></code> <code><a href="Drill.html">dbConnect</a></code> </p>
-          </td>
-          <td><p>Drill</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sergeant-exports.html">sergeant-exports</a></code> </p>
-          </td>
-          <td><p>sergeant exported operators</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sergeant.html">sergeant</a></code> </p>
-          </td>
-          <td><p>Tools to Transform and Query Data with 'Apache' 'Drill'</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="src_drill.html">src_drill</a></code> <code><a href="src_drill.html">tbl</a></code> </p>
-          </td>
-          <td><p>Connect to Drill (dplyr)</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="DrilDriver-class.html">dbUnloadDriver(<i>&lt;DrillDriver&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Unload driver</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Drill.html">Drill()</a></code> <code><a href="Drill.html">dbConnect(<i>&lt;DrillDriver&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Drill</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dbDataType-DrillConnection-method.html">dbDataType(<i>&lt;DrillConnection&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Drill dbDataType</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_active.html">drill_active()</a></code> </p>
+        </td>
+        <td><p>Test whether Drill HTTP Dill direct REST API Interface server is up</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_cancel.html">drill_cancel()</a></code> </p>
+        </td>
+        <td><p>Cancel the query that has the given queryid</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_connection.html">drill_connection()</a></code> </p>
+        </td>
+        <td><p>Setup a Drill connection</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_custom_functions.html">drill_custom_functions</a></code> </p>
+        </td>
+        <td><p>Drill expressions / custom functions <code>dplyr</code> translations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_metrics.html">drill_metrics()</a></code> </p>
+        </td>
+        <td><p>Get the current memory metrics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_options.html">drill_options()</a></code> </p>
+        </td>
+        <td><p>List the name, default, and data type of the system and session options</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_profile.html">drill_profile()</a></code> </p>
+        </td>
+        <td><p>Get the profile of the query that has the given queryid</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_profiles.html">drill_profiles()</a></code> </p>
+        </td>
+        <td><p>Get the profiles of running and completed queries</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_query.html">drill_query()</a></code> </p>
+        </td>
+        <td><p>Submit a query and return results</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_set.html">drill_set()</a></code> </p>
+        </td>
+        <td><p>Set Drill SYSTEM or SESSION options</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_settings_reset.html">drill_settings_reset()</a></code> </p>
+        </td>
+        <td><p>Changes (optionally, all) session settings back to system defaults</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_show_files.html">drill_show_files()</a></code> </p>
+        </td>
+        <td><p>Show files in a file system schema.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_show_schemas.html">drill_show_schemas()</a></code> </p>
+        </td>
+        <td><p>Returns a list of available schemas.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_stats.html">drill_stats()</a></code> </p>
+        </td>
+        <td><p>Get Drillbit information, such as ports numbers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_status.html">drill_status()</a></code> </p>
+        </td>
+        <td><p>Get the status of Drill</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_storage.html">drill_storage()</a></code> <code><a href="drill_storage.html">drill_mod_storage()</a></code> <code><a href="drill_storage.html">drill_rm_storage()</a></code> </p>
+        </td>
+        <td><p>Get the list of storage plugin names and configurations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_system_reset.html">drill_system_reset()</a></code> </p>
+        </td>
+        <td><p>Changes (optionally, all) system settings back to system defaults</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_threads.html">drill_threads()</a></code> </p>
+        </td>
+        <td><p>Get information about threads</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_uplift.html">drill_uplift()</a></code> </p>
+        </td>
+        <td><p>Turn columnar query results into a type-converted tbl</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_use.html">drill_use()</a></code> </p>
+        </td>
+        <td><p>Change to a particular schema.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drill_version.html">drill_version()</a></code> </p>
+        </td>
+        <td><p>Identify the version of Drill running</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sergeant-exports.html">sergeant-exports</a></code> </p>
+        </td>
+        <td><p>sergeant exported operators</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sergeant.html">sergeant</a></code> </p>
+        </td>
+        <td><p>Tools to Transform and Query Data with 'Apache' 'Drill'</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="src_drill.html">src_drill()</a></code> <code><a href="src_drill.html">tbl(<i>&lt;src_drill&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Connect to Drill (dplyr)</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -286,11 +296,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -8,14 +8,21 @@
 <title>Tools to Transform and Query Data with 'Apache' 'Drill' • sergeant</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Tools to Transform and Query Data with 'Apache' 'Drill'">
+<meta property="og:description" content="'Apache Drill' is a low-latency distributed query engine designed to enable 
+    data exploration and 'analytics' on both relational and non-relational 'datastores', 
+    scaling to petabytes of data. Methods are provided that enable working with 'Apache' 
+    'Drill' instances via the 'REST' 'API', 'JDBC' interface (optional), 'DBI' 'methods'
+    and using 'dplyr'/'dbplyr' idioms.">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -24,20 +31,30 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">sergeant</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">sergeant</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="http://github.com/hrbrmstr/sergeant">
+  <a href="https://github.com/hrbrmstr/sergeant">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -52,42 +69,43 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     
 
     
     
-<div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<p><img src="sergeant.png" width="33" align="left" style="padding-right:20px"></p>
-<p><code>sergeant</code> : Tools to Transform and Query Data with ‘Apache’ ‘Drill’</p>
-<p>Drill + <code>sergeant</code> is (IMO) a nice alternative to Spark + <code>sparklyr</code> if you don’t need the ML components of Spark (i.e. just need to query “big data” sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.</p>
-<p>I find writing SQL queries to parquet files with Drill on a local linux or macOS workstation to be more performant than doing the data ingestion work with R (for large or disperate data sets). I also work with many tiny JSON files on a daily basis and Drill makes it much easier to do so. YMMV.</p>
-<p>You can download Drill from <a href="https://drill.apache.org/download/" class="uri">https://drill.apache.org/download/</a> (use “Direct File Download”). I use <code>/usr/local/drill</code> as the install directory. <code>drill-embedded</code> is a super-easy way to get started playing with Drill on a single workstation and most of my workflows can get by using Drill this way. If there is sufficient desire for an automated downloader and a way to start the <code>drill-embedded</code> server from within R, please file an issue.</p>
+<div id="sergeant" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#sergeant" class="anchor"></a>💂 sergeant</h1></div>
+<p>Tools to Transform and Query Data with ‘Apache’ ‘Drill’</p>
+<div id="note" class="section level2">
+<h2 class="hasAnchor">
+<a href="#note" class="anchor"></a>NOTE</h2>
+<p>Version 0.7.0 splits off the JDBC interface into a separate package <code>sergeant.caffeinated</code> (<a href="https://gitlab.com/hrbrmstr/sergeant-caffeinated">GitLab</a>; <a href="https://github.com/hrbrmstr/sergeant-caffeinated">GitHub</a>).</p>
+</div>
+<div id="description" class="section level2">
+<h2 class="hasAnchor">
+<a href="#description" class="anchor"></a>Description</h2>
+<p>Drill + <code>sergeant</code> is (IMO) a streamlined alternative to Spark + <code>sparklyr</code> if you don’t need the ML components of Spark (i.e. just need to query “big data” sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.</p>
+<p>Using Drill SQL queries that reference parquet files on a local linux or macOS workstation can often be more performant than doing the same data ingestion &amp; wrangling work with R (especially for large or disperate data sets). Drill can often help further streaming workflows that infolve wrangling many tiny JSON files on a daily basis.</p>
+<p>Drill can be obtained from <a href="https://drill.apache.org/download/" class="uri">https://drill.apache.org/download/</a> (use “Direct File Download”). Drill can also be installed via <a href="https://drill.apache.org/docs/running-drill-on-docker/">Docker</a>. For local installs on Unix-like systems, a common/suggestion location for the Drill directory is <code>/usr/local/drill</code> as the install directory.</p>
+<p>Drill embedded (started using the <code>$DRILL_BASE_DIR/bin/drill-embedded</code> script) is a super-easy way to get started playing with Drill on a single workstation and most of many workflows can “get by” using Drill this way.</p>
 <p>There are a few convenience wrappers for various informational SQL queries (like <code><a href="reference/drill_version.html">drill_version()</a></code>). Please file an PR if you add more.</p>
-<p>The package has been written with retrieval of rectangular data sources in mind. If you need/want a version of <code><a href="reference/drill_query.html">drill_query()</a></code> that will enable returning of non-rectangular data (which is possible with Drill) then please file an issue.</p>
 <p>Some of the more “controlling vs data ops” REST API functions aren’t implemented. Please file a PR if you need those.</p>
-<p>Finally, I run most of this locally and at home, so it’s all been coded with no authentication or encryption in mind. If you want/need support for that, please file an issue. If there is demand for this, it will change the R API a bit (I’ve already thought out what to do but have no need for it right now).</p>
 <p>The following functions are implemented:</p>
-<p><strong><code>DBI</code></strong></p>
+<p><strong><code>DBI</code></strong> (REST)</p>
 <ul>
-<li>As complete of an R <code>DBI</code> driver has been implemented using the Drill REST API, mostly to facilitate the <code>dplyr</code> interface. Use the <code>RJDBC</code> driver interface if you need more <code>DBI</code> functionality.</li>
-<li>This also means that SQL functions unique to Drill have also been “implemented” (i.e. made accessible to the <code>dplyr</code> interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub.</li>
+<li>A “just enough” feature complete R <code>DBI</code> driver has been implemented using the Drill REST API, mostly to facilitate the <code>dplyr</code> interface. Use the <code>RJDBC</code> driver interface if you need more <code>DBI</code> functionality.</li>
+<li>This also means that SQL functions unique to Drill have also been “implemented” (i.e. made accessible to the <code>dplyr</code> interface). If you have custom Drill SQL functions that need to be implemented please file an issue on GitHub. Many should work without it, but some may require a custom interface.</li>
 </ul>
-<p><strong><code>RJDBC</code></strong></p>
-<ul>
-<li>
-<code>drill_jdbc</code>: Connect to Drill using JDBC, enabling use of said idioms. See <code>RJDBC</code> for more info.</li>
-<li>NOTE: The DRILL JDBC driver fully-qualified path must be placed in the <code>DRILL_JDBC_JAR</code> environment variable. This is best done via <code>~/.Renviron</code> for interactive work. i.e. <code>DRILL_JDBC_JAR=/usr/local/drill/jars/drill-jdbc-all-1.9.0.jar</code>
-</li>
-</ul>
-<p><strong><code>dplyr</code></strong>:</p>
+<p><strong><code>dplyr</code></strong>: (REST)</p>
 <ul>
 <li>
-<code>src_drill</code>: Connect to Drill (using dplyr) + supporting functions</li>
+<code>src_drill</code>: Connect to Drill (using <code>dplyr</code>) + supporting functions</li>
 </ul>
-<p>See <code>dplyr</code> for the <code>dplyr</code> operations (light testing shows they work in basic SQL use-cases but Drill’s SQL engine has issues with more complex queries).</p>
+<p>Note that a number of Drill SQL functions have been mapped to R functions (e.g. <code>grepl</code>) to make it easier to transition from non-database-backed SQL ops to Drill. See the help on <code>drill_custom_functions</code> for more info on these helper Drill custom function mappings.</p>
 <p><strong>Drill APIs</strong>:</p>
 <ul>
 <li>
@@ -133,424 +151,426 @@
 <li>
 <code>drill_version</code>: Identify the version of Drill running</li>
 </ul>
-<div id="installation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"hrbrmstr/sergeant"</span>)</code></pre></div>
 </div>
-<div id="experimental-dplyr-interface" class="section level3">
-<h3 class="hasAnchor">
-<a href="#experimental-dplyr-interface" class="anchor"></a>Experimental <code>dplyr</code> interface</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sergeant)
-
-ds &lt;-<span class="st"> </span><span class="kw"><a href="reference/src_drill.html">src_drill</a></span>(<span class="st">"localhost"</span>)  <span class="co"># use localhost if running standalone on same system otherwise the host or IP of your Drill server</span>
-ds
-<span class="co">#&gt; src:  DrillConnection</span>
-<span class="co">#&gt; tbls: INFORMATION_SCHEMA, cp.default, dfs.default, dfs.root, dfs.tmp, sys</span>
-
-db &lt;-<span class="st"> </span><span class="kw">tbl</span>(ds, <span class="st">"cp.`employee.json`"</span>) 
-
-<span class="co"># without `collect()`:</span>
-<span class="kw">count</span>(db, gender, marital_status)
-<span class="co">#&gt; # Source:   lazy query [?? x 3]</span>
-<span class="co">#&gt; # Database: DrillConnection</span>
-<span class="co">#&gt; # Groups:   gender</span>
-<span class="co">#&gt;   marital_status gender     n</span>
-<span class="co">#&gt;            &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1              S      F   297</span>
-<span class="co">#&gt; 2              M      M   278</span>
-<span class="co">#&gt; 3              S      M   276</span>
-<span class="co">#&gt; 4              M      F   304</span>
-
-<span class="co"># ^^ gets translated to:</span>
-<span class="co"># </span>
-<span class="co"># SELECT *</span>
-<span class="co"># FROM (SELECT  gender ,  marital_status , COUNT(*) AS  n </span>
-<span class="co">#       FROM  cp.`employee.json` </span>
-<span class="co">#       GROUP BY  gender ,  marital_status )  govketbhqb </span>
-<span class="co"># LIMIT 1000</span>
-
-<span class="kw">count</span>(db, gender, marital_status) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">collect</span>()
-<span class="co">#&gt; # A tibble: 4 x 3</span>
-<span class="co">#&gt; # Groups:   gender [2]</span>
-<span class="co">#&gt;   marital_status gender     n</span>
-<span class="co">#&gt; *          &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1              S      F   297</span>
-<span class="co">#&gt; 2              M      M   278</span>
-<span class="co">#&gt; 3              S      M   276</span>
-<span class="co">#&gt; 4              M      F   304</span>
-
-<span class="co"># ^^ gets translated to:</span>
-<span class="co"># </span>
-<span class="co"># SELECT  gender ,  marital_status , COUNT(*) AS  n </span>
-<span class="co"># FROM  cp.`employee.json` </span>
-<span class="co"># GROUP BY  gender ,  marital_status </span>
-
-<span class="kw">group_by</span>(db, position_title) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(gender) -&gt;<span class="st"> </span>tmp2
-
-<span class="kw">group_by</span>(db, position_title) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(gender) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">full_desc=</span><span class="kw">ifelse</span>(gender<span class="op">==</span><span class="st">"F"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(<span class="dt">Title=</span>position_title, <span class="dt">Gender=</span>full_desc, <span class="dt">Count=</span>n)
-<span class="co">#&gt; # A tibble: 30 x 3</span>
-<span class="co">#&gt;                     Title Gender Count</span>
-<span class="co">#&gt;  *                  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1              President Female     1</span>
-<span class="co">#&gt;  2     VP Country Manager   Male     3</span>
-<span class="co">#&gt;  3     VP Country Manager Female     3</span>
-<span class="co">#&gt;  4 VP Information Systems Female     1</span>
-<span class="co">#&gt;  5     VP Human Resources Female     1</span>
-<span class="co">#&gt;  6          Store Manager Female    13</span>
-<span class="co">#&gt;  7             VP Finance   Male     1</span>
-<span class="co">#&gt;  8          Store Manager   Male    11</span>
-<span class="co">#&gt;  9           HQ Marketing Female     2</span>
-<span class="co">#&gt; 10 HQ Information Systems Female     4</span>
-<span class="co">#&gt; # ... with 20 more rows</span>
-
-<span class="co"># ^^ gets translated to:</span>
-<span class="co"># </span>
-<span class="co"># SELECT  position_title ,  gender ,  n ,</span>
-<span class="co">#         CASE WHEN ( gender  = 'F') THEN ('Female') ELSE ('Male') </span><span class="re">END</span><span class="co"> AS  full_desc </span>
-<span class="co"># FROM (SELECT  position_title ,  gender , COUNT(*) AS  n </span>
-<span class="co">#       FROM  cp.`employee.json` </span>
-<span class="co">#       GROUP BY  position_title ,  gender )  dcyuypuypb </span>
-
-<span class="kw">arrange</span>(db, <span class="kw">desc</span>(employee_id)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">n=</span><span class="dv">20</span>)
-<span class="co">#&gt; # Source:     table&lt;cp.`employee.json`&gt; [?? x 16]</span>
-<span class="co">#&gt; # Database:   DrillConnection</span>
-<span class="co">#&gt; # Ordered by: desc(employee_id)</span>
-<span class="co">#&gt;    store_id gender department_id birth_date supervisor_id  last_name          position_title  hire_date</span>
-<span class="co">#&gt;       &lt;int&gt;  &lt;chr&gt;         &lt;int&gt;     &lt;date&gt;         &lt;int&gt;      &lt;chr&gt;                   &lt;chr&gt;     &lt;dttm&gt;</span>
-<span class="co">#&gt;  1       18      F            18 1914-02-02          1140      Stand Store Temporary Stocker 1998-01-01</span>
-<span class="co">#&gt;  2       18      M            18 1914-02-02          1140    Burnham Store Temporary Stocker 1998-01-01</span>
-<span class="co">#&gt;  3       18      F            18 1914-02-02          1139  Doolittle Store Temporary Stocker 1998-01-01</span>
-<span class="co">#&gt;  4       18      M            18 1914-02-02          1139     Pirnie Store Temporary Stocker 1998-01-01</span>
-<span class="co">#&gt;  5       18      M            17 1914-02-02          1140     Younce Store Permanent Stocker 1998-01-01</span>
-<span class="co">#&gt;  6       18      F            17 1914-02-02          1140    Biltoft Store Permanent Stocker 1998-01-01</span>
-<span class="co">#&gt;  7       18      M            17 1914-02-02          1139   Detwiler Store Permanent Stocker 1998-01-01</span>
-<span class="co">#&gt;  8       18      F            17 1914-02-02          1139     Ciruli Store Permanent Stocker 1998-01-01</span>
-<span class="co">#&gt;  9       18      F            16 1914-02-02          1140     Bishop Store Temporary Checker 1998-01-01</span>
-<span class="co">#&gt; 10       18      F            16 1914-02-02          1140  Cutwright Store Temporary Checker 1998-01-01</span>
-<span class="co">#&gt; 11       18      F            16 1914-02-02          1139   Anderson Store Temporary Checker 1998-01-01</span>
-<span class="co">#&gt; 12       18      F            16 1914-02-02          1139  Swartwood Store Temporary Checker 1998-01-01</span>
-<span class="co">#&gt; 13       18      M            15 1914-02-02          1140 Curtsinger Store Permanent Checker 1998-01-01</span>
-<span class="co">#&gt; 14       18      F            15 1914-02-02          1140      Quick Store Permanent Checker 1998-01-01</span>
-<span class="co">#&gt; 15       18      M            15 1914-02-02          1139      Souza Store Permanent Checker 1998-01-01</span>
-<span class="co">#&gt; 16       18      M            15 1914-02-02          1139   Compagno Store Permanent Checker 1998-01-01</span>
-<span class="co">#&gt; 17       18      M            11 1961-09-24          1139  Jaramillo  Store Shift Supervisor 1998-01-01</span>
-<span class="co">#&gt; 18       18      M            11 1972-05-12            17     Belsey Store Assistant Manager 1998-01-01</span>
-<span class="co">#&gt; 19       12      M            18 1914-02-02          1069    Eichorn Store Temporary Stocker 1998-01-01</span>
-<span class="co">#&gt; 20       12      F            18 1914-02-02          1069  Geiermann Store Temporary Stocker 1998-01-01</span>
-<span class="co">#&gt; # ... with more rows, and 8 more variables: management_role &lt;chr&gt;, salary &lt;dbl&gt;, marital_status &lt;chr&gt;, full_name &lt;chr&gt;,</span>
-<span class="co">#&gt; #   employee_id &lt;int&gt;, education_level &lt;chr&gt;, first_name &lt;chr&gt;, position_id &lt;int&gt;</span>
-
-<span class="co"># ^^ gets translated to:</span>
-<span class="co"># </span>
-<span class="co"># SELECT *</span>
-<span class="co"># FROM (SELECT *</span>
-<span class="co">#       FROM  cp.`employee.json` </span>
-<span class="co">#       ORDER BY  employee_id  DESC)  lvpxoaejbc </span>
-<span class="co"># LIMIT 5</span>
-
-<span class="kw">mutate</span>(db, <span class="dt">position_title=</span><span class="kw">tolower</span>(position_title)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">salary=</span><span class="kw">as.numeric</span>(salary)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">gender=</span><span class="kw">ifelse</span>(gender<span class="op">==</span><span class="st">"F"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">marital_status=</span><span class="kw">ifelse</span>(marital_status<span class="op">==</span><span class="st">"S"</span>, <span class="st">"Single"</span>, <span class="st">"Married"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(supervisor_id) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">underlings_count=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">collect</span>()
-<span class="co">#&gt; # A tibble: 112 x 2</span>
-<span class="co">#&gt;    supervisor_id underlings_count</span>
-<span class="co">#&gt;  *         &lt;int&gt;            &lt;int&gt;</span>
-<span class="co">#&gt;  1             0                1</span>
-<span class="co">#&gt;  2             1                7</span>
-<span class="co">#&gt;  3             5                9</span>
-<span class="co">#&gt;  4             4                2</span>
-<span class="co">#&gt;  5             2                3</span>
-<span class="co">#&gt;  6            20                2</span>
-<span class="co">#&gt;  7            21                4</span>
-<span class="co">#&gt;  8            22                7</span>
-<span class="co">#&gt;  9             6                4</span>
-<span class="co">#&gt; 10            36                2</span>
-<span class="co">#&gt; # ... with 102 more rows</span>
-
-<span class="co"># ^^ gets translated to:</span>
-<span class="co"># </span>
-<span class="co"># SELECT  supervisor_id , COUNT(*) AS  underlings_count </span>
-<span class="co"># FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  position_title ,  store_id ,  department_id ,  birth_date ,  hire_date ,  salary ,  supervisor_id ,  education_level ,  gender ,  management_role , CASE WHEN ( marital_status  = 'S') THEN ('Single') ELSE ('Married') </span><span class="re">END</span><span class="co"> AS  marital_status </span>
-<span class="co">#       FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  position_title ,  store_id ,  department_id ,  birth_date ,  hire_date ,  salary ,  supervisor_id ,  education_level ,  marital_status ,  management_role , CASE WHEN ( gender  = 'F') THEN ('Female') ELSE ('Male') </span><span class="re">END</span><span class="co"> AS  gender </span>
-<span class="co">#             FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  position_title ,  store_id ,  department_id ,  birth_date ,  hire_date ,  supervisor_id ,  education_level ,  marital_status ,  gender ,  management_role , CAST( salary  AS DOUBLE) AS  salary </span>
-<span class="co">#                   FROM (SELECT  employee_id ,  full_name ,  first_name ,  last_name ,  position_id ,  store_id ,  department_id ,  birth_date ,  hire_date ,  salary ,  supervisor_id ,  education_level ,  marital_status ,  gender ,  management_role , LOWER( position_title ) AS  position_title </span>
-<span class="co">#                         FROM  cp.`employee.json` )  cnjsqxeick )  bnbnjrubna )  wavfmhkczv )  zaxeyyicxo </span>
-<span class="co"># GROUP BY  supervisor_id </span></code></pre></div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"hrbrmstr/sergeant"</span>)</a></code></pre></div>
 </div>
-<div id="usage" class="section level3">
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<div id="dplyr-interface" class="section level3">
 <h3 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sergeant)
-
-<span class="co"># current verison</span>
-<span class="kw">packageVersion</span>(<span class="st">"sergeant"</span>)
-<span class="co">#&gt; [1] '0.5.0'</span>
-
-dc &lt;-<span class="st"> </span><span class="kw"><a href="reference/drill_connection.html">drill_connection</a></span>(<span class="st">"localhost"</span>) 
-
-<span class="kw"><a href="reference/drill_active.html">drill_active</a></span>(dc)
-<span class="co">#&gt; [1] TRUE</span>
-
-<span class="kw"><a href="reference/drill_version.html">drill_version</a></span>(dc)
-<span class="co">#&gt; [1] "1.10.0"</span>
-
-<span class="kw"><a href="reference/drill_storage.html">drill_storage</a></span>(dc)<span class="op">$</span>name
-<span class="co">#&gt; [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"</span></code></pre></div>
-<p>Working with the built-in JSON data sets:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT * FROM cp.`employee.json` limit 100"</span>)
-<span class="co">#&gt; Parsed with column specification:</span>
-<span class="co">#&gt; cols(</span>
-<span class="co">#&gt;   store_id = col_integer(),</span>
-<span class="co">#&gt;   gender = col_character(),</span>
-<span class="co">#&gt;   department_id = col_integer(),</span>
-<span class="co">#&gt;   birth_date = col_date(format = ""),</span>
-<span class="co">#&gt;   supervisor_id = col_integer(),</span>
-<span class="co">#&gt;   last_name = col_character(),</span>
-<span class="co">#&gt;   position_title = col_character(),</span>
-<span class="co">#&gt;   hire_date = col_datetime(format = ""),</span>
-<span class="co">#&gt;   management_role = col_character(),</span>
-<span class="co">#&gt;   salary = col_double(),</span>
-<span class="co">#&gt;   marital_status = col_character(),</span>
-<span class="co">#&gt;   full_name = col_character(),</span>
-<span class="co">#&gt;   employee_id = col_integer(),</span>
-<span class="co">#&gt;   education_level = col_character(),</span>
-<span class="co">#&gt;   first_name = col_character(),</span>
-<span class="co">#&gt;   position_id = col_integer()</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; # A tibble: 100 x 16</span>
-<span class="co">#&gt;    store_id gender department_id birth_date supervisor_id last_name         position_title  hire_date   management_role</span>
-<span class="co">#&gt;  *    &lt;int&gt;  &lt;chr&gt;         &lt;int&gt;     &lt;date&gt;         &lt;int&gt;     &lt;chr&gt;                  &lt;chr&gt;     &lt;dttm&gt;             &lt;chr&gt;</span>
-<span class="co">#&gt;  1        0      F             1 1961-08-26             0    Nowmer              President 1994-12-01 Senior Management</span>
-<span class="co">#&gt;  2        0      M             1 1915-07-03             1   Whelply     VP Country Manager 1994-12-01 Senior Management</span>
-<span class="co">#&gt;  3        0      M             1 1969-06-20             1    Spence     VP Country Manager 1998-01-01 Senior Management</span>
-<span class="co">#&gt;  4        0      F             1 1951-05-10             1 Gutierrez     VP Country Manager 1998-01-01 Senior Management</span>
-<span class="co">#&gt;  5        0      F             2 1942-10-08             1   Damstra VP Information Systems 1994-12-01 Senior Management</span>
-<span class="co">#&gt;  6        0      F             3 1949-03-27             1  Kanagaki     VP Human Resources 1994-12-01 Senior Management</span>
-<span class="co">#&gt;  7        9      F            11 1922-08-10             5   Brunner          Store Manager 1998-01-01  Store Management</span>
-<span class="co">#&gt;  8       21      F            11 1979-06-23             5  Blumberg          Store Manager 1998-01-01  Store Management</span>
-<span class="co">#&gt;  9        0      M             5 1949-08-26             1     Stanz             VP Finance 1994-12-01 Senior Management</span>
-<span class="co">#&gt; 10        1      M            11 1967-06-20             5  Murraiin          Store Manager 1998-01-01  Store Management</span>
-<span class="co">#&gt; # ... with 90 more rows, and 7 more variables: salary &lt;dbl&gt;, marital_status &lt;chr&gt;, full_name &lt;chr&gt;, employee_id &lt;int&gt;,</span>
-<span class="co">#&gt; #   education_level &lt;chr&gt;, first_name &lt;chr&gt;, position_id &lt;int&gt;</span>
-
-<span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender"</span>)
-<span class="co">#&gt; Parsed with column specification:</span>
-<span class="co">#&gt; cols(</span>
-<span class="co">#&gt;   gender = col_integer()</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; # A tibble: 2 x 1</span>
-<span class="co">#&gt;   gender</span>
-<span class="co">#&gt; *  &lt;int&gt;</span>
-<span class="co">#&gt; 1    601</span>
-<span class="co">#&gt; 2    554</span>
-
-<span class="kw"><a href="reference/drill_options.html">drill_options</a></span>(dc)
-<span class="co">#&gt; # A tibble: 113 x 4</span>
-<span class="co">#&gt;                                              name value   type    kind</span>
-<span class="co">#&gt;  *                                          &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;</span>
-<span class="co">#&gt;  1                 planner.enable_hash_single_key  TRUE SYSTEM BOOLEAN</span>
-<span class="co">#&gt;  2      store.parquet.reader.pagereader.queuesize     2 SYSTEM    LONG</span>
-<span class="co">#&gt;  3             planner.enable_limit0_optimization FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt;  4              store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt;  5                planner.enable_constant_folding  TRUE SYSTEM BOOLEAN</span>
-<span class="co">#&gt;  6                      store.json.extended_types FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt;  7   planner.memory.non_blocking_operators_memory    64 SYSTEM    LONG</span>
-<span class="co">#&gt;  8                  planner.enable_multiphase_agg  TRUE SYSTEM BOOLEAN</span>
-<span class="co">#&gt;  9                  exec.query_profile.debug_mode FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt; 10 planner.filter.max_selectivity_estimate_factor     1 SYSTEM  DOUBLE</span>
-<span class="co">#&gt; # ... with 103 more rows</span>
-
-<span class="kw"><a href="reference/drill_options.html">drill_options</a></span>(dc, <span class="st">"json"</span>)
-<span class="co">#&gt; # A tibble: 7 x 4</span>
-<span class="co">#&gt;                                                    name value   type    kind</span>
-<span class="co">#&gt;                                                   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;</span>
-<span class="co">#&gt; 1                     store.json.read_numbers_as_double FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt; 2                             store.json.extended_types FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt; 3                              store.json.writer.uglify FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt; 4                store.json.reader.skip_invalid_records FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt; 5 store.json.reader.print_skipped_invalid_record_number FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt; 6                              store.json.all_text_mode FALSE SYSTEM BOOLEAN</span>
-<span class="co">#&gt; 7                    store.json.writer.skip_null_fields  TRUE SYSTEM BOOLEAN</span></code></pre></div>
+<a href="#dplyr-interface" class="anchor"></a><code>dplyr</code> interface</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(sergeant)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># use localhost if running standalone on same system otherwise the host or IP of your Drill server</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">ds &lt;-<span class="st"> </span><span class="kw"><a href="reference/src_drill.html">src_drill</a></span>(<span class="st">"localhost"</span>)  <span class="co">#ds</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">db &lt;-<span class="st"> </span><span class="kw"><a href="reference/sergeant-exports.html">tbl</a></span>(ds, <span class="st">"cp.`employee.json`"</span>) </a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co"># without `collect()`:</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">count</span>(db, gender, marital_status)</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">## # Source:   lazy query [?? x 3]</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">## # Database: DrillConnection</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">## # Groups:   gender</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">##   marital_status gender     n</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">##   &lt;chr&gt;          &lt;chr&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">## 1 S              F        297</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">## 2 M              M        278</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">## 3 S              M        276</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">## 4 M              F        304</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="kw">count</span>(db, gender, marital_status) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">collect</span>()</a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">## # A tibble: 4 x 3</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">## # Groups:   gender [2]</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">##   marital_status gender     n</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">## * &lt;chr&gt;          &lt;chr&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">## 1 S              F        297</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">## 2 M              M        278</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">## 3 S              M        276</span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">## 4 M              F        304</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="kw">group_by</span>(db, position_title) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="st">  </span><span class="kw">count</span>(gender) -&gt;<span class="st"> </span>tmp2</a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="kw">group_by</span>(db, position_title) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="st">  </span><span class="kw">count</span>(gender) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">full_desc=</span><span class="kw">ifelse</span>(gender<span class="op">==</span><span class="st">"F"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="st">  </span><span class="kw">select</span>(<span class="dt">Title=</span>position_title, <span class="dt">Gender=</span>full_desc, <span class="dt">Count=</span>n)</a>
+<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="co">## # A tibble: 30 x 3</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="co">##    Title                  Gender Count</span></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"><span class="co">##  * &lt;chr&gt;                  &lt;chr&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co">##  1 President              Female     1</span></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co">##  2 VP Country Manager     Male       3</span></a>
+<a class="sourceLine" id="cb2-44" data-line-number="44"><span class="co">##  3 VP Country Manager     Female     3</span></a>
+<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="co">##  4 VP Information Systems Female     1</span></a>
+<a class="sourceLine" id="cb2-46" data-line-number="46"><span class="co">##  5 VP Human Resources     Female     1</span></a>
+<a class="sourceLine" id="cb2-47" data-line-number="47"><span class="co">##  6 Store Manager          Female    13</span></a>
+<a class="sourceLine" id="cb2-48" data-line-number="48"><span class="co">##  7 VP Finance             Male       1</span></a>
+<a class="sourceLine" id="cb2-49" data-line-number="49"><span class="co">##  8 Store Manager          Male      11</span></a>
+<a class="sourceLine" id="cb2-50" data-line-number="50"><span class="co">##  9 HQ Marketing           Female     2</span></a>
+<a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co">## 10 HQ Information Systems Female     4</span></a>
+<a class="sourceLine" id="cb2-52" data-line-number="52"><span class="co">## # ... with 20 more rows</span></a>
+<a class="sourceLine" id="cb2-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb2-54" data-line-number="54"><span class="kw">arrange</span>(db, <span class="kw">desc</span>(employee_id)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">n=</span><span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="co">## # Source:     table&lt;cp.`employee.json`&gt; [?? x 20]</span></a>
+<a class="sourceLine" id="cb2-56" data-line-number="56"><span class="co">## # Database:   DrillConnection</span></a>
+<a class="sourceLine" id="cb2-57" data-line-number="57"><span class="co">## # Ordered by: desc(employee_id)</span></a>
+<a class="sourceLine" id="cb2-58" data-line-number="58"><span class="co">##    store_id gender department_id birth_date supervisor_id last_name  position_title hire_date           management_role</span></a>
+<a class="sourceLine" id="cb2-59" data-line-number="59"><span class="co">##       &lt;int&gt; &lt;chr&gt;          &lt;int&gt; &lt;date&gt;             &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;          &lt;dttm&gt;              &lt;chr&gt;          </span></a>
+<a class="sourceLine" id="cb2-60" data-line-number="60"><span class="co">##  1       18 F                 18 1914-02-02          1140 Stand      Store Tempora… 1998-01-01 00:00:00 Store Temp Sta…</span></a>
+<a class="sourceLine" id="cb2-61" data-line-number="61"><span class="co">##  2       18 M                 18 1914-02-02          1140 Burnham    Store Tempora… 1998-01-01 00:00:00 Store Temp Sta…</span></a>
+<a class="sourceLine" id="cb2-62" data-line-number="62"><span class="co">##  3       18 F                 18 1914-02-02          1139 Doolittle  Store Tempora… 1998-01-01 00:00:00 Store Temp Sta…</span></a>
+<a class="sourceLine" id="cb2-63" data-line-number="63"><span class="co">##  4       18 M                 18 1914-02-02          1139 Pirnie     Store Tempora… 1998-01-01 00:00:00 Store Temp Sta…</span></a>
+<a class="sourceLine" id="cb2-64" data-line-number="64"><span class="co">##  5       18 M                 17 1914-02-02          1140 Younce     Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-65" data-line-number="65"><span class="co">##  6       18 F                 17 1914-02-02          1140 Biltoft    Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-66" data-line-number="66"><span class="co">##  7       18 M                 17 1914-02-02          1139 Detwiler   Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-67" data-line-number="67"><span class="co">##  8       18 F                 17 1914-02-02          1139 Ciruli     Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-68" data-line-number="68"><span class="co">##  9       18 F                 16 1914-02-02          1140 Bishop     Store Tempora… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-69" data-line-number="69"><span class="co">## 10       18 F                 16 1914-02-02          1140 Cutwright  Store Tempora… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-70" data-line-number="70"><span class="co">## 11       18 F                 16 1914-02-02          1139 Anderson   Store Tempora… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-71" data-line-number="71"><span class="co">## 12       18 F                 16 1914-02-02          1139 Swartwood  Store Tempora… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-72" data-line-number="72"><span class="co">## 13       18 M                 15 1914-02-02          1140 Curtsinger Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-73" data-line-number="73"><span class="co">## 14       18 F                 15 1914-02-02          1140 Quick      Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-74" data-line-number="74"><span class="co">## 15       18 M                 15 1914-02-02          1139 Souza      Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-75" data-line-number="75"><span class="co">## 16       18 M                 15 1914-02-02          1139 Compagno   Store Permane… 1998-01-01 00:00:00 Store Full Tim…</span></a>
+<a class="sourceLine" id="cb2-76" data-line-number="76"><span class="co">## 17       18 M                 11 1961-09-24          1139 Jaramillo  Store Shift S… 1998-01-01 00:00:00 Store Manageme…</span></a>
+<a class="sourceLine" id="cb2-77" data-line-number="77"><span class="co">## 18       18 M                 11 1972-05-12            17 Belsey     Store Assista… 1998-01-01 00:00:00 Store Manageme…</span></a>
+<a class="sourceLine" id="cb2-78" data-line-number="78"><span class="co">## 19       12 M                 18 1914-02-02          1069 Eichorn    Store Tempora… 1998-01-01 00:00:00 Store Temp Sta…</span></a>
+<a class="sourceLine" id="cb2-79" data-line-number="79"><span class="co">## 20       12 F                 18 1914-02-02          1069 Geiermann  Store Tempora… 1998-01-01 00:00:00 Store Temp Sta…</span></a>
+<a class="sourceLine" id="cb2-80" data-line-number="80"><span class="co">## # ... with more rows, and 7 more variables: salary &lt;dbl&gt;, marital_status &lt;chr&gt;, full_name &lt;chr&gt;, employee_id &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb2-81" data-line-number="81"><span class="co">## #   education_level &lt;chr&gt;, first_name &lt;chr&gt;, position_id &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-82" data-line-number="82"></a>
+<a class="sourceLine" id="cb2-83" data-line-number="83"><span class="kw">mutate</span>(db, <span class="dt">position_title=</span><span class="kw">tolower</span>(position_title)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-84" data-line-number="84"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">salary=</span><span class="kw">as.numeric</span>(salary)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-85" data-line-number="85"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">gender=</span><span class="kw">ifelse</span>(gender<span class="op">==</span><span class="st">"F"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-86" data-line-number="86"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">marital_status=</span><span class="kw">ifelse</span>(marital_status<span class="op">==</span><span class="st">"S"</span>, <span class="st">"Single"</span>, <span class="st">"Married"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-87" data-line-number="87"><span class="st">  </span><span class="kw">group_by</span>(supervisor_id) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-88" data-line-number="88"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">underlings_count=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-89" data-line-number="89"><span class="st">  </span><span class="kw">collect</span>()</a>
+<a class="sourceLine" id="cb2-90" data-line-number="90"><span class="co">## # A tibble: 112 x 2</span></a>
+<a class="sourceLine" id="cb2-91" data-line-number="91"><span class="co">##    supervisor_id underlings_count</span></a>
+<a class="sourceLine" id="cb2-92" data-line-number="92"><span class="co">##  *         &lt;int&gt;            &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-93" data-line-number="93"><span class="co">##  1             0                1</span></a>
+<a class="sourceLine" id="cb2-94" data-line-number="94"><span class="co">##  2             1                7</span></a>
+<a class="sourceLine" id="cb2-95" data-line-number="95"><span class="co">##  3             5                9</span></a>
+<a class="sourceLine" id="cb2-96" data-line-number="96"><span class="co">##  4             4                2</span></a>
+<a class="sourceLine" id="cb2-97" data-line-number="97"><span class="co">##  5             2                3</span></a>
+<a class="sourceLine" id="cb2-98" data-line-number="98"><span class="co">##  6            20                2</span></a>
+<a class="sourceLine" id="cb2-99" data-line-number="99"><span class="co">##  7            21                4</span></a>
+<a class="sourceLine" id="cb2-100" data-line-number="100"><span class="co">##  8            22                7</span></a>
+<a class="sourceLine" id="cb2-101" data-line-number="101"><span class="co">##  9             6                4</span></a>
+<a class="sourceLine" id="cb2-102" data-line-number="102"><span class="co">## 10            36                2</span></a>
+<a class="sourceLine" id="cb2-103" data-line-number="103"><span class="co">## # ... with 102 more rows</span></a></code></pre></div>
+</div>
+<div id="rest-api" class="section level3">
+<h3 class="hasAnchor">
+<a href="#rest-api" class="anchor"></a>REST API</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">dc &lt;-<span class="st"> </span><span class="kw"><a href="reference/drill_connection.html">drill_connection</a></span>(<span class="st">"localhost"</span>) </a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="reference/drill_active.html">drill_active</a></span>(dc)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">## [1] TRUE</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="reference/drill_version.html">drill_version</a></span>(dc)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">## [1] "1.13.0"</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="reference/drill_storage.html">drill_storage</a></span>(dc)<span class="op">$</span>name</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">## [1] "cp"    "dfs"   "hbase" "hive"  "kudu"  "mongo" "s3"</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT * FROM cp.`employee.json` limit 100"</span>)</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">## Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">## cols(</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">##   store_id = col_integer(),</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">##   gender = col_character(),</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">##   department_id = col_integer(),</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">##   birth_date = col_date(format = ""),</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">##   supervisor_id = col_integer(),</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">##   last_name = col_character(),</span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">##   position_title = col_character(),</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">##   hire_date = col_datetime(format = ""),</span></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">##   management_role = col_character(),</span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">##   salary = col_double(),</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">##   marital_status = col_character(),</span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">##   full_name = col_character(),</span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">##   employee_id = col_integer(),</span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">##   education_level = col_character(),</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co">##   first_name = col_character(),</span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">##   position_id = col_integer()</span></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co">## )</span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">## # A tibble: 100 x 16</span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">##    store_id gender department_id birth_date supervisor_id last_name position_title  hire_date           management_role</span></a>
+<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">##  *    &lt;int&gt; &lt;chr&gt;          &lt;int&gt; &lt;date&gt;             &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;           &lt;dttm&gt;              &lt;chr&gt;          </span></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">##  1        0 F                  1 1961-08-26             0 Nowmer    President       1994-12-01 00:00:00 Senior Managem…</span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">##  2        0 M                  1 1915-07-03             1 Whelply   VP Country Man… 1994-12-01 00:00:00 Senior Managem…</span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">##  3        0 M                  1 1969-06-20             1 Spence    VP Country Man… 1998-01-01 00:00:00 Senior Managem…</span></a>
+<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">##  4        0 F                  1 1951-05-10             1 Gutierrez VP Country Man… 1998-01-01 00:00:00 Senior Managem…</span></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">##  5        0 F                  2 1942-10-08             1 Damstra   VP Information… 1994-12-01 00:00:00 Senior Managem…</span></a>
+<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">##  6        0 F                  3 1949-03-27             1 Kanagaki  VP Human Resou… 1994-12-01 00:00:00 Senior Managem…</span></a>
+<a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">##  7        9 F                 11 1922-08-10             5 Brunner   Store Manager   1998-01-01 00:00:00 Store Manageme…</span></a>
+<a class="sourceLine" id="cb3-42" data-line-number="42"><span class="co">##  8       21 F                 11 1979-06-23             5 Blumberg  Store Manager   1998-01-01 00:00:00 Store Manageme…</span></a>
+<a class="sourceLine" id="cb3-43" data-line-number="43"><span class="co">##  9        0 M                  5 1949-08-26             1 Stanz     VP Finance      1994-12-01 00:00:00 Senior Managem…</span></a>
+<a class="sourceLine" id="cb3-44" data-line-number="44"><span class="co">## 10        1 M                 11 1967-06-20             5 Murraiin  Store Manager   1998-01-01 00:00:00 Store Manageme…</span></a>
+<a class="sourceLine" id="cb3-45" data-line-number="45"><span class="co">## # ... with 90 more rows, and 7 more variables: salary &lt;dbl&gt;, marital_status &lt;chr&gt;, full_name &lt;chr&gt;, employee_id &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb3-46" data-line-number="46"><span class="co">## #   education_level &lt;chr&gt;, first_name &lt;chr&gt;, position_id &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb3-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb3-48" data-line-number="48"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender"</span>)</a>
+<a class="sourceLine" id="cb3-49" data-line-number="49"><span class="co">## Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb3-50" data-line-number="50"><span class="co">## cols(</span></a>
+<a class="sourceLine" id="cb3-51" data-line-number="51"><span class="co">##   gender = col_integer()</span></a>
+<a class="sourceLine" id="cb3-52" data-line-number="52"><span class="co">## )</span></a>
+<a class="sourceLine" id="cb3-53" data-line-number="53"><span class="co">## # A tibble: 2 x 1</span></a>
+<a class="sourceLine" id="cb3-54" data-line-number="54"><span class="co">##   gender</span></a>
+<a class="sourceLine" id="cb3-55" data-line-number="55"><span class="co">## *  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb3-56" data-line-number="56"><span class="co">## 1    601</span></a>
+<a class="sourceLine" id="cb3-57" data-line-number="57"><span class="co">## 2    554</span></a>
+<a class="sourceLine" id="cb3-58" data-line-number="58"></a>
+<a class="sourceLine" id="cb3-59" data-line-number="59"><span class="kw"><a href="reference/drill_options.html">drill_options</a></span>(dc)</a>
+<a class="sourceLine" id="cb3-60" data-line-number="60"><span class="co">## # A tibble: 138 x 5</span></a>
+<a class="sourceLine" id="cb3-61" data-line-number="61"><span class="co">##    name                                              value    accessibleScopes kind    optionScope</span></a>
+<a class="sourceLine" id="cb3-62" data-line-number="62"><span class="co">##  * &lt;chr&gt;                                             &lt;chr&gt;    &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;      </span></a>
+<a class="sourceLine" id="cb3-63" data-line-number="63"><span class="co">##  1 debug.validate_iterators                          FALSE    ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-64" data-line-number="64"><span class="co">##  2 debug.validate_vectors                            FALSE    ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-65" data-line-number="65"><span class="co">##  3 drill.exec.functions.cast_empty_string_to_null    FALSE    ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-66" data-line-number="66"><span class="co">##  4 drill.exec.hashagg.fallback.enabled               FALSE    ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-67" data-line-number="67"><span class="co">##  5 drill.exec.memory.operator.output_batch_size      16777216 SYSTEM           LONG    BOOT       </span></a>
+<a class="sourceLine" id="cb3-68" data-line-number="68"><span class="co">##  6 drill.exec.storage.file.partition.column.label    dir      ALL              STRING  BOOT       </span></a>
+<a class="sourceLine" id="cb3-69" data-line-number="69"><span class="co">##  7 drill.exec.storage.implicit.filename.column.label filename ALL              STRING  BOOT       </span></a>
+<a class="sourceLine" id="cb3-70" data-line-number="70"><span class="co">##  8 drill.exec.storage.implicit.filepath.column.label filepath ALL              STRING  BOOT       </span></a>
+<a class="sourceLine" id="cb3-71" data-line-number="71"><span class="co">##  9 drill.exec.storage.implicit.fqn.column.label      fqn      ALL              STRING  BOOT       </span></a>
+<a class="sourceLine" id="cb3-72" data-line-number="72"><span class="co">## 10 drill.exec.storage.implicit.suffix.column.label   suffix   ALL              STRING  BOOT       </span></a>
+<a class="sourceLine" id="cb3-73" data-line-number="73"><span class="co">## # ... with 128 more rows</span></a>
+<a class="sourceLine" id="cb3-74" data-line-number="74"></a>
+<a class="sourceLine" id="cb3-75" data-line-number="75"><span class="kw"><a href="reference/drill_options.html">drill_options</a></span>(dc, <span class="st">"json"</span>)</a>
+<a class="sourceLine" id="cb3-76" data-line-number="76"><span class="co">## # A tibble: 9 x 5</span></a>
+<a class="sourceLine" id="cb3-77" data-line-number="77"><span class="co">##   name                                                  value accessibleScopes kind    optionScope</span></a>
+<a class="sourceLine" id="cb3-78" data-line-number="78"><span class="co">##   &lt;chr&gt;                                                 &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;      </span></a>
+<a class="sourceLine" id="cb3-79" data-line-number="79"><span class="co">## 1 store.json.all_text_mode                              FALSE ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-80" data-line-number="80"><span class="co">## 2 store.json.extended_types                             FALSE ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-81" data-line-number="81"><span class="co">## 3 store.json.read_numbers_as_double                     FALSE ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-82" data-line-number="82"><span class="co">## 4 store.json.reader.allow_nan_inf                       TRUE  ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-83" data-line-number="83"><span class="co">## 5 store.json.reader.print_skipped_invalid_record_number FALSE ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-84" data-line-number="84"><span class="co">## 6 store.json.reader.skip_invalid_records                FALSE ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-85" data-line-number="85"><span class="co">## 7 store.json.writer.allow_nan_inf                       TRUE  ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-86" data-line-number="86"><span class="co">## 8 store.json.writer.skip_null_fields                    TRUE  ALL              BOOLEAN BOOT       </span></a>
+<a class="sourceLine" id="cb3-87" data-line-number="87"><span class="co">## 9 store.json.writer.uglify                              FALSE ALL              BOOLEAN BOOT</span></a></code></pre></div>
+</div>
 </div>
 <div id="working-with-parquet-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#working-with-parquet-files" class="anchor"></a>Working with parquet files</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5"</span>)
-<span class="co">#&gt; Parsed with column specification:</span>
-<span class="co">#&gt; cols(</span>
-<span class="co">#&gt;   N_COMMENT = col_character(),</span>
-<span class="co">#&gt;   N_NAME = col_character(),</span>
-<span class="co">#&gt;   N_NATIONKEY = col_integer(),</span>
-<span class="co">#&gt;   N_REGIONKEY = col_integer()</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; # A tibble: 5 x 4</span>
-<span class="co">#&gt;              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY</span>
-<span class="co">#&gt; *                &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;       &lt;int&gt;</span>
-<span class="co">#&gt; 1  haggle. carefully f   ALGERIA           0           0</span>
-<span class="co">#&gt; 2 al foxes promise sly ARGENTINA           1           1</span>
-<span class="co">#&gt; 3 y alongside of the p    BRAZIL           2           1</span>
-<span class="co">#&gt; 4 eas hang ironic, sil    CANADA           3           1</span>
-<span class="co">#&gt; 5 y above the carefull     EGYPT           4           4</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5"</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">## Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">## cols(</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">##   N_COMMENT = col_character(),</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">##   N_NAME = col_character(),</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">##   N_NATIONKEY = col_integer(),</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">##   N_REGIONKEY = col_integer()</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">## )</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">## # A tibble: 5 x 4</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">##   N_COMMENT            N_NAME    N_NATIONKEY N_REGIONKEY</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">## * &lt;chr&gt;                &lt;chr&gt;           &lt;int&gt;       &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">## 1 haggle. carefully f  ALGERIA             0           0</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">## 2 al foxes promise sly ARGENTINA           1           1</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">## 3 y alongside of the p BRAZIL              2           1</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## 4 eas hang ironic, sil CANADA              3           1</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">## 5 y above the carefull EGYPT               4           4</span></a></code></pre></div>
 <p>Including multiple parquet files in different directories (note the wildcard support):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5"</span>)
-<span class="co">#&gt; Parsed with column specification:</span>
-<span class="co">#&gt; cols(</span>
-<span class="co">#&gt;   N_COMMENT = col_character(),</span>
-<span class="co">#&gt;   N_NAME = col_character(),</span>
-<span class="co">#&gt;   N_NATIONKEY = col_integer(),</span>
-<span class="co">#&gt;   N_REGIONKEY = col_integer(),</span>
-<span class="co">#&gt;   dir0 = col_character()</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; # A tibble: 5 x 5</span>
-<span class="co">#&gt;              N_COMMENT    N_NAME N_NATIONKEY N_REGIONKEY      dir0</span>
-<span class="co">#&gt; *                &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;       &lt;int&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt; 1  haggle. carefully f   ALGERIA           0           0 nationsMF</span>
-<span class="co">#&gt; 2 al foxes promise sly ARGENTINA           1           1 nationsMF</span>
-<span class="co">#&gt; 3 y alongside of the p    BRAZIL           2           1 nationsMF</span>
-<span class="co">#&gt; 4 eas hang ironic, sil    CANADA           3           1 nationsMF</span>
-<span class="co">#&gt; 5 y above the carefull     EGYPT           4           4 nationsMF</span></code></pre></div>
-<div id="a-preview-of-the-built-in-support-for-spatial-ops" class="section level3">
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">## Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">## cols(</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">##   N_COMMENT = col_character(),</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">##   N_NAME = col_character(),</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">##   N_NATIONKEY = col_integer(),</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">##   dir0 = col_character(),</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">##   N_REGIONKEY = col_integer()</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">## )</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## # A tibble: 5 x 5</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">##   N_COMMENT            N_NAME    N_NATIONKEY dir0      N_REGIONKEY</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## * &lt;chr&gt;                &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;           &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## 1 haggle. carefully f  ALGERIA             0 nationsSF           0</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## 2 al foxes promise sly ARGENTINA           1 nationsSF           1</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## 3 y alongside of the p BRAZIL              2 nationsSF           1</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## 4 eas hang ironic, sil CANADA              3 nationsSF           1</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">## 5 y above the carefull EGYPT               4 nationsSF           4</span></a></code></pre></div>
+<div id="drill-has-built-in-support-for-spatial-ops" class="section level3">
 <h3 class="hasAnchor">
-<a href="#a-preview-of-the-built-in-support-for-spatial-ops" class="anchor"></a>A preview of the built-in support for spatial ops</h3>
+<a href="#drill-has-built-in-support-for-spatial-ops" class="anchor"></a>Drill has built-in support for spatial ops</h3>
 <p>Via: <a href="https://github.com/k255/drill-gis" class="uri">https://github.com/k255/drill-gis</a></p>
 <p>A common use case is to select data within boundary of given polygon:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"</span>
-<span class="st">select columns[2] as city, columns[4] as lon, columns[3] as lat</span>
-<span class="st">    from cp.`sample-data/CA-cities.csv`</span>
-<span class="st">    where</span>
-<span class="st">        ST_Within(</span>
-<span class="st">            ST_Point(columns[4], columns[3]),</span>
-<span class="st">            ST_GeomFromText(</span>
-<span class="st">                'POLYGON((-121.95 37.28, -121.94 37.35, -121.84 37.35, -121.84 37.28, -121.95 37.28))'</span>
-<span class="st">                )</span>
-<span class="st">            )</span>
-<span class="st">"</span>)
-<span class="co">#&gt; Parsed with column specification:</span>
-<span class="co">#&gt; cols(</span>
-<span class="co">#&gt;   city = col_character(),</span>
-<span class="co">#&gt;   lon = col_double(),</span>
-<span class="co">#&gt;   lat = col_double()</span>
-<span class="co">#&gt; )</span>
-<span class="co">#&gt; # A tibble: 7 x 3</span>
-<span class="co">#&gt;          city       lon      lat</span>
-<span class="co">#&gt; *       &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     Burbank -121.9316 37.32328</span>
-<span class="co">#&gt; 2    San Jose -121.8950 37.33939</span>
-<span class="co">#&gt; 3        Lick -121.8458 37.28716</span>
-<span class="co">#&gt; 4 Willow Glen -121.8897 37.30855</span>
-<span class="co">#&gt; 5 Buena Vista -121.9166 37.32133</span>
-<span class="co">#&gt; 6    Parkmoor -121.9308 37.32105</span>
-<span class="co">#&gt; 7   Fruitdale -121.9327 37.31086</span></code></pre></div>
-</div>
-<div id="jdbc" class="section level3">
-<h3 class="hasAnchor">
-<a href="#jdbc" class="anchor"></a>JDBC</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RJDBC)
-<span class="co">#&gt; Loading required package: rJava</span>
-
-<span class="co"># Use this if connecting to a cluster with zookeeper</span>
-<span class="co"># con &lt;- drill_jdbc("drill-node:2181", "drillbits1") </span>
-
-<span class="co"># Use the following if running drill-embedded</span>
-con &lt;-<span class="st"> </span><span class="kw"><a href="reference/drill_jdbc.html">drill_jdbc</a></span>(<span class="st">"localhost:31010"</span>, <span class="dt">use_zk=</span><span class="ot">FALSE</span>)
-<span class="co">#&gt; Using [jdbc:drill:drillbit=localhost:31010]...</span>
-
-<span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(con, <span class="st">"SELECT * FROM cp.`employee.json`"</span>)
-<span class="co">#&gt; # A tibble: 1,155 x 16</span>
-<span class="co">#&gt;    employee_id         full_name first_name last_name position_id         position_title store_id department_id</span>
-<span class="co">#&gt;  *       &lt;dbl&gt;             &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;                  &lt;chr&gt;    &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt;  1           1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1</span>
-<span class="co">#&gt;  2           2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1</span>
-<span class="co">#&gt;  3           4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1</span>
-<span class="co">#&gt;  4           5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1</span>
-<span class="co">#&gt;  5           6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2</span>
-<span class="co">#&gt;  6           7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3</span>
-<span class="co">#&gt;  7           8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11</span>
-<span class="co">#&gt;  8           9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11</span>
-<span class="co">#&gt;  9          10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5</span>
-<span class="co">#&gt; 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11</span>
-<span class="co">#&gt; # ... with 1,145 more rows, and 8 more variables: birth_date &lt;chr&gt;, hire_date &lt;chr&gt;, salary &lt;dbl&gt;, supervisor_id &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   education_level &lt;chr&gt;, marital_status &lt;chr&gt;, gender &lt;chr&gt;, management_role &lt;chr&gt;</span>
-
-<span class="co"># but it can work via JDBC function calls, too</span>
-<span class="kw">dbGetQuery</span>(con, <span class="st">"SELECT * FROM cp.`employee.json`"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>()
-<span class="co">#&gt; # A tibble: 1,155 x 16</span>
-<span class="co">#&gt;    employee_id         full_name first_name last_name position_id         position_title store_id department_id</span>
-<span class="co">#&gt;  *       &lt;dbl&gt;             &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;                  &lt;chr&gt;    &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt;  1           1      Sheri Nowmer      Sheri    Nowmer           1              President        0             1</span>
-<span class="co">#&gt;  2           2   Derrick Whelply    Derrick   Whelply           2     VP Country Manager        0             1</span>
-<span class="co">#&gt;  3           4    Michael Spence    Michael    Spence           2     VP Country Manager        0             1</span>
-<span class="co">#&gt;  4           5    Maya Gutierrez       Maya Gutierrez           2     VP Country Manager        0             1</span>
-<span class="co">#&gt;  5           6   Roberta Damstra    Roberta   Damstra           3 VP Information Systems        0             2</span>
-<span class="co">#&gt;  6           7  Rebecca Kanagaki    Rebecca  Kanagaki           4     VP Human Resources        0             3</span>
-<span class="co">#&gt;  7           8       Kim Brunner        Kim   Brunner          11          Store Manager        9            11</span>
-<span class="co">#&gt;  8           9   Brenda Blumberg     Brenda  Blumberg          11          Store Manager       21            11</span>
-<span class="co">#&gt;  9          10      Darren Stanz     Darren     Stanz           5             VP Finance        0             5</span>
-<span class="co">#&gt; 10          11 Jonathan Murraiin   Jonathan  Murraiin          11          Store Manager        1            11</span>
-<span class="co">#&gt; # ... with 1,145 more rows, and 8 more variables: birth_date &lt;chr&gt;, hire_date &lt;chr&gt;, salary &lt;dbl&gt;, supervisor_id &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   education_level &lt;chr&gt;, marital_status &lt;chr&gt;, gender &lt;chr&gt;, management_role &lt;chr&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/drill_query.html">drill_query</a></span>(dc, <span class="st">"</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">select columns[2] as city, columns[4] as lon, columns[3] as lat</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">    from cp.`sample-data/CA-cities.csv`</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">    where</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">        ST_Within(</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">            ST_Point(columns[4], columns[3]),</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">            ST_GeomFromText(</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="st">                'POLYGON((-121.95 37.28, -121.94 37.35, -121.84 37.35, -121.84 37.28, -121.95 37.28))'</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="st">                )</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="st">            )</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="st">"</span>)</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">## Parsed with column specification:</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">## cols(</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">##   city = col_character(),</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">##   lon = col_double(),</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">##   lat = col_double()</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">## )</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">## # A tibble: 7 x 3</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">##   city          lon   lat</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">## * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">## 1 Burbank     -122.  37.3</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">## 2 San Jose    -122.  37.3</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">## 3 Lick        -122.  37.3</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">## 4 Willow Glen -122.  37.3</span></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">## 5 Buena Vista -122.  37.3</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">## 6 Parkmoor    -122.  37.3</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">## 7 Fruitdale   -122.  37.3</span></a></code></pre></div>
 </div>
 <div id="test-results" class="section level3">
 <h3 class="hasAnchor">
 <a href="#test-results" class="anchor"></a>Test Results</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sergeant)
-<span class="kw">library</span>(testthat)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'testthat'</span>
-<span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     matches</span>
-
-<span class="kw">date</span>()
-<span class="co">#&gt; [1] "Sat Jun 17 20:47:11 2017"</span>
-
-devtools<span class="op">::</span><span class="kw">test</span>()
-<span class="co">#&gt; Loading sergeant</span>
-<span class="co">#&gt; Testing sergeant</span>
-<span class="co">#&gt; basic functionality: ..</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; DONE ===================================================================================================================</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(sergeant)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">library</span>(testthat)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">## Attaching package: 'testthat'</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">## The following object is masked from 'package:dplyr':</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">## </span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">##     matches</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">## The following object is masked from 'package:purrr':</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">## </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">##     is_null</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw">date</span>()</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">## [1] "Sun Oct 14 09:30:28 2018"</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/test">test</a></span>()</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">## Loading sergeant</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">## Testing sergeant</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">## ✔ | OK F W S | Context</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">## </span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20">⠏ <span class="op">|</span><span class="st">  </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>dplyr API</a>
+<a class="sourceLine" id="cb7-21" data-line-number="21">⠋ <span class="op">|</span><span class="st">  </span><span class="dv">1</span>       <span class="op">|</span><span class="st"> </span>dplyr API</a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">⠙ <span class="op">|</span><span class="st">  </span><span class="dv">2</span>       <span class="op">|</span><span class="st"> </span>dplyr API</a>
+<a class="sourceLine" id="cb7-23" data-line-number="23">⠹ <span class="op">|</span><span class="st">  </span><span class="dv">3</span>       <span class="op">|</span><span class="st"> </span>dplyr API</a>
+<a class="sourceLine" id="cb7-24" data-line-number="24">✔ <span class="op">|</span><span class="st">  </span><span class="dv">3</span>       <span class="op">|</span><span class="st"> </span>dplyr API [<span class="fl">0.1</span> s]</a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">## </span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26">⠏ <span class="op">|</span><span class="st">  </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-27" data-line-number="27">⠋ <span class="op">|</span><span class="st">  </span><span class="dv">1</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-28" data-line-number="28">⠙ <span class="op">|</span><span class="st">  </span><span class="dv">2</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-29" data-line-number="29">⠹ <span class="op">|</span><span class="st">  </span><span class="dv">3</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-30" data-line-number="30">⠸ <span class="op">|</span><span class="st">  </span><span class="dv">4</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-31" data-line-number="31">⠼ <span class="op">|</span><span class="st">  </span><span class="dv">5</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">⠴ <span class="op">|</span><span class="st">  </span><span class="dv">6</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-33" data-line-number="33">⠦ <span class="op">|</span><span class="st">  </span><span class="dv">7</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-34" data-line-number="34">⠧ <span class="op">|</span><span class="st">  </span><span class="dv">8</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-35" data-line-number="35">⠇ <span class="op">|</span><span class="st">  </span><span class="dv">9</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">⠏ <span class="op">|</span><span class="st"> </span><span class="dv">10</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-37" data-line-number="37">⠋ <span class="op">|</span><span class="st"> </span><span class="dv">11</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38">⠙ <span class="op">|</span><span class="st"> </span><span class="dv">12</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-39" data-line-number="39">⠹ <span class="op">|</span><span class="st"> </span><span class="dv">13</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-40" data-line-number="40">⠸ <span class="op">|</span><span class="st"> </span><span class="dv">14</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-41" data-line-number="41">⠼ <span class="op">|</span><span class="st"> </span><span class="dv">15</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-42" data-line-number="42">⠴ <span class="op">|</span><span class="st"> </span><span class="dv">16</span>       <span class="op">|</span><span class="st"> </span>REST API</a>
+<a class="sourceLine" id="cb7-43" data-line-number="43">✔ <span class="op">|</span><span class="st"> </span><span class="dv">16</span>       <span class="op">|</span><span class="st"> </span>REST API [<span class="fl">1.9</span> s]</a>
+<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">## </span></a>
+<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">## ══ Results ═════════════════════════════════════════════════════════</span></a>
+<a class="sourceLine" id="cb7-46" data-line-number="46"><span class="co">## Duration: 2.1 s</span></a>
+<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="co">## </span></a>
+<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="co">## OK:       19</span></a>
+<a class="sourceLine" id="cb7-49" data-line-number="49"><span class="co">## Failed:   0</span></a>
+<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co">## Warnings: 0</span></a>
+<a class="sourceLine" id="cb7-51" data-line-number="51"><span class="co">## Skipped:  0</span></a></code></pre></div>
 </div>
-<div id="code-of-conduct" class="section level3">
-<h3 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h3>
-<p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
+<div id="sergeant-metrics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sergeant-metrics" class="anchor"></a>sergeant Metrics</h2>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Lang</th>
+<th align="right"># Files</th>
+<th align="right">(%)</th>
+<th align="right">LoC</th>
+<th align="right">(%)</th>
+<th align="right">Blank lines</th>
+<th align="right">(%)</th>
+<th align="right"># Lines</th>
+<th align="right">(%)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">R</td>
+<td align="right">12</td>
+<td align="right">0.92</td>
+<td align="right">625</td>
+<td align="right">0.92</td>
+<td align="right">173</td>
+<td align="right">0.75</td>
+<td align="right">562</td>
+<td align="right">0.87</td>
+</tr>
+<tr class="even">
+<td align="left">Rmd</td>
+<td align="right">1</td>
+<td align="right">0.08</td>
+<td align="right">55</td>
+<td align="right">0.08</td>
+<td align="right">58</td>
+<td align="right">0.25</td>
+<td align="right">86</td>
+<td align="right">0.13</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="code-of-conduct" class="section level2">
+<h2 class="hasAnchor">
+<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
+<p>Please note that this project is released with a <a href="CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
+    <div class="links">
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="http://github.com/hrbrmstr/sergeant">http://​github.com/​hrbrmstr/​sergeant</a>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=sergeant">https://​cloud.r-project.org/​package=sergeant</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/hrbrmstr/sergeant">https://​github.com/​hrbrmstr/​sergeant</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/hrbrmstr/sergeant/issues">https://​github.com/​hrbrmstr/​sergeant/​issues</a>
 </li>
 </ul>
+</div>
+<div class="license">
 <h2>License</h2>
-<p><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE.html">LICENSE</a></p>
+<ul class="list-unstyled">
+<li>
+<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
+</ul>
+</div>
+<div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Bob Rudis <br><small class="roles"> Author, maintainer </small> </li>
+<li>Bob Rudis <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-5670-2640" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" height="16"></a> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
+</div>
+
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://doi.org/10.5281/zenodo.1248912"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1248912.svg" alt="DOI"></a></li>
 <li><a href="https://travis-ci.org/hrbrmstr/sergeant"><img src="https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://codecov.io/gh/hrbrmstr/sergeant"><img src="https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg" alt="Coverage Status"></a></li>
+<li><a href="https://cran.r-project.org/package=sergeant"><img src="http://www.r-pkg.org/badges/version/sergeant" alt="CRAN_Status_Badge"></a></li>
 </ul>
+</div>
 </div>
 
 </div>
@@ -561,11 +581,13 @@ devtools<span class="op">::</span><span class="kw">test</span>()
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

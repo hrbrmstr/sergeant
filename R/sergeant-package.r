@@ -23,7 +23,7 @@
 #' network or between nodes. Drill uses ZooKeeper to maintain cluster membership and health
 #' check information.
 #'
-#' Methods are provided to work with Drill via the native JDBC & REST APIs along with R
+#' Methods are provided to work with Drill via the REST APIs along with R
 #' \code{DBI} and \code{dplyr} interfaces.
 #'
 #' @name sergeant
@@ -40,7 +40,6 @@
 #' @import utils
 #' @import DBI methods
 #' @importFrom scales comma
-#' @importClassesFrom RJDBC JDBCDriver JDBCConnection JDBCResult
 NULL
 
 
@@ -54,6 +53,11 @@ NULL
 NULL
 
 #' @name %>%
+#' @export
+#' @rdname sergeant-exports
+NULL
+
+#' @name tbl
 #' @export
 #' @rdname sergeant-exports
 NULL

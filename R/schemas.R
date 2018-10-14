@@ -30,9 +30,10 @@ drill_use <- function(drill_con, schema_name) {
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @family Dill direct REST API Interface
-#' @examples \dontrun{
+#' @examples
+#' try({
 #' drill_connection() %>% drill_show_files("dfs.tmp")
-#' }
+#' }, silent=TRUE)
 drill_show_files <- function(drill_con, schema_spec) {
   query <- sprintf("SHOW FILES IN %s", schema_spec)
   drill_query(drill_con, query, uplift=TRUE) %>%

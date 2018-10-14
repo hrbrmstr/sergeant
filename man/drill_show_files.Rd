@@ -15,9 +15,9 @@ drill_show_files(drill_con, schema_spec)
 Show files in a file system schema.
 }
 \examples{
-\dontrun{
+try({
 drill_connection() \%>\% drill_show_files("dfs.tmp")
-}
+}, silent=TRUE)
 }
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}

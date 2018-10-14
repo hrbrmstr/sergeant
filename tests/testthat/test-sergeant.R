@@ -1,6 +1,6 @@
 test_host <- Sys.getenv("DRILL_TEST_HOST", "localhost")
 
-context("dplyr")
+context("dplyr API")
 test_that("Core dbplyr ops work", {
 
  testthat::skip_on_cran()
@@ -16,7 +16,7 @@ test_that("Core dbplyr ops work", {
 
 })
 
-context("rest")
+context("REST API")
 test_that("REST API works", {
 
  testthat::skip_on_cran()
@@ -51,17 +51,3 @@ test_that("REST API works", {
 
 
 })
-
-# context("jdbc")
-# test_that("we can do something", {
-#
-#  testthat::skip_on_cran()
-#
-#   dc <- drill_jdbc("localhost:31010", use_zk=FALSE)
-#
-#   expect_that(dc, is_a("JDBCConnection"))
-#
-#   expect_that(drill_query(dc, "SELECT * FROM cp.`employee.json`"),
-#               is_a("tbl"))
-#
-# })

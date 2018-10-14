@@ -13,7 +13,8 @@
 #' @param username,password if not `NULL` the credentials for the Drill service.
 #' @note This is a DBI wrapper around the Drill REST API.
 #' @export
-#' @examples \dontrun{
+#' @examples
+#' try({
 #' db <- src_drill("localhost", 8047L)
 #'
 #' print(db)
@@ -57,7 +58,7 @@
 #' ##  9     2      Darren Stanz    12 Darren Stanz********     5      D*rr*n St*nz
 #' ## 10     4 Jonathan Murraiin    17 Jonathan Murraiin***     0 J*n*th*n M*rr***n
 #' ## # ... with more rows, and 3 more variables: rpd <chr>, rnd <dbl>, first_three <chr>
-#' }
+#' }, silent=TRUE)
 src_drill <- function(host  = Sys.getenv("DRILL_HOST", "localhost"),
                       port = as.integer(Sys.getenv("DRILL_PORT", 8047L)),
                       ssl = FALSE, username = NULL, password = NULL) {

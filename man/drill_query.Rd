@@ -27,10 +27,10 @@ default printing (which can be helpful if you accidentally execute a query and t
 set is huge).
 }
 \examples{
-\dontrun{
+try({
 drill_connection() \%>\%
   drill_query("SELECT * FROM cp.`employee.json` limit 5")
-}
+}, silent=TRUE)
 }
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}

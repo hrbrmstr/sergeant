@@ -1,3 +1,12 @@
+# sergeant 0.7.0-BETA
+
+- separated out Java-based functions into a sibling package
+
+# sergeant 0.7.0-ALPHA
+
+- enhanced JDBC connectivity
+- updated REST API to handle new features in Drill 1.14.0
+
 # sergeant 0.6.0
 
 - Authentication support for DBI/dplyr and `drill_connection()` pure REST interface

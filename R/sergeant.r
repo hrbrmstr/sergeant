@@ -41,9 +41,10 @@ drill_connection <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @family Dill direct REST API Interface
-#' @examples \dontrun{
+#' @examples
+#' try({
 #' drill_connection() %>% drill_active()
-#' }
+#' }, silent=TRUE)
 drill_active <- function(drill_con) {
   drill_server <- make_server(drill_con)
   !is.null(s_head(drill_server, httr::timeout(2))$result)

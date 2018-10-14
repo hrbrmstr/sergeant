@@ -36,7 +36,7 @@ SQL functions that need to be implemented please file an issue on GitHub.
 This is a DBI wrapper around the Drill REST API.
 }
 \examples{
-\dontrun{
+try({
 db <- src_drill("localhost", 8047L)
 
 print(db)
@@ -80,7 +80,7 @@ select(emp, full_name) \%>\%
 ##  9     2      Darren Stanz    12 Darren Stanz********     5      D*rr*n St*nz
 ## 10     4 Jonathan Murraiin    17 Jonathan Murraiin***     0 J*n*th*n M*rr***n
 ## # ... with more rows, and 3 more variables: rpd <chr>, rnd <dbl>, first_three <chr>
-}
+}, silent=TRUE)
 }
 \seealso{
 Other Drill REST `dplyr` API: \code{\link{drill_custom_functions}},

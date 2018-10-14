@@ -30,7 +30,7 @@ Drill can maximize data locality during query execution without moving data over
 network or between nodes. Drill uses ZooKeeper to maintain cluster membership and health
 check information.
 
-Methods are provided to work with Drill via the native JDBC & REST APIs along with R
+Methods are provided to work with Drill via the REST APIs along with R
 \code{DBI} and \code{dplyr} interfaces.
 }
 \references{

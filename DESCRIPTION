@@ -29,12 +29,10 @@ Imports:
     readr (>= 1.1.1),
     purrr (>= 0.2.2),
     scales (>= 0.4.1),
-    RJDBC (>= 0.2-5),
     utils,
     methods,
     magrittr
 Suggests:
-    rJava (>= 0.9-8),
     testthat (>= 1.0.2),
     covr (>= 3.0.0)
 RoxygenNote: 6.0.1.9000

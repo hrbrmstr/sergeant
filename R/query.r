@@ -17,10 +17,11 @@
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @family Dill direct REST API Interface
 #' @export
-#' @examples \dontrun{
+#' @examples
+#' try({
 #' drill_connection() %>%
 #'   drill_query("SELECT * FROM cp.`employee.json` limit 5")
-#' }
+#' }, silent=TRUE)
 drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) {
 
   query <- trimws(query)
@@ -30,8 +31,9 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
 
     try_require("rJava")
     try_require("RJDBC")
+    try_require("sergeant.caffeinated")
 
-    dplyr::tbl_df(RJDBC::dbGetQuery(drill_con, query))
+    dplyr::tbl_df(dbGetQuery(drill_con, query))
 
   } else {
 

@@ -77,5 +77,8 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 drill_uplift <- function(query_result) {
+  if (length(query_result$columns) != 0) {
+    query_result$rows <- query_result$rows[,query_result$columns]
+  }
   dplyr::tbl_df(readr::type_convert(query_result$rows))
 }

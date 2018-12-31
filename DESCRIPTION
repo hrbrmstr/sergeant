@@ -33,6 +33,7 @@ Imports:
     methods,
     magrittr
 Suggests:
+    DT,
     testthat (>= 1.0.2),
     covr (>= 3.0.0)
 RoxygenNote: 6.1.1

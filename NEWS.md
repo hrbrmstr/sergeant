@@ -1,10 +1,11 @@
 # sergeant 0.8.0 (in-progress)
 
 - Column order preserved in REST API & REST API DBI-based calls if
-  using Apache Drill 1.15.0+
+  using Apache Drill 1.15.0+ (Addresses #7)
 - New `drill_functions()` function to show all the available Apache 
-  Drill built-in functions & UDFs (Apache Drill 1.15.0+ required)
-
+  Drill built-in functions & UDFs (Apache Drill 1.15.0+ required); this
+  function has an option to display the functions in a widget and has
+  added the `DT` package to `Suggests` in the DESCRIPTION file.
 
 # sergeant 0.7.0-BETA
 

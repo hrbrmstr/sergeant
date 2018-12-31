@@ -304,29 +304,43 @@ drill_version <- function(drill_con) {
 #'
 #' @md
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
+#' @param browse if `TRUE` display an HTML interacrtive HTML widget with the functions
+#'        as well as reutrn the data frame with the functions. Default if `FALSE`.
 #' @note You _must_ be using Drill 1.15.0+ to use this function
 #' @export
+#' @return data frame
 #' @family Dill direct REST API Interface
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_connection() %>% drill_functions()
 #' }
-drill_functions <- function(drill_con) {
+drill_functions <- function(drill_con, browse=FALSE) {
 
   stopifnot(utils::compareVersion(drill_version(drill_con), "1.15.0") >= 0)
 
   if (inherits(drill_con, "src_drill")) {
     dplyr::collect(
       dplyr::tbl(drill_con, dplyr::sql("(SELECT * FROM sys.functions)"))
-    )
+    ) -> out
   } else {
     drill_query(
       drill_con = drill_con,
       query = "SELECT * FROM sys.functions",
       uplift = TRUE,
       .progress = FALSE
-      )
+    ) -> out
   }
+
+  if (browse) {
+    if (!requireNamespace("DT", quietly = TRUE)) {
+      warning("The DT must be installed to use this function")
+    } else {
+      DT::datatable(out, options = list(pageLength = 100))
+    }
+  }
+
+  out
+
 }
 
 

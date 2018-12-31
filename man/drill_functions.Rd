@@ -4,10 +4,16 @@
 \alias{drill_functions}
 \title{Show all the available Drill built-in functions & UDFs}
 \usage{
-drill_functions(drill_con)
+drill_functions(drill_con, browse = FALSE)
 }
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
+
+\item{browse}{if \code{TRUE} display an HTML interacrtive HTML widget with the functions
+as well as reutrn the data frame with the functions. Default if \code{FALSE}.}
+}
+\value{
+data frame
 }
 \description{
 Show all the available Drill built-in functions & UDFs

@@ -80,6 +80,7 @@ function mappings.
     connection
   - `drill_active`: Test whether Drill HTTP REST API server is up
   - `drill_cancel`: Cancel the query that has the given queryid
+  - `drill_functions`: Show all the available Drill built-in functions & UDFs (Apache Drill 1.15.0+ required)
   - `drill_jdbc`: Connect to Drill using JDBC
   - `drill_metrics`: Get the current memory metrics
   - `drill_options`: List the name, default, and data type of the system

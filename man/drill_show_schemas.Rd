@@ -19,6 +19,7 @@ Returns a list of available schemas.
 Other Dill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_cancel}},
   \code{\link{drill_connection}},
+  \code{\link{drill_functions}},
   \code{\link{drill_metrics}}, \code{\link{drill_options}},
   \code{\link{drill_profiles}},
   \code{\link{drill_profile}}, \code{\link{drill_query}},

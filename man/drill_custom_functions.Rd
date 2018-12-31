@@ -23,7 +23,7 @@ the link found in the \code{DESCRIPTION} file.
 \itemize{
 \item \code{as.character(x)} : \code{CAST( x AS CHARACTER )}
 \item \code{as.date(x)} : \code{CAST( x AS DATE )}
-\item \code{as.logical(x)} : \code{CAST( x AS BOOLEAN)}
+\item \code{as.logical(x)} : \code{CAST( x AS BOOLEAN) }
 \item \code{as.numeric(x)} : \code{CAST( x AS DOUBLE )}
 \item \code{as.posixct(x)} : \code{CAST( x AS TIMESTAMP )}
 \item \code{binary_string(x)} : \code{BINARY_STRING( x )}
@@ -41,7 +41,7 @@ the link found in the \code{DESCRIPTION} file.
 \item \code{string_binary(x)} : \code{STRING_BINARY( x )}
 \item \code{radians(x)} : \code{RADIANS( x )}
 \item \code{rshift(x)} : \code{RSHIFT( x )}
-\item \code{to_char(x, y)} : \code{TO_CHAR x, y )}
+\item \code{to_char(x, y)} : \code{TO_CHAR  x, y )}
 \item \code{to_date(x, y)} : \code{TO_DATE( x, y )}
 \item \code{to_number(x, y)} : \code{TO_NUMBER( x, y )}
 \item \code{trunc(x)} : \code{TRUNC( x )}
@@ -58,7 +58,7 @@ the link found in the \code{DESCRIPTION} file.
 \item \code{tolower(x)} = \code{LOWER( x )}
 \item \code{ltrim(x, y)} = \code{LTRIM( x, y )}
 \item \code{nullif(x, y} = \code{NULLIF( x, y )}
-\item \code{position(x, y)} = \code{POSITION( x IN y )}
+\item \code{position(x, y)} = \code{POSITION( x IN  y )}
 \item \code{gsub(x, y, z)} = \code{REGEXP_REPLACE( z, x, y )}
 \item \code{regexp_replace(x, y, z)} = \code{REGEXP_REPLACE( x, y, z )}
 \item \code{rtrim(x, y)} = \code{RTRIM( x, y )}

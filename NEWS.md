@@ -1,3 +1,8 @@
+# sergeant 0.8.0 (in-progress)
+
+- Column order preserved in REST API & REST API DBI-based calls if
+  using Apache Drill 1.15.0+
+
 # sergeant 0.7.0-BETA
 
 - separated out Java-based functions into a sibling package

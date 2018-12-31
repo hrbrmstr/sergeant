@@ -194,8 +194,9 @@ setMethod(
     } else {
       out <- httr::content(res, as="text", encoding="UTF-8")
       out <- jsonlite::fromJSON(out, flatten=TRUE)
-      out <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows, na=character())))
-      out
+      xdf <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows, na=character())))
+      if (length(out$columns) != 0) xdf <- xdf[,out$columns]
+      xdf
     }
 
   }
@@ -272,8 +273,9 @@ setMethod(
       )
     )
     out <- jsonlite::fromJSON(httr::content(res, as="text", encoding="UTF-8"), flatten=TRUE)
-    out <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows)))
-    colnames(out)
+    xdf <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows, na=character())))
+    if (length(out$columns) != 0) xdf <- xdf[,out$columns]
+    colnames(xdf)
   }
 )
 

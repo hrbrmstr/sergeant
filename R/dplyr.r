@@ -156,6 +156,7 @@ db_data_type.DrillConnection <- function(con, fields, ...) {
   data_type <- function(x) {
     switch(
       class(x)[1],
+      integer64 = "BIGINT",
       logical = "BOOLEAN",
       integer = "INTEGER",
       numeric = "DOUBLE",

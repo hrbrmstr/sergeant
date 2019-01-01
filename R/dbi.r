@@ -219,20 +219,85 @@ setMethod(
 
       warning(resp, call.=FALSE)
 
-      dplyr::data_frame()
+      return(dplyr::data_frame())
 
     } else {
 
       out <- httr::content(resp, as="text", encoding="UTF-8")
       out <- jsonlite::fromJSON(out, flatten=TRUE)
 
-      suppressMessages(
-        dplyr::tbl_df(readr::type_convert(out$rows, na=character()))
-      ) -> xdf
+      xdf <- out$rows
 
+      # ** only available in Drill 1.15.0+ **
+      # properly arrange columns
       if (length(out$columns) != 0) xdf <- xdf[,out$columns]
 
+      # ** only available in Drill 1.15.0+ **
+      # be smarter about type conversion now that the REST API provides
+      # the necessary metadata
+      if (length(out$metadata)) {
+
+        if ("BIGINT" %in% out$metadata) {
+          if (!.pkgenv$bigint_warn_once) {
+            warning(
+              "One or more columns are of type BIGINT. ",
+              "The sergeant package is in the process of switching to the use ",
+              "of the rapidjson package in an effort to provide support for ",
+              "this data type. Until then, BIGINT columns will still be converted ",
+              "to numeric since that's how jsonlite::fromJSON() works.\n\n",
+              "If you really need BIGINT/integer64 support, consider using the ",
+              "R ODBC interface to Apache Drill with the MapR ODBC drivers.\n\n",
+              "This informational warning will only be shown once per R session.",
+              call.=FALSE
+            )
+            .pkgenv$bigint_warn_once <- TRUE
+          }
+        }
+
+        sapply(1:length(out$columns), function(col_idx) {
+
+          cname <- out$columns[col_idx]
+          ctype <- out$metadata[col_idx]
+
+          case_when(
+            ctype == "INT" ~ "i",
+            ctype == "VARCHAR" ~ "c",
+            ctype == "TIMESTAMP" ~ "?",
+            ctype == "BIGINT" ~ "?",
+            ctype == "BINARY" ~ "c",
+            ctype == "BOOLEAN" ~ "l",
+            ctype == "DATE" ~ "?",
+            ctype == "FLOAT" ~ "d",
+            ctype == "DOUBLE" ~ "d",
+            ctype == "TIME" ~ "c",
+            ctype == "INTERVAL" ~ "c",
+            TRUE ~ "?"
+          )
+
+        }) -> col_types
+
+        suppressMessages(
+          dplyr::tbl_df(
+            readr::type_convert(
+              df = xdf,
+              col_types = paste0(col_types, collapse=""),
+              na = character()
+            )
+          )
+        ) -> xdf
+
+      } else {
+
+        suppressMessages(
+          dplyr::tbl_df(
+            readr::type_convert(df = xdf, na = character())
+          )
+        ) -> xdf
+
+      }
+
       xdf
+
     }
 
   }

@@ -16,7 +16,7 @@ Depends:
     R (>= 3.1.2)
 URL: https://gitlab.com/hrbrmstr/sergeant
 BugReports: https://gitlab.com/hrbrmstr/sergeant/issues
-License: MIT + file LICENSE
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -32,7 +32,12 @@ Imports:
     scales (>= 0.4.1),
     utils,
     methods,
-    magrittr
+    magrittr,
+    Rcpp
+LinkingTo:
+    progress,
+    rapidjsonr,
+    Rcpp
 Suggests:
     DT,
     testthat (>= 1.0.2),

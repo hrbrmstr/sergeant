@@ -9,6 +9,7 @@
 - DBI & dbplyr-REST interface queries now return much better query error 
   messages including original query text and a link to the Drill
   query profile (so users can do more in-depth debugging)
+- License change to GPL-3 since the pkg now uses code from bibrquery
 
 # sergeant 0.7.0-BETA
 

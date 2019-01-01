@@ -6,6 +6,9 @@
   Drill built-in functions & UDFs (Apache Drill 1.15.0+ required); this
   function has an option to display the functions in a widget and has
   added the `DT` package to `Suggests` in the DESCRIPTION file.
+- DBI & dbplyr-REST interface queries now return much better query error 
+  messages including original query text and a link to the Drill
+  query profile (so users can do more in-depth debugging)
 
 # sergeant 0.7.0-BETA
 

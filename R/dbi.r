@@ -164,7 +164,7 @@ setMethod(
 
     if (.progress) {
 
-      res <- httr::POST(
+      httr::POST(
         url = res@drill_server,
         path = "/query.json",
         encode = "json",
@@ -173,11 +173,11 @@ setMethod(
           queryType = "SQL",
           query = res@statement
         )
-      )
+      ) -> resp
 
     } else {
 
-      res <- httr::POST(
+      httr::POST(
         url = res@drill_server,
         path = "/query.json",
         encode = "json",
@@ -185,17 +185,53 @@ setMethod(
           queryType = "SQL",
           query = res@statement
         )
-      )
+      ) -> resp
+
     }
 
-    if (httr::status_code(res) != 200) {
-      warning(content(res, as="parsed"))
+    if (httr::status_code(resp) != 200) {
+
+      resp <- httr::content(resp, as="parsed")
+      resp <- resp$errorMessage
+      resp <- unlist(strsplit(resp, "\n"))
+
+      err <- resp[grepl("Error Id", resp)]
+
+      resp <- resp[resp != ""]
+      resp <- resp[!grepl("Error Id", resp)]
+
+      err <- sub("^.*: ", "", err)
+      err <- unlist(strsplit(err, "[[:space:]]+"))[1]
+
+      oq <- unlist(strsplit(res@statement, "\n"))
+
+      c(
+        resp,
+        "\nOriginal Query:\n",
+        sprintf("%3d: %s", 1:length(oq), oq),
+        sprintf(
+          "\nQuery Profile Error Link:\n%s/profiles/%s",
+          res@drill_server, err
+        )
+      ) -> resp
+
+      resp <- paste0(resp, collapse="\n")
+
+      warning(resp, call.=FALSE)
+
       dplyr::data_frame()
+
     } else {
-      out <- httr::content(res, as="text", encoding="UTF-8")
+
+      out <- httr::content(resp, as="text", encoding="UTF-8")
       out <- jsonlite::fromJSON(out, flatten=TRUE)
-      xdf <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows, na=character())))
+
+      suppressMessages(
+        dplyr::tbl_df(readr::type_convert(out$rows, na=character()))
+      ) -> xdf
+
       if (length(out$columns) != 0) xdf <- xdf[,out$columns]
+
       xdf
     }
 
@@ -266,16 +302,33 @@ setMethod(
   'dbListFields',
   signature(conn='DrillResult', name='missing'),
   function(conn, name) {
-    res <- httr::POST(
+    httr::POST(
       sprintf("%s/query.json", conn@drill_server),
       encode = "json",
       body = list(queryType="SQL", query=conn@statement
       )
-    )
-    out <- jsonlite::fromJSON(httr::content(res, as="text", encoding="UTF-8"), flatten=TRUE)
-    xdf <- suppressMessages(dplyr::tbl_df(readr::type_convert(out$rows, na=character())))
+    ) -> res
+
+    # fatal query error on the Drill side so return no fields
+    if (httr::status_code(res) != 200) {
+      #warning(content(res, as="parsed"), call.=FALSE)
+      return(character())
+    }
+
+    out <- httr::content(res, as = "text", encoding = "UTF-8")
+
+    out <- jsonlite::fromJSON(out, flatten = TRUE)
+
+    suppressMessages(
+      dplyr::tbl_df(
+        readr::type_convert(out$rows, na = character())
+      )
+    ) -> xdf
+
     if (length(out$columns) != 0) xdf <- xdf[,out$columns]
+
     colnames(xdf)
+
   }
 )
 

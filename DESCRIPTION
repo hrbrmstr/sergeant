@@ -14,12 +14,13 @@ Description: 'Apache Drill' is a low-latency distributed query engine designed t
     and using 'dplyr'/'dbplyr' idioms.
 Depends:
     R (>= 3.1.2)
-URL: https://github.com/hrbrmstr/sergeant
-BugReports: https://github.com/hrbrmstr/sergeant/issues
+URL: https://gitlab.com/hrbrmstr/sergeant
+BugReports: https://gitlab.com/hrbrmstr/sergeant/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    bit64,
     DBI (>= 0.7),
     dplyr (>= 0.7.0),
     dbplyr (>= 1.1.0),

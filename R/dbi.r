@@ -225,10 +225,6 @@ setMethod(
 
       orig <- httr::content(resp, as="text", encoding="UTF-8")
 
-      # cat(crayon::green(orig))
-      #
-      # writeLines(orig, "/Volumes/otg/data.json")
-
       out <- jsonlite::fromJSON(orig, flatten=TRUE)
 
       xdf <- out$rows
@@ -244,17 +240,25 @@ setMethod(
 
         if ("BIGINT" %in% out$metadata) {
           if (!.pkgenv$bigint_warn_once) {
-            warning(
-              "One or more columns are of type BIGINT. ",
-              "The sergeant package is in the process of switching to the use ",
-              "of the rapidjson package in an effort to provide support for ",
-              "this data type. Until then, BIGINT columns will still be converted ",
-              "to numeric since that's how jsonlite::fromJSON() works.\n\n",
-              "If you really need BIGINT/integer64 support, consider using the ",
-              "R ODBC interface to Apache Drill with the MapR ODBC drivers.\n\n",
-              "This informational warning will only be shown once per R session.",
-              call.=FALSE
-            )
+            if (getOption("sergeant.bigint.warnonce", TRUE)) {
+              warning(
+                "One or more columns are of type BIGINT. ",
+                "The sergeant package currently uses jsonlite::fromJSON() ",
+                "to process Drill REST API result sets. Since jsonlite does not ",
+                "support 64-bit integers BIGINT columns are initially converted ",
+                "to numeric since that's how jsonlite::fromJSON() works. This is ",
+                "problematic for many reasons, including trying to use 'dplyr' idioms ",
+                "with said converted BIGINT-to-numeric columns. It is recommended that ",
+                "you 'CAST' BIGINT columns to 'VARCHAR' prior to working with them from ",
+                "R/'dplyr'.\n\n",
+                "If you really need BIGINT/integer64 support, consider using the ",
+                "R ODBC interface to Apache Drill with the MapR ODBC drivers.\n\n",
+                "This informational warning will only be shown once per R session and ",
+                "you can disable them from appearing by setting the 'sergeant.bigint.warnonce' ",
+                "to 'FALSE' (i.e. options(sergeant.bigint.warnonce = FALSE)).",
+                call.=FALSE
+              )
+            }
             .pkgenv$bigint_warn_once <- TRUE
           }
         }

@@ -10,10 +10,13 @@
   messages including original query text and a link to the Drill
   query profile (so users can do more in-depth debugging)
 - License change to GPL-3 since the pkg now uses code from bibrquery
+- New `option()` => "`sergeant.bigint.warnonce`" to control `BIGINT` 
+  warnings. Use `options(sergeant.bigint.warnonce = FALSE)` 
 
 # sergeant 0.7.0-BETA
 
-- separated out Java-based functions into a sibling package
+- separated out Java-based functions (i.e. the JDBC driver) into a 
+  sibling package `sergeant.caffeinated`
 
 # sergeant 0.7.0-ALPHA
 

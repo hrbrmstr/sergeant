@@ -12,6 +12,7 @@
 - License change to GPL-3 since the pkg now uses code from bibrquery
 - New `option()` => "`sergeant.bigint.warnonce`" to control `BIGINT` 
   warnings. Use `options(sergeant.bigint.warnonce = FALSE)` 
+- Fixed bug in `dbListFields()` (`DrillConnection-class`)
 
 # sergeant 0.7.0-BETA
 

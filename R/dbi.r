@@ -255,7 +255,7 @@ setMethod(
                 "R ODBC interface to Apache Drill with the MapR ODBC drivers.\n\n",
                 "This informational warning will only be shown once per R session and ",
                 "you can disable them from appearing by setting the 'sergeant.bigint.warnonce' ",
-                "to 'FALSE' (i.e. options(sergeant.bigint.warnonce = FALSE)).",
+                "option to 'FALSE' (i.e. options(sergeant.bigint.warnonce = FALSE)).",
                 call.=FALSE
               )
             }
@@ -279,7 +279,7 @@ setMethod(
             ctype == "FLOAT" ~ "d",
             ctype == "DOUBLE" ~ "d",
             ctype == "TIME" ~ "c",
-            ctype == "INTERVAL" ~ "c",
+            ctype == "INTERVAL" ~ "?",
             TRUE ~ "?"
           )
 
@@ -365,7 +365,8 @@ setMethod(
   'dbListFields',
   c('DrillConnection', 'character'),
   function(conn, name, ...) {
-    quoted.name <- dbQuoteIdentifier(conn, name)
+    #quoted.name <- dbQuoteIdentifier(conn, name)
+    quoted.name <- name
     names(dbGetQuery(conn, paste('SELECT * FROM', quoted.name, 'LIMIT 1')))
   }
 )
@@ -400,7 +401,7 @@ setMethod(
       )
     ) -> xdf
 
-    if (length(out$columns) != 0) xdf <- xdf[,out$columns]
+    if (length(out$columns) != 0) xdf <- xdf[,out$columns,drop=FALSE]
 
     colnames(xdf)
 

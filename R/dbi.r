@@ -223,14 +223,19 @@ setMethod(
 
     } else {
 
-      out <- httr::content(resp, as="text", encoding="UTF-8")
-      out <- jsonlite::fromJSON(out, flatten=TRUE)
+      orig <- httr::content(resp, as="text", encoding="UTF-8")
+
+      # cat(crayon::green(orig))
+      #
+      # writeLines(orig, "/Volumes/otg/data.json")
+
+      out <- jsonlite::fromJSON(orig, flatten=TRUE)
 
       xdf <- out$rows
 
       # ** only available in Drill 1.15.0+ **
       # properly arrange columns
-      if (length(out$columns) != 0) xdf <- xdf[,out$columns]
+      if (length(out$columns) != 0) xdf <- xdf[,out$columns,drop=FALSE]
 
       # ** only available in Drill 1.15.0+ **
       # be smarter about type conversion now that the REST API provides
@@ -319,6 +324,7 @@ setMethod(
     else if (inherits(obj, "Date")) "DATE"
     else if (identical(class(obj), "times")) "TIME"
     else if (inherits(obj, "POSIXct")) "TIMESTAMP"
+    else if (inherits(obj, "integer64")) "BIGINT"
     else if (is.numeric(obj)) "DOUBLE"
     else "VARCHAR(255)"
   },

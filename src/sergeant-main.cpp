@@ -7,6 +7,7 @@
 #include <rapidjson/istreamwrapper.h>
 #include "rapidjson/filereadstream.h"
 #include <RProgress.h>
+#include "integer64.h"
 
 #include <ctime>
 #include <cstdio>
@@ -31,6 +32,16 @@ long int parse_int(const char* x) {
   } else {
     return y;
   }
+}
+
+
+int64_t parse_int64(const char* x) {
+  errno = 0;
+  int64_t y = strtoll(x, NULL, 10);
+  if (errno != 0) {
+    y = NA_INTEGER64;
+  }
+  return y;
 }
 
 enum DrillType {
@@ -126,7 +137,11 @@ public:
     switch(type_) {
     case DRILL_INT:
       return Rcpp::IntegerVector(n);
-    case DRILL_BIGINT:
+    case DRILL_BIGINT: {
+      Rcpp::DoubleVector out(n);
+      out.attr("class") = "integer64";
+      return out;
+    }
     case DRILL_DOUBLE:
     case DRILL_FLOAT:
       return Rcpp::DoubleVector(n);
@@ -173,8 +188,10 @@ public:
     }
 
     switch(type_) {
-    case DRILL_INT:
     case DRILL_BIGINT:
+      INTEGER64(x)[i] = v.IsString() ? parse_int64(v.GetString()) : NA_INTEGER64;
+      break;
+    case DRILL_INT:
       INTEGER(x)[i] = v.IsString() ? parse_int(v.GetString()) : NA_INTEGER;
       break;
     case DRILL_DOUBLE:

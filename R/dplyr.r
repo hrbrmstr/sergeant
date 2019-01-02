@@ -183,6 +183,7 @@ sql_translate_env.DrillConnection <- function(con) {
     scalar = dbplyr::sql_translator(
       .parent = dbplyr::base_scalar,
       `!=` = dbplyr::sql_infix("<>"),
+      as.integer64 = function(x) build_sql("CAST(", x, "AS BIGINT)"),
       as.numeric = function(x) build_sql("CAST(", x, " AS DOUBLE)"),
       as.character = function(x) build_sql("CAST(", x, " AS CHARACTER)"),
       as.date = function(x) build_sql("CAST(", x, " AS DATE)"),

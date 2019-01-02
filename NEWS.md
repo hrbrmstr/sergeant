@@ -13,6 +13,8 @@
 - New `option()` => "`sergeant.bigint.warnonce`" to control `BIGINT` 
   warnings. Use `options(sergeant.bigint.warnonce = FALSE)` 
 - Fixed bug in `dbListFields()` (`DrillConnection-class`)
+- Added `as.integer64()` `dplyr` custom Drill function to convert
+  columns to `BIGINT`
 
 # sergeant 0.7.0-BETA
 

@@ -62,7 +62,8 @@ Note that a number of Drill SQL functions have been mapped to R functions (e.g. 
 - `drill_jdbc`:	Connect to Drill using JDBC
 - `drill_metrics`:	Get the current memory metrics
 - `drill_options`:	List the name, default, and data type of the system and session options
-- `drill_profile`:	Get the profile of the query that has the given query id
+- `drill_popts`: Show all the available Drill options (1.15.0+)
+- `drill_rofile`:	Get the profile of the query that has the given query id
 - `drill_profiles`:	Get the profiles of running and completed queries
 - `drill_query`:	Submit a query and return results
 - `drill_set`:	Set Drill SYSTEM or SESSION options
@@ -77,6 +78,7 @@ Note that a number of Drill SQL functions have been mapped to R functions (e.g. 
 - `drill_uplift`:	Turn a columnar query results into a type-converted tbl
 - `drill_use`:	Change to a particular schema.
 - `drill_version`:	Identify the version of Drill running
+
 
 ## Installation
 

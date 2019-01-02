@@ -83,7 +83,8 @@ function mappings.
   - `drill_functions`: Show all the available Drill built-in functions & UDFs (Apache Drill 1.15.0+ required)
   - `drill_jdbc`: Connect to Drill using JDBC
   - `drill_metrics`: Get the current memory metrics
-  - `drill_options`: List the name, default, and data type of the system
+  - `drill_optis`: Show all the available Drill options (1.15.0+)
+  - `drill_optons`: List the name, default, and data type of the system
     and session options
   - `drill_profile`: Get the profile of the query that has the given
     query id

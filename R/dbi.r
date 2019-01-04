@@ -231,7 +231,11 @@ setMethod(
 
       # ** only available in Drill 1.15.0+ **
       # properly arrange columns
-      if (length(out$columns) != 0) xdf <- xdf[,out$columns,drop=FALSE]
+      if (length(out$columns) != 0) {
+        if (is.data.frame(xdf)) {
+          if (nrow(xdf) > 0) xdf <- xdf[,out$columns,drop=FALSE]
+        }
+      }
 
       # ** only available in Drill 1.15.0+ **
       # be smarter about type conversion now that the REST API provides
@@ -386,24 +390,17 @@ setMethod(
     ) -> res
 
     # fatal query error on the Drill side so return no fields
-    if (httr::status_code(res) != 200) {
-      #warning(content(res, as="parsed"), call.=FALSE)
-      return(character())
-    }
+    if (httr::status_code(res) != 200)  return(character())
 
     out <- httr::content(res, as = "text", encoding = "UTF-8")
 
     out <- jsonlite::fromJSON(out, flatten = TRUE)
 
-    suppressMessages(
-      dplyr::tbl_df(
-        readr::type_convert(out$rows, na = character())
-      )
-    ) -> xdf
-
-    if (length(out$columns) != 0) xdf <- xdf[,out$columns,drop=FALSE]
-
-    colnames(xdf)
+    if (length(out$columns) != 0) {
+      return(out$columns)
+    } else {
+      return(colnames(xdf))
+    }
 
   }
 )

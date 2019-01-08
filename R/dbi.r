@@ -394,12 +394,12 @@ setMethod(
 
     out <- httr::content(res, as = "text", encoding = "UTF-8")
 
-    xdf <- jsonlite::fromJSON(out, flatten = TRUE)
+    out <- jsonlite::fromJSON(out, flatten = TRUE)
 
     if (length(out$columns) != 0) {
       return(out$columns)
     } else {
-      return(colnames(xdf))
+      return(colnames(out$rows))
     }
 
   }

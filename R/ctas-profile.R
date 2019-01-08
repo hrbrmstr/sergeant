@@ -30,9 +30,9 @@ ctas_profile <- function(x, new_table_name = "CHANGE____ME") {
 
   stopifnot(inherits(x, "tbl_drill"))
 
-  vals <- collect(head(x))
+  vals <- dplyr::collect(head(x))
 
-  vals <- suppressMessages(type_convert(vals))
+  vals <- suppressMessages(readr::type_convert(vals))
 
   data_type <- function(x) {
     switch(

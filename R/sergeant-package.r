@@ -20,7 +20,7 @@
 #' You can install and run a Drillbit service on one node or on many nodes to form a
 #' distributed cluster environment. When a Drillbit runs on each data node in a cluster,
 #' Drill can maximize data locality during query execution without moving data over the
-#' network or between nodes. Drill uses ZooKeeper to maintain cluster membership and health
+#' network or between nodes. Drill uses Zookeeper to maintain cluster membership and health
 #' check information.
 #'
 #' Methods are provided to work with Drill via the REST APIs along with R
@@ -33,9 +33,10 @@
 #' @import utils DBI methods bit64 httr jsonlite htmltools bit64
 #' @importFrom scales comma
 #' @importFrom purrr map map2 map2_df %>%
+#' @importFrom readr type_convert
 #' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter
 #' @importFrom dplyr db_desc src db_data_type db_explain sql_translate_env copy_to
-#' @importFrom dplyr db_query_fields src_tbls sql_escape_ident case_when
+#' @importFrom dplyr db_query_fields src_tbls sql_escape_ident case_when collect
 #' @importFrom dbplyr build_sql sql_prefix sql_quote src_sql tbl_sql
 #' @importFrom dbplyr win_recycled win_current_group base_win base_agg base_scalar win_over sql
 NULL

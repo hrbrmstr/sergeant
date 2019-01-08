@@ -35,6 +35,7 @@ Imports:
     magrittr (>= 1.5)
 Suggests:
     DT (>= 0.5),
+    stevedore,
     testthat (>= 1.0.2),
     covr (>= 3.0.0)
 RoxygenNote: 6.1.1

@@ -27,7 +27,7 @@ drill_set <- function(drill_con, ..., type=c("session", "system")) {
 
   purrr::map2(names(params), params, ~sprintf("ALTER %s SET `%s` = %s", type, .x, .y)) %>%
     purrr::map_df(function(x) {
-    y <- drill_query(drill_con, x)
+    y <- drill_query(drill_con, x, .progress=FALSE)
     if (length(y) == 2) {
       dplyr::data_frame(query=x, param=y$summary, value=y$ok, error_msg=NA)
     } else {

@@ -5,7 +5,7 @@
 #' @family Dill direct REST API Interface
 #' @export
 drill_show_schemas <- function(drill_con) {
-  drill_query(drill_con, "SHOW SCHEMAS")
+  drill_query(drill_con, "SHOW SCHEMAS", .progress=FALSE)
 }
 
 #' Change to a particular schema.
@@ -18,7 +18,7 @@ drill_show_schemas <- function(drill_con) {
 #' @export
 drill_use <- function(drill_con, schema_name) {
   query <- sprintf("USE `%s`", schema_name)
-  out <- drill_query(drill_con, query)
+  out <- drill_query(drill_con, query, .progress=FALSE)
   if (!("errorMessage" %in% names(out))) message(out)
   invisible(out)
 }
@@ -36,6 +36,6 @@ drill_use <- function(drill_con, schema_name) {
 #' }, silent=TRUE)
 drill_show_files <- function(drill_con, schema_spec) {
   query <- sprintf("SHOW FILES IN %s", schema_spec)
-  drill_query(drill_con, query, uplift=TRUE) %>%
+  drill_query(drill_con, query, uplift=TRUE, .progress=FALSE) %>%
     dplyr::select(name, isDirectory, permissions, dplyr::everything())
 }

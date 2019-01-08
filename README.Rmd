@@ -5,12 +5,15 @@ editor_options:
 ---
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, include=FALSE}
 knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
   collapse = TRUE,
   comment = "##",
   fig.path = "README-"
 )
+options(sergeant.bigint.warnonce = FALSE)
 ```
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1248912.svg)](https://doi.org/10.5281/zenodo.1248912) 
@@ -30,7 +33,7 @@ Version 0.7.0 splits off the JDBC interface into a separate package `sergeant.ca
 
 Drill + `sergeant` is (IMO) a streamlined alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
-Using Drill SQL queries that reference parquet files on a local linux or macOS workstation can often be more performant than doing the same data ingestion & wrangling work with R (especially for large or disperate data sets). Drill can often help further streaming workflows that infolve wrangling many tiny JSON files on a daily basis.
+Using Drill SQL queries that reference parquet files on a local linux or macOS workstation can often be more performant than doing the same data ingestion & wrangling work with R (especially for large or disperate data sets). Drill can often help further streamline workflows that involve wrangling many tiny JSON files on a daily basis.
 
 Drill can be obtained from <https://drill.apache.org/download/> (use "Direct File Download"). Drill can also be installed via [Docker](https://drill.apache.org/docs/running-drill-on-docker/). For local installs on Unix-like systems, a common/suggestion location for the Drill directory is  `/usr/local/drill` as the install directory. 
 
@@ -79,6 +82,9 @@ Note that a number of Drill SQL functions have been mapped to R functions (e.g. 
 - `drill_use`:	Change to a particular schema.
 - `drill_version`:	Identify the version of Drill running
 
+**Helpers**
+
+- `ctas_profile`: Generate a Drill CTAS Statement from a Query
 
 ## Installation
 
@@ -107,24 +113,24 @@ count(db, gender, marital_status)
 
 count(db, gender, marital_status) %>% collect()
 
-group_by(db, position_title) %>% 
+group_by(db, position_title) %>%
   count(gender) -> tmp2
 
-group_by(db, position_title) %>% 
-  count(gender) %>% 
-  ungroup() %>% 
-  mutate(full_desc=ifelse(gender=="F", "Female", "Male")) %>% 
-  collect() %>% 
-  select(Title=position_title, Gender=full_desc, Count=n)
+group_by(db, position_title) %>%
+  count(gender) %>%
+  ungroup() %>%
+  mutate(full_desc = ifelse(gender == "F", "Female", "Male")) %>%
+  collect() %>%
+  select(Title = position_title, Gender = full_desc, Count = n)
 
-arrange(db, desc(employee_id)) %>% print(n=20)
+arrange(db, desc(employee_id)) %>% print(n = 20)
 
-mutate(db, position_title=tolower(position_title)) %>%
-  mutate(salary=as.numeric(salary)) %>% 
-  mutate(gender=ifelse(gender=="F", "Female", "Male")) %>%
-  mutate(marital_status=ifelse(marital_status=="S", "Single", "Married")) %>% 
-  group_by(supervisor_id) %>% 
-  summarise(underlings_count=n()) %>% 
+mutate(db, position_title = tolower(position_title)) %>%
+  mutate(salary = as.numeric(salary)) %>%
+  mutate(gender = ifelse(gender == "F", "Female", "Male")) %>%
+  mutate(marital_status = ifelse(marital_status == "S", "Single", "Married")) %>%
+  group_by(supervisor_id) %>%
+  summarise(underlings_count = n()) %>%
   collect()
 ```
 
@@ -179,18 +185,7 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
             )
 ")
 ```
-### Test Results
-
-```{r}
-library(sergeant)
-library(testthat)
-
-date()
-
-devtools::test()
-```
-
-## sergeant Metrics
+### sergeant Metrics
 
 ```{r echo=FALSE}
 cloc::cloc_pkg_md()

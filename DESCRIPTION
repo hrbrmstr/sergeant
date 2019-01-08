@@ -13,7 +13,7 @@ Description: 'Apache Drill' is a low-latency distributed query engine designed t
     'Drill' instances via the 'REST' 'API', 'JDBC' interface (optional), 'DBI' 'methods'
     and using 'dplyr'/'dbplyr' idioms.
 Depends:
-    R (>= 3.1.2)
+    R (>= 3.2.0)
 URL: https://gitlab.com/hrbrmstr/sergeant
 BugReports: https://gitlab.com/hrbrmstr/sergeant/issues
 License: GPL-3 + file LICENSE

@@ -15,6 +15,8 @@
 - Fixed bug in `dbListFields()` (`DrillConnection-class`)
 - Added `as.integer64()` `dplyr` custom Drill function to convert
   columns to `BIGINT`
+- Added `ctas_profile()` to automagically create a CTAS query from 
+  a Drill `tbl` (Ref: #29 / inspired by David Severski)
 
 # sergeant 0.7.0-BETA
 

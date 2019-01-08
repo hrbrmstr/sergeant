@@ -12,7 +12,7 @@
 #' @return a \code{tbl} (invisibly) with the \code{ALTER} queries sent and results, including errors.
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples \dontrun{
 #' drill_connection() %>%
 #'   drill_set(exec.errors.verbose=TRUE, store.format="parquet", web.logs.max_lines=20000)
@@ -55,7 +55,7 @@ drill_set <- function(drill_con, ..., type=c("session", "system")) {
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param ... bare name of system options to reset
 #' @param all if \code{TRUE}, all parameters are reset (\code{...} is ignored)
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 #' @examples \dontrun{
@@ -98,7 +98,7 @@ drill_system_reset <- function(drill_con, ..., all=FALSE) {
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param ... bare name of system options to reset
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @export
 #' @examples \dontrun{
 #' drill_connection() %>% drill_settings_reset(exec.errors.verbose)

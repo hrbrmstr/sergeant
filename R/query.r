@@ -15,7 +15,7 @@
 #' @param .progress if \code{TRUE} (default if in an interactive session) then ask
 #'                  \code{httr::POST} to display a progress bar
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @export
 #' @examples
 #' try({

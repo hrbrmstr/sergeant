@@ -85,7 +85,8 @@ Note that a number of Drill SQL functions have been mapped to R functions (e.g. 
 **Helpers**
 
 - `ctas_profile`: Generate a Drill CTAS Statement from a Query
-
+- `drill_up`: 
+Start a Dockerized Drill Instance
 ## Installation
 
 ```{r eval=FALSE}

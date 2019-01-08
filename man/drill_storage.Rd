@@ -4,9 +4,9 @@
 \alias{drill_storage}
 \alias{drill_mod_storage}
 \alias{drill_rm_storage}
-\title{Get the list of storage plugin names and configurations}
+\title{Retrieve, modify or update storage plugin names and configurations}
 \usage{
-drill_storage(drill_con, plugin = NULL)
+drill_storage(drill_con, plugin = NULL, as = c("tbl", "list", "raw"))
 
 drill_mod_storage(drill_con, name, config)
 
@@ -17,13 +17,19 @@ drill_rm_storage(drill_con, name)
 
 \item{plugin}{the assigned name in the storage plugin definition.}
 
+\item{as}{one of "`tbl`" or "`list`" or "`raw`". The latter two are useful if you want
+modify an existing storage plugin (e.g. add a workspace) via
+[drill_mod_storage()].}
+
 \item{name}{name of the storage plugin configuration to create/update/remove}
 
-\item{config}{a \code{list} or raw character, valid JSON of a complete storage
-spec}
+\item{config}{a raw 1-element character vector containing valid JSON of a
+complete storage spec}
 }
 \description{
-Get the list of storage plugin names and configurations
+Retrieve, modify or remove storage plugins from a Drill instance. If you intend
+to modify an existing configuration it is suggested that you use the "`list`" or
+"`raw`" values to the `as` parameter to make it easier to modify them.
 }
 \examples{
 \dontrun{
@@ -56,37 +62,7 @@ drill_connection() \%>\%
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
 \seealso{
-Other Dill direct REST API Interface: \code{\link{drill_active}},
-  \code{\link{drill_cancel}},
-  \code{\link{drill_connection}},
-  \code{\link{drill_functions}},
-  \code{\link{drill_metrics}}, \code{\link{drill_options}},
-  \code{\link{drill_opts}}, \code{\link{drill_profiles}},
-  \code{\link{drill_profile}}, \code{\link{drill_query}},
-  \code{\link{drill_settings_reset}},
-  \code{\link{drill_set}}, \code{\link{drill_show_files}},
-  \code{\link{drill_show_schemas}},
-  \code{\link{drill_stats}}, \code{\link{drill_status}},
-  \code{\link{drill_system_reset}},
-  \code{\link{drill_threads}}, \code{\link{drill_use}},
-  \code{\link{drill_version}}
-
-Other Dill direct REST API Interface: \code{\link{drill_active}},
-  \code{\link{drill_cancel}},
-  \code{\link{drill_connection}},
-  \code{\link{drill_functions}},
-  \code{\link{drill_metrics}}, \code{\link{drill_options}},
-  \code{\link{drill_opts}}, \code{\link{drill_profiles}},
-  \code{\link{drill_profile}}, \code{\link{drill_query}},
-  \code{\link{drill_settings_reset}},
-  \code{\link{drill_set}}, \code{\link{drill_show_files}},
-  \code{\link{drill_show_schemas}},
-  \code{\link{drill_stats}}, \code{\link{drill_status}},
-  \code{\link{drill_system_reset}},
-  \code{\link{drill_threads}}, \code{\link{drill_use}},
-  \code{\link{drill_version}}
-
-Other Dill direct REST API Interface: \code{\link{drill_active}},
+Other Drill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_cancel}},
   \code{\link{drill_connection}},
   \code{\link{drill_functions}},
@@ -101,4 +77,4 @@ Other Dill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_threads}}, \code{\link{drill_use}},
   \code{\link{drill_version}}
 }
-\concept{Dill direct REST API Interface}
+\concept{Drill direct REST API Interface}

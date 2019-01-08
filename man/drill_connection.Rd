@@ -29,7 +29,7 @@ interface immediately to prime the cookie-jar with the session id.
 dc <- drill_connection()
 }
 \seealso{
-Other Dill direct REST API Interface: \code{\link{drill_active}},
+Other Drill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_cancel}},
   \code{\link{drill_functions}},
   \code{\link{drill_metrics}}, \code{\link{drill_options}},
@@ -44,4 +44,4 @@ Other Dill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_threads}}, \code{\link{drill_use}},
   \code{\link{drill_version}}
 }
-\concept{Dill direct REST API Interface}
+\concept{Drill direct REST API Interface}

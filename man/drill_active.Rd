@@ -2,7 +2,7 @@
 % Please edit documentation in R/sergeant.r
 \name{drill_active}
 \alias{drill_active}
-\title{Test whether Drill HTTP Dill direct REST API Interface server is up}
+\title{Test whether Drill HTTP Drill direct REST API Interface server is up}
 \usage{
 drill_active(drill_con)
 }
@@ -18,7 +18,7 @@ drill_connection() \%>\% drill_active()
 }, silent=TRUE)
 }
 \seealso{
-Other Dill direct REST API Interface: \code{\link{drill_cancel}},
+Other Drill direct REST API Interface: \code{\link{drill_cancel}},
   \code{\link{drill_connection}},
   \code{\link{drill_functions}},
   \code{\link{drill_metrics}}, \code{\link{drill_options}},
@@ -33,4 +33,4 @@ Other Dill direct REST API Interface: \code{\link{drill_cancel}},
   \code{\link{drill_threads}}, \code{\link{drill_use}},
   \code{\link{drill_version}}
 }
-\concept{Dill direct REST API Interface}
+\concept{Drill direct REST API Interface}

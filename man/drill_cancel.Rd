@@ -18,7 +18,7 @@ Cancel the query that has the given queryid
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
 \seealso{
-Other Dill direct REST API Interface: \code{\link{drill_active}},
+Other Drill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_connection}},
   \code{\link{drill_functions}},
   \code{\link{drill_metrics}}, \code{\link{drill_options}},
@@ -33,4 +33,4 @@ Other Dill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_threads}}, \code{\link{drill_use}},
   \code{\link{drill_version}}
 }
-\concept{Dill direct REST API Interface}
+\concept{Drill direct REST API Interface}

@@ -10,7 +10,7 @@ s_head <- purrr::safely(httr::HEAD)
 #' @note If `user`/`password` are set this function will make a `POST` to the REST
 #'       interface immediately to prime the cookie-jar with the session id.
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples
 #' dc <- drill_connection()
 drill_connection <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
@@ -34,13 +34,13 @@ drill_connection <- function(host=Sys.getenv("DRILL_HOST", "localhost"),
 
 }
 
-#' Test whether Drill HTTP Dill direct REST API Interface server is up
+#' Test whether Drill HTTP Drill direct REST API Interface server is up
 #'
 #' This is a very simple test (performs \code{HEAD /} request on the Drill server/cluster)
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples
 #' try({
 #' drill_connection() %>% drill_active()
@@ -55,7 +55,7 @@ drill_active <- function(drill_con) {
 #' @note The output of this is in a "viewer" window
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples \dontrun{
 #' drill_connection() %>% drill_status()
 #' }
@@ -72,7 +72,7 @@ drill_status <- function(drill_con) {
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples \dontrun{
 #' drill_connection() %>% drill_metrics()
 #' }
@@ -89,7 +89,7 @@ drill_metrics <- function(drill_con) {
 #' @note The output of this is in a "viewer" window
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples \dontrun{
 #' drill_connection() %>% drill_threads()
 #' }
@@ -107,7 +107,7 @@ drill_threads <- function(drill_con) {
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples \dontrun{
 #' drill_connection() %>% drill_profiles()
 #' }
@@ -124,7 +124,7 @@ drill_profiles <- function(drill_con) {
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param query_id UUID of the query in standard UUID format that Drill assigns to each query
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @export
 drill_profile <- function(drill_con, query_id) {
   drill_server <- make_server(drill_con)
@@ -139,7 +139,7 @@ drill_profile <- function(drill_con, query_id) {
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param query_id the UUID of the query in standard UUID format that Drill assigns to each query.
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @export
 drill_cancel <- function(drill_con, query_id) {
   drill_server <- make_server(drill_con)
@@ -149,13 +149,20 @@ drill_cancel <- function(drill_con, query_id) {
   invisible(TRUE)
 }
 
-#' Get the list of storage plugin names and configurations
+#' Retrieve, modify or update storage plugin names and configurations
+#'
+#' Retrieve, modify or remove storage plugins from a Drill instance. If you intend
+#' to modify an existing configuration it is suggested that you use the "`list`" or
+#' "`raw`" values to the `as` parameter to make it easier to modify them.
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param plugin the assigned name in the storage plugin definition.
+#' @param as one of "`tbl`" or "`list`" or "`raw`". The latter two are useful if you want
+#'        modify an existing storage plugin (e.g. add a workspace) via
+#'        [drill_mod_storage()].
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @examples \dontrun{
 #' drill_connection() %>% drill_storage()
 #'
@@ -181,7 +188,9 @@ drill_cancel <- function(drill_con, query_id) {
 #' }
 #' ')
 #' }
-drill_storage <- function(drill_con, plugin=NULL) {
+drill_storage <- function(drill_con, plugin=NULL, as=c("tbl", "list", "raw")) {
+
+  as <- match.arg(as[1], c("tbl", "list", "raw"))
 
   drill_server <- make_server(drill_con)
 
@@ -193,18 +202,24 @@ drill_storage <- function(drill_con, plugin=NULL) {
 
   httr::stop_for_status(res)
 
-  cnt <- httr::content(res, as="text", encoding="UTF-8")
-  jsonlite::fromJSON(cnt, flatten=TRUE) %>%
-    dplyr::tbl_df()
+  out <- httr::content(res, as="text", encoding="UTF-8")
+
+  switch(
+    as,
+    tbl = jsonlite::fromJSON(out, flatten=TRUE) %>% dplyr::tbl_df(),
+    list = jsonlite::fromJSON(
+      out, simplifyVector = TRUE, simplifyDataFrame = FALSE, flatten = FALSE
+    ),
+    raw = out
+  )
 
 }
 
 #' @md
 #' @rdname drill_storage
 #' @param name name of the storage plugin configuration to create/update/remove
-#' @param config a `list` or raw character, valid JSON of a complete storage
-#'        spec
-#' @family Dill direct REST API Interface
+#' @param config a raw 1-element character vector containing valid JSON of a
+#'        complete storage spec
 #' @export
 drill_mod_storage <- function(drill_con, name, config) {
 
@@ -213,19 +228,20 @@ drill_mod_storage <- function(drill_con, name, config) {
   httr::POST(
     url = sprintf("%s/storage/%s.json", drill_server, name),
     httr::content_type_json(),
-    body = config
+    body = config,
+    encode = "raw"
   ) -> res
 
   httr::stop_for_status(res)
 
-  cnt <- httr::content(res, as="text", encoding="UTF-8")
-  jsonlite::fromJSON(cnt, flatten=TRUE)
+  out <- httr::content(res, as="text", encoding="UTF-8")
+
+  invisible(jsonlite::fromJSON(out, flatten=TRUE)$result == "success")
 
 }
 
 #' @md
 #' @rdname drill_storage
-#' @family Dill direct REST API Interface
 #' @export
 drill_rm_storage <- function(drill_con, name) {
 
@@ -248,7 +264,7 @@ drill_rm_storage <- function(drill_con, name) {
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param pattern pattern to filter results by
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_connection() %>% drill_options()
@@ -268,7 +284,7 @@ drill_options <- function(drill_con, pattern=NULL) {
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_connection() %>% drill_stats()
@@ -285,7 +301,7 @@ drill_stats <- function(drill_con) {
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @export
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_connection() %>% drill_version()
@@ -309,7 +325,7 @@ drill_version <- function(drill_con) {
 #' @note You _must_ be using Drill 1.15.0+ to use this function
 #' @export
 #' @return data frame
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @examples \dontrun{
 #' drill_connection() %>% drill_functions()
@@ -352,7 +368,7 @@ drill_functions <- function(drill_con, browse=FALSE) {
 #' @note You _must_ be using Drill 1.15.0+ to use this function
 #' @export
 #' @return data frame
-#' @family Dill direct REST API Interface
+#' @family Drill direct REST API Interface
 #' @references \href{https://drill.apache.org/docs/querying-system-tables/#querying-the-options-table}{Drill documentation}
 #' @examples \dontrun{
 #' drill_connection() %>% drill_opts()
@@ -384,4 +400,14 @@ drill_opts <- function(drill_con, browse=FALSE) {
 
   out
 
+}
+
+#' Print function for `drill_conn` objects
+#'
+#' @md
+#' @param x a `drill_conn` object made with [drill_connection()]
+#' @param ... unused
+#' @export
+print.drill_conn <- function(x, ...) {
+  cat(sprintf("<Drill REST API Direct Connection to %s:%s>\n", x$host, x$port))
 }

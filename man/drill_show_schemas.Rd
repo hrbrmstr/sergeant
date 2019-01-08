@@ -16,7 +16,7 @@ Returns a list of available schemas.
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
 \seealso{
-Other Dill direct REST API Interface: \code{\link{drill_active}},
+Other Drill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_cancel}},
   \code{\link{drill_connection}},
   \code{\link{drill_functions}},
@@ -31,4 +31,4 @@ Other Dill direct REST API Interface: \code{\link{drill_active}},
   \code{\link{drill_threads}}, \code{\link{drill_use}},
   \code{\link{drill_version}}
 }
-\concept{Dill direct REST API Interface}
+\concept{Drill direct REST API Interface}

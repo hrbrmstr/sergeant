@@ -112,6 +112,7 @@ function mappings.
 
   - `ctas_profile`: Generate a Drill CTAS Statement from a Query
 
+  - `drill_up`: Start a Dockerized Drill Instance
 ## Installation
 
 ``` r

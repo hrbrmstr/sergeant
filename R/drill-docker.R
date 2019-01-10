@@ -38,7 +38,7 @@ drill_up <- function(image = "drill/apache-drill:1.15.0",
   stopifnot(dir.exists(data_dir))
 
   if (!requireNamespace("stevedore", quietly = TRUE)) {
-    stop("The stevedore must be installed to use this function")
+    stop("The stevedorepackage must be installed to use this function")
   }
 
   docker <- stevedore::docker_client()
@@ -73,6 +73,7 @@ drill_up <- function(image = "drill/apache-drill:1.15.0",
 
   r <- drill_storage(drill_con, "dfs", "raw")
 
+  # ugly but the jsonlite targeted "unboxing" code would be uglier
   gsub(
     '"workspaces" : \\{',
     '"workspaces" : \\{\n  "d" : { "location" : "/data", "writable" : true, "defaultInputFormat" : null, "allowAccessOutsideWorkspace" : false },',

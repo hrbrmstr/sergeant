@@ -30,9 +30,9 @@ ctas_profile <- function(x, new_table_name = "CHANGE____ME") {
 
   stopifnot(inherits(x, "tbl_drill"))
 
-  vals <- dplyr::collect(head(x))
+  vals_orig <- dplyr::collect(head(x))
 
-  vals <- suppressMessages(readr::type_convert(vals))
+  vals <- suppressMessages(readr::type_convert(vals_orig))
 
   data_type <- function(x) {
     switch(
@@ -52,20 +52,25 @@ ctas_profile <- function(x, new_table_name = "CHANGE____ME") {
 
   field_types <- vapply(vals, data_type, character(1))
 
-  sprintf(
-    "  CAST(`%s` AS %s) AS `%s`",
-    names(field_types),
-    field_types,
-    names(field_types)
-  ) -> casts
+  ctr <- 0
+
+  mapply(function(fn, ft) {
+
+    if (ft %in% c("DATE", "TIMESTAMP")) {
+
+      ctr <<- ctr + 1
+      cmt <- "*NOTE* You need to specify the format string. Sample character data is: [%s]. "
+      cmt <- sprintf(cmt, vals_orig[[fn]][[1]])
+
+      sprintf("  TO_TIMESTAMP(`%s`, 'FORMATSTRING') AS `%s` -- %s", fn, fn, cmt)
+
+    } else {
+      sprintf("  CAST(`%s` AS %s) AS `%s`", fn, ft, fn)
+    }
+
+  }, names(field_types), field_types, SIMPLIFY = TRUE, USE.NAMES = FALSE) -> casts
 
   casts <- unlist(strsplit(paste0(casts, collapse=",\n"), "\n"))
-
-  case_when(
-    grepl("AS TIMESTAMP", casts) ~ sprintf("%s -- ** Change this TO_TIMESTAMP() with a proper format string ** (will eventually auto-convert)", casts),
-    grepl("AS DATE", casts) ~ sprintf("%s -- ** Change this TO_DATE() with a proper format string ** (will eventually auto-convert)", casts),
-    TRUE ~ casts
-  ) -> casts
 
   orig_query <- x$ops$x
 
@@ -78,6 +83,24 @@ ctas_profile <- function(x, new_table_name = "CHANGE____ME") {
     new_table_name,
     paste0(casts, collapse="\n"),
     orig_query
-  )
+  ) -> out
+
+  paste0(c(
+    "-- ** Created by ctas_profile() in the R sergeant package, version ",
+    toString(packageVersion("sergeant")), " **\n\n", out
+  ), collapse="") -> out
+
+  if (ctr > 0) {
+    sprintf(
+      paste0(c(
+        "%s\n\n-- TIMESTAMP and/or DATE columns were detected.\n",
+        "Drill's date/time format string reference can be found at:\n--\n",
+        "-- <http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html>"
+      ), collapse=""),
+      out
+    ) -> out
+  }
+
+  out
 
 }

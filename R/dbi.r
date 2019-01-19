@@ -97,7 +97,7 @@ setMethod(
 setMethod(
   "dbDisconnect",
   "DrillConnection", function(conn, ...) {
-    TRUE
+    invisible(TRUE)
   },
   valueClass = "logical"
 )
@@ -329,6 +329,9 @@ setMethod(
   "dbDataType",
   "DrillConnection",
   function(dbObj, obj, ...) {
+
+    stopifnot(!is.null(obj))
+
     if (is.integer(obj)) "INTEGER"
     else if (inherits(obj, "Date")) "DATE"
     else if (identical(class(obj), "times")) "TIME"
@@ -426,7 +429,12 @@ setMethod(
   "dbGetInfo",
   "DrillDriver",
   function(dbObj) {
-    return()
+    return(
+      list(
+        driver.version = packageVersion("sergeant"),
+        client.version = packageVersion("sergeant")
+      )
+    )
   }
 )
 
@@ -439,9 +447,29 @@ setMethod(
     return(list(
       host = dbObj@host,
       port = dbObj@port,
-      user = dbObj@username,
+      username = dbObj@username,
       ssl = dbObj@ssl,
-      implicits = dbObj@implicits
+      implicits = dbObj@implicits,
+      db.version = dbGetQuery(dbObj, "SELECT version FROM sys.version")[["version"]],
+      dbname = ""
     ))
   }
 )
+
+#' A concise character representation (label) for a `DrillConnection`
+#'
+#' @param x a `DrillConnection`
+#' @param ... ignored
+#' @export
+format.DrillConnection <- function(x, ...) {
+  if (dbIsValid(x)) {
+    sprintf("<DrillConnection %s:%s>", x@host, x@port)
+  }
+}
+
+
+
+
+
+
+

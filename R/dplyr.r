@@ -140,7 +140,8 @@ db_explain.DrillConnection <- function(con, sql, ...) {
 db_query_fields.DrillConnection <- function(con, sql, ...) {
 
   fields <- dbplyr::build_sql(
-    "SELECT * FROM ", sql, " LIMIT 1",
+    # "SELECT * FROM ", sql, " LIMIT 1",
+    "SELECT * FROM ", dplyr::sql_subquery(con, sql), " LIMIT 1",
     con = con
   )
   result <- dbSendQuery(con, fields)

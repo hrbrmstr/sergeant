@@ -126,6 +126,7 @@ cmake_server <- function(conn) {
 #' @param conn connection
 #' @param statement SQL statement
 #' @param ... passed on to methods
+#' @export
 #' @family Drill REST DBI API
 #' @aliases dbSendQuery,DrillConnection,character-method
 setMethod(
@@ -334,7 +335,7 @@ setMethod(
     else if (inherits(obj, "POSIXct")) "TIMESTAMP"
     else if (inherits(obj, "integer64")) "BIGINT"
     else if (is.numeric(obj)) "DOUBLE"
-    else "VARCHAR(255)"
+    else "VARCHAR"
   },
   valueClass = "character"
 )

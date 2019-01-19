@@ -17,6 +17,7 @@
   columns to `BIGINT`
 - Added `ctas_profile()` to automagically create a CTAS query from 
   a Drill `tbl` (Ref: #29 / inspired by David Severski)
+- Added more tests to cover DBI and extended d[b]plyr operations
 
 # sergeant 0.7.0-BETA
 

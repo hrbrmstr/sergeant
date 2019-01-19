@@ -16,7 +16,7 @@ Depends:
     R (>= 3.2.0)
 URL: https://gitlab.com/hrbrmstr/sergeant
 BugReports: https://gitlab.com/hrbrmstr/sergeant/issues
-License: GPL-3 + file LICENSE
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 

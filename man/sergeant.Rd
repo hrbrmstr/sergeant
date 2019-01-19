@@ -13,10 +13,10 @@ having to create and manage schemas. Some of the key features are:
 }
 \details{
 \itemize{
-  \item{Schema-free JSON document model similar to MongoDB and Elasticsearch}
-  \item{Industry-standard APIs: ANSI SQL, ODBC/JDBC, RESTful APIs}
-  \item{Extremely user and developer friendly}
-  \item{Pluggable architecture enables connectivity to multiple datastores}
+\item{Schema-free JSON document model similar to MongoDB and Elasticsearch}
+\item{Industry-standard APIs: ANSI SQL, ODBC/JDBC, RESTful APIs}
+\item{Extremely user and developer friendly}
+\item{Pluggable architecture enables connectivity to multiple datastores}
 }
 
 Drill includes a distributed execution environment, purpose built for large-scale data

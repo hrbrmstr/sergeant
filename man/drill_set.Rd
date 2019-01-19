@@ -9,7 +9,7 @@ drill_set(drill_con, ..., type = c("session", "system"))
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
-\item{...}{named parameters to be sent to ALTER [SYSTEM|SESSION]}
+\item{...}{named parameters to be sent to \code{ALTER SYSTEM} or \code{ALTER SESSION}}
 
 \item{type}{set the \code{session} or \code{system} parameter}
 }

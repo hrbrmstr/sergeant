@@ -416,3 +416,32 @@ setMethod(
   'DrillResult',
   function(res, ...) { return(res@statement) }
 )
+
+
+#' Metadata about database objects
+#' @rdname dbGetInfo
+#' @param dbObj A \code{\linkS4class{DrillDriver}} or \code{\linkS4class{DrillConnection}} object
+#' @export
+setMethod(
+  "dbGetInfo",
+  "DrillDriver",
+  function(dbObj) {
+    return()
+  }
+)
+
+#' @rdname dbGetInfo
+#' @export
+setMethod(
+  "dbGetInfo",
+  "DrillConnection",
+  function(dbObj) {
+    return(list(
+      host = dbObj@host,
+      port = dbObj@port,
+      user = dbObj@username,
+      ssl = dbObj@ssl,
+      implicits = dbObj@implicits
+    ))
+  }
+)

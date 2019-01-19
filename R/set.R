@@ -7,7 +7,7 @@
 #' If any query errors result, error messages will be presented to the console.
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
-#' @param ... named parameters to be sent to ALTER [SYSTEM|SESSION]
+#' @param ... named parameters to be sent to `ALTER SYSTEM` or `ALTER SESSION`
 #' @param type set the \code{session} or \code{system} parameter
 #' @return a \code{tbl} (invisibly) with the \code{ALTER} queries sent and results, including errors.
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}

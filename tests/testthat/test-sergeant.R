@@ -82,6 +82,11 @@ test_that("core DBI ops work", {
   expect_equal(dbDataType(con, bit64::integer64(0)), "BIGINT")
   expect_equal(dbDataType(con, numeric(0)), "DOUBLE")
 
+  expect_true(is.null(dbGetInfo(Drill())))
+
+  inf <- dbGetInfo(con)
+  expect_equal(inf$port, 8047)
+
 })
 
 context("REST API")

@@ -1,13 +1,13 @@
 #' Connect to Drill (dplyr)
 #'
-#' Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
+#' Use `src_drill()` to connect to a Drill cluster and `tbl()` to connect to a
 #' fully-qualified "table reference". The vast majority of Drill SQL functions have
-#' also been made available to the \code{dplyr} interface. If you have custom Drill
+#' also been made available to the `dplyr` interface. If you have custom Drill
 #' SQL functions that need to be implemented please file an issue on GitHub.
 #'
 #' @md
-#' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
-#' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
+#' @param host Drill host (will pick up the value from `DRILL_HOST` env var)
+#' @param port Drill port (will pick up the value from `DRILL_PORT` env var)
 #' @param ssl use ssl?
 #' @family Drill REST `dplyr` API
 #' @param username,password if not `NULL` the credentials for the Drill service.

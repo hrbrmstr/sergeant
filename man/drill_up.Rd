@@ -2,10 +2,13 @@
 % Please edit documentation in R/drill-docker.R
 \name{drill_up}
 \alias{drill_up}
+\alias{drill_down}
 \title{Start a Dockerized Drill Instance}
 \usage{
 drill_up(image = "drill/apache-drill:1.15.0", container_name = "drill",
   data_dir = getwd(), remove = TRUE)
+
+drill_down(id)
 }
 \arguments{
 \item{image}{Drill image to use. Must be a valid image from
@@ -21,6 +24,8 @@ in the container. This will be mapped to the \code{dfs} storage plugin as the
 
 \item{remove}{remove the Drill container instance after it's stopped?
 Defaults to \code{TRUE} since you shouldn't be relying on this in production.}
+
+\item{id}{the id of the Drill container}
 }
 \value{
 a \code{stevedore} docker object (invisibly) which \emph{you} are responsible
@@ -37,6 +42,9 @@ one at \href{https://hub.docker.com/u/drill}{Drill's Docker Hub}.
 The path specified in \code{data_dir} will be mapped inside the container as
 \code{/data} and a new \code{dfs} storage workspace will created (\code{dfs.d}) that
 maps to \code{/data} and is writable.
+
+Use \code{\link[=drill_down]{drill_down()}} to stop a running Drill container by container id
+(full or partial).
 }
 \note{
 this requires a working Docker setup on your system and it is \emph{highly suggested}
@@ -47,3 +55,8 @@ you \code{docker pull} it yourself before running this function.
 drill_up(data_dir = "~/Data")
 }
 }
+\seealso{
+Other Drill Docker functions: \code{\link{killall_drill}},
+  \code{\link{showall_drill}}
+}
+\concept{Drill Docker functions}

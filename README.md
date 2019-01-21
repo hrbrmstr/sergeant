@@ -112,8 +112,12 @@ function mappings.
 
   - `ctas_profile`: Generate a Drill CTAS Statement from a Query
 
-  - `drill_up`: Start a Dockerized Drill Instance
-## Installation
+ - - `drill_up`: Start a Dockerized Drill Instance
+ - `showall_drill`: Show all dead and running Drill Docker containers
+  - `sdrill_down`:  stop a Dockerized Drill Instance by container id
+  - `topall_drill`: Prune all dead and running Drill Docker containers
+
+# Installation
 
 ``` r
 devtools::install_github("hrbrmstr/sergeant")

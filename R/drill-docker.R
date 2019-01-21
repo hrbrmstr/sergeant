@@ -9,6 +9,9 @@
 #' `/data` and a new `dfs` storage workspace will created (`dfs.d`) that
 #' maps to `/data` and is writable.
 #'
+#' Use [drill_down()] to stop a running Drill container by container id
+#' (full or partial).
+#'
 #' @md
 #' @note this requires a working Docker setup on your system and it is *highly suggested*
 #'       you `docker pull` it yourself before running this function.
@@ -26,6 +29,7 @@
 #'         for killing with the `$stop()`  function or from the Docker command
 #'         line (in interactive mode the docker container ID is printed as well).
 #' @export
+#' @family Drill Docker functions
 #' @examples \dontrun{
 #' drill_up(data_dir = "~/Data")
 #' }
@@ -86,4 +90,67 @@ drill_up <- function(image = "drill/apache-drill:1.15.0",
 
   invisible(drill)
 
+}
+
+#' @rdname drill_up
+#' @param id the id of the Drill container
+#' @export
+drill_down <- function(id) {
+
+  docker <- stevedore::docker_client()
+  docker$container$get(id)$stop()
+
+}
+
+#' Show all dead and running Drill Docker containers
+#'
+#' This function will show _all_ Docker containers that are based on an
+#' image matching a runtime command of "`bin/drill-embedded`".
+#'
+#' @family Drill Docker functions
+#' @export
+showall_drill <- function() {
+
+  docker <- stevedore::docker_client()
+
+  x <- docker$container$list(all=TRUE)
+
+  x <- x[grepl("bin/drill-embedded", x$command, fixed = TRUE),]
+  if (nrow(x) > 0) {
+    message(sprintf(
+      "Drill containers found: [%s]\nReturning data frame of container metadata (invisibly).",
+      paste0(substr(x$id, 1, 16), collapse=", ")
+    ))
+    return(invisible(x))
+  } else {
+    message("No Drill containers running matching target command found.")
+  }
+
+}
+
+#' Prune all dead and running Drill Docker containers
+#'
+#' _This is a destructive function._ It will stop **any** Docker container that
+#' is based on an image matching a runtime command of "`bin/drill-embedded`".
+#' It's best used when you had a session forcefully interuppted and had been
+#' using the R helper functions to start/stop the Drill Docker container.
+#' You may want to consider using the Docker command-line interface to perform
+#' this work manually.
+#'
+#' @family Drill Docker functions
+#' @export
+killall_drill <- function() {
+
+  docker <- stevedore::docker_client()
+  x <- docker$container$list(all=TRUE)
+  for (i in 1:nrow(x)) {
+    if (grepl("bin/drill-embedded", x$command[i], fixed = TRUE)) {
+      message(sprintf("Pruning: %s...", x$id[i]))
+      if (x$state[i] == "running") {
+        cntnr <- docker$container$get(x$id[i])
+        suppressWarnings(try(cntnr$stop(), silent = TRUE))
+        suppressWarnings(try(cntnr$remove()(), silent = TRUE))
+      }
+    }
+  }
 }

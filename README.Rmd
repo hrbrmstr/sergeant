@@ -86,8 +86,12 @@ Note that a number of Drill SQL functions have been mapped to R functions (e.g. 
 
 - `ctas_profile`: Generate a Drill CTAS Statement from a Query
 - `drill_up`: 
-Start a Dockerized Drill Instance
-## Installation
+ sart a Dockerized Drill Instance
+# `sdrill_down`:  stop a Dockerized Drill Instance by container id
+- `howall_drill`: Show all dead and running Drill Docker containers
+- `stopall_drill`: Prune all dead and running Drill Docker containers
+
+# Installation
 
 ```{r eval=FALSE}
 devtools::install_github("hrbrmstr/sergeant")

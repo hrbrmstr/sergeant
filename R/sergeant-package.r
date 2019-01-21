@@ -27,6 +27,7 @@
 #' \code{DBI} and \code{dplyr} interfaces.
 #'
 #' @name sergeant
+#' @keywords internal
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @docType package
 #' @author Bob Rudis (bob@@rud.is)

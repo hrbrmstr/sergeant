@@ -39,3 +39,4 @@ Methods are provided to work with Drill via the REST APIs along with R
 \author{
 Bob Rudis (bob@rud.is)
 }
+\keyword{internal}

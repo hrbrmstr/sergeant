@@ -24,7 +24,8 @@
 #' check information.
 #'
 #' Methods are provided to work with Drill via the REST APIs along with R
-#' \code{DBI} and \code{dplyr} interfaces.
+#' \code{DBI} and \code{dplyr} interfaces. Helper functions are included to facilitate
+#' using official 'Drill' 'Docker' images/containers.
 #'
 #' @name sergeant
 #' @keywords internal

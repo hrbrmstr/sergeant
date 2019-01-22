@@ -5,13 +5,16 @@ Authors@R: c(
       person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-5670-2640")),
       person("Edward", "Visel", email = "edward.visel@gmail.com", role = "ctb"),
-      person("Andy", "Hine", email = "andyyhine@gmail.com", role = "ctb")
+      person("Andy", "Hine", email = "andyyhine@gmail.com", role = "ctb"),
+      person("David", "Severski", email = "davidski@deadheaven.com", role = "ctb",
+        comment = c(ORCID = "https://orcid.org/0000-0001-7867-0459"))
     )
 Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 
     data exploration and 'analytics' on both relational and non-relational 'datastores', 
     scaling to petabytes of data. Methods are provided that enable working with 'Apache' 
     'Drill' instances via the 'REST' 'API', 'JDBC' interface (optional), 'DBI' 'methods'
-    and using 'dplyr'/'dbplyr' idioms.
+    and using 'dplyr'/'dbplyr' idioms. Helper functions are included to facilitate
+    using official 'Drill' 'Docker' images/containers.
 Depends:
     R (>= 3.2.0)
 URL: https://gitlab.com/hrbrmstr/sergeant

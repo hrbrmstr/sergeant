@@ -95,6 +95,50 @@ drill_uplift <- function(query_result) {
     query_result$rows <- query_result$rows[,query_result$columns,drop=FALSE]
   }
 
+  if (length(query_result$columns) != 0) {
+    if (is.data.frame(query_result$rows)) {
+      if (nrow(query_result$rows) > 0) query_result$rows <-
+          query_result$rows[,query_result$columns,drop=FALSE]
+    } else {
+      lapply(1:length(query_result$columns), function(col_idx) {
+        ctype <- query_result$metadata[col_idx]
+        if (ctype == "INT") {
+          integer(0)
+        } else if (ctype == "VARCHAR") {
+          character(0)
+        } else if (ctype == "TIMESTAMP") {
+          cx <- integer(0)
+          class(cx) <- "POSIXct"
+          cx
+        } else if (ctype == "BIGINT") {
+          integer64(0)
+        } else if (ctype == "BINARY") {
+          character(0)
+        } else if (ctype == "BOOLEAN") {
+          logical(0)
+        } else if (ctype == "DATE") {
+          cx <- integer(0)
+          class(cx) <- "Date"
+          cx
+        } else if (ctype == "FLOAT") {
+          numeric(0)
+        } else if (ctype == "DOUBLE") {
+          double(0)
+        } else if (ctype == "TIME") {
+          character(0)
+        } else if (ctype == "INTERVAL") {
+          character(0)
+        } else {
+          character(0)
+        }
+      }) -> xdf
+      xdf <- set_names(xdf, query_result$columns)
+      class(xdf) <- c("data.frame")
+      return(xdf)
+    }
+  }
+
+
   # ** only available in Drill 1.15.0+ **
   # be smarter about type conversion now that the REST API provides
   # the necessary metadata

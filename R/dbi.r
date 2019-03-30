@@ -235,6 +235,42 @@ setMethod(
       if (length(out$columns) != 0) {
         if (is.data.frame(xdf)) {
           if (nrow(xdf) > 0) xdf <- xdf[,out$columns,drop=FALSE]
+        } else {
+          lapply(1:length(out$columns), function(col_idx) {
+            ctype <- out$metadata[col_idx]
+            if (ctype == "INT") {
+              integer(0)
+            } else if (ctype == "VARCHAR") {
+              character(0)
+            } else if (ctype == "TIMESTAMP") {
+              cx <- integer(0)
+              class(cx) <- "POSIXct"
+              cx
+            } else if (ctype == "BIGINT") {
+              integer64(0)
+            } else if (ctype == "BINARY") {
+              character(0)
+            } else if (ctype == "BOOLEAN") {
+              logical(0)
+            } else if (ctype == "DATE") {
+              cx <- integer(0)
+              class(cx) <- "Date"
+              cx
+            } else if (ctype == "FLOAT") {
+              numeric(0)
+            } else if (ctype == "DOUBLE") {
+              double(0)
+            } else if (ctype == "TIME") {
+              character(0)
+            } else if (ctype == "INTERVAL") {
+              character(0)
+            } else {
+              character(0)
+            }
+          }) -> xdf
+          xdf <- set_names(xdf, out$columns)
+          class(xdf) <- c("data.frame")
+          return(xdf)
         }
       }
 

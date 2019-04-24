@@ -4,13 +4,16 @@
 \alias{drill_use}
 \title{Change to a particular schema.}
 \usage{
-drill_use(drill_con, schema_name)
+drill_use(drill_con, schema_name, .progress = interactive())
 }
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
 \item{schema_name}{A unique name for a Drill schema. A schema in Drill is a configured
 storage plugin, such as hive, or a storage plugin and workspace.}
+
+\item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
+\code{httr::POST} to display a progress bar}
 }
 \description{
 Change to a particular schema.

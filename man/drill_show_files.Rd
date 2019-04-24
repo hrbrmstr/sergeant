@@ -4,12 +4,15 @@
 \alias{drill_show_files}
 \title{Show files in a file system schema.}
 \usage{
-drill_show_files(drill_con, schema_spec)
+drill_show_files(drill_con, schema_spec, .progress = interactive())
 }
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
 \item{schema_spec}{properly quoted "filesystem.directory_name" reference path}
+
+\item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
+\code{httr::POST} to display a progress bar}
 }
 \description{
 Show files in a file system schema.

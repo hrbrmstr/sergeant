@@ -77,5 +77,11 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @export
 drill_uplift <- function(query_result) {
-  dplyr::tbl_df(readr::type_convert(query_result$rows))
+  # this could be handled better by constructing a zero-row tibble from the column names and type metadata returned by the
+  # REST API.  For now though this avoids the error thrown by tbl_df in the zero-row case.
+  ret <- tibble::tibble()
+  if (length(query_result$rows) != 0) {
+    ret <- dplyr::tbl_df(readr::type_convert(query_result$rows))
+  }
+  ret
 }

@@ -51,3 +51,15 @@ test_that("REST API works", {
 
 
 })
+
+test_that("handle empty query results", {
+
+  testthat::skip_on_cran()
+
+  dc <- drill_connection(test_host)
+
+  test_rest <- drill_query(dc, "SELECT * FROM cp.`employee.json` where employee_id=-1")
+
+  expect_that(test_rest, is_a("data.frame"))
+
+})

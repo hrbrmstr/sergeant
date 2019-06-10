@@ -12,12 +12,26 @@ Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](
 
 Tools to Transform and Query Data with ‘Apache’ ‘Drill’
 
-## NOTE
+## \*\* IMPORTANT \*\*
 
 Version 0.7.0 splits off the JDBC interface into a separate package
 `sergeant.caffeinated`
+([sr.ht](https://git.sr.ht/~hrbrmstr/sergeant);
 ([GitLab](https://gitlab.com/hrbrmstr/sergeant-caffeinated);
 [GitHub](https://github.com/hrbrmstr/sergeant-caffeinated)).
+
+If you want to try all the new features coming in 0.8.0 please install from the 0.8.0 branch via:
+
+``` r
+# sr.ht
+devtools::install_git("https://git.sr.ht/~hrbrmstr/sergeant", ref="0.8.0")
+
+# GitLab
+devtools::install_git("https://gitlab.com/hrbrmstr/sergeant", ref="0.8.0")
+
+# GitHub
+devtools::install_git("https://github.com/hrbrmstr/sergeant", ref="0.8.0")
+```
 
 ## Description
 

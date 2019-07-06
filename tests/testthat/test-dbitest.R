@@ -28,7 +28,7 @@ expect_true(all(names(dbGetInfo(dr)) %in% c("driver.version", "client.version"))
 expect_equal(names(formals(dbConnect)), c("drv", "..."))
 expect_equal(names(formals(dbDisconnect)), c("conn", "..."))
 
-con <- expect_visible(connect(dr))
+con <- expect_visible(dbConnect(dr, test_host))
 expect_s4_class(con, "DBIConnection")
 expect_true(dbDisconnect(con))
 

@@ -29,9 +29,9 @@ drill_set <- function(drill_con, ..., type=c("session", "system")) {
     purrr::map_df(function(x) {
     y <- drill_query(drill_con, x, .progress=FALSE)
     if (length(y) == 2) {
-      dplyr::data_frame(query=x, param=y$summary, value=y$ok, error_msg=NA)
+      dplyr::tibble(query=x, param=y$summary, value=y$ok, error_msg=NA)
     } else {
-      dplyr::data_frame(query=x, param=NA, value=NA, error_msg=y[[1]])
+      dplyr::tibble(query=x, param=NA, value=NA, error_msg=y[[1]])
     }
   }) -> res
 
@@ -70,9 +70,9 @@ drill_system_reset <- function(drill_con, ..., all=FALSE) {
     purrr::map_df(function(x) {
     y <- drill_query(drill_con, x)
     if (length(y) == 2) {
-      dplyr::data_frame(query=x, param=y[[2]]$summary, value=y[[2]]$ok, error=NA)
+      dplyr::tibble(query=x, param=y[[2]]$summary, value=y[[2]]$ok, error=NA)
     } else {
-      dplyr::data_frame(query=x, param=NA, value=NA, error=y[[1]])
+      dplyr::tibble(query=x, param=NA, value=NA, error=y[[1]])
     }
   }) -> res
 
@@ -110,9 +110,9 @@ drill_settings_reset <- function(drill_con, ...) {
     purrr::map_df(function(x) {
     y <- drill_query(drill_con, x)
     if (length(y) == 2) {
-      dplyr::data_frame(query=x, param=y[[2]]$summary, value=y[[2]]$ok, error=NA)
+      dplyr::tibble(query=x, param=y[[2]]$summary, value=y[[2]]$ok, error=NA)
     } else {
-      dplyr::data_frame(query=x, param=NA, value=NA, error=y[[1]])
+      dplyr::tibble(query=x, param=NA, value=NA, error=y[[1]])
     }
   }) -> res
 

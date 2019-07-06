@@ -1,3 +1,6 @@
+library(dbplyr)
+library(dplyr)
+
 test_host <- Sys.getenv("DRILL_TEST_HOST", "localhost")
 
 options(sergeant.bigint.warnonce = FALSE)

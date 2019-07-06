@@ -5,7 +5,7 @@
 \alias{drill_down}
 \title{Start a Dockerized Drill Instance}
 \usage{
-drill_up(image = "drill/apache-drill:1.15.0", container_name = "drill",
+drill_up(image = "drill/apache-drill:1.16.0", container_name = "drill",
   data_dir = getwd(), remove = TRUE)
 
 drill_down(id)

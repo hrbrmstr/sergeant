@@ -18,8 +18,8 @@ addons:
       - oracle-java8-set-default
 
 before_install:
-  - docker pull drill/apache-drill:1.15.0
-  - docker run -i --name drill-1.15.0 -p 8047:8047 --detach -t drill/apache-drill:1.15.0 /bin/bash
+  - docker pull drill/apache-drill:1.16.0
+  - docker run -i --name drill-1.16.0 -p 8047:8047 --detach -t drill/apache-drill:1.16.0 /bin/bash
   - docker ps -a
 
 before_script:

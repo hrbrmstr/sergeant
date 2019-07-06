@@ -4,13 +4,16 @@
 \alias{drill_use}
 \title{Change to a particular schema.}
 \usage{
-drill_use(drill_con, schema_name)
+drill_use(drill_con, schema_name, .progress = interactive())
 }
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
 \item{schema_name}{A unique name for a Drill schema. A schema in Drill is a configured
 storage plugin, such as hive, or a storage plugin and workspace.}
+
+\item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
+\code{httr::POST} to display a progress bar}
 }
 \description{
 Change to a particular schema.
@@ -19,19 +22,7 @@ Change to a particular schema.
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
 \seealso{
-Other Drill direct REST API Interface: \code{\link{drill_active}},
-  \code{\link{drill_cancel}},
-  \code{\link{drill_connection}},
-  \code{\link{drill_functions}},
-  \code{\link{drill_metrics}}, \code{\link{drill_options}},
-  \code{\link{drill_opts}}, \code{\link{drill_profiles}},
-  \code{\link{drill_profile}}, \code{\link{drill_query}},
-  \code{\link{drill_settings_reset}},
-  \code{\link{drill_set}}, \code{\link{drill_show_files}},
-  \code{\link{drill_show_schemas}},
-  \code{\link{drill_stats}}, \code{\link{drill_status}},
-  \code{\link{drill_storage}},
-  \code{\link{drill_system_reset}},
-  \code{\link{drill_threads}}, \code{\link{drill_version}}
+Other Dill direct REST API Interface: \code{\link{drill_show_files}},
+  \code{\link{drill_show_schemas}}
 }
-\concept{Drill direct REST API Interface}
+\concept{Dill direct REST API Interface}

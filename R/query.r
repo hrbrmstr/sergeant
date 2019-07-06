@@ -96,12 +96,19 @@ drill_uplift <- function(query_result) {
   }
 
   if (length(query_result$columns) != 0) {
+
     if (is.data.frame(query_result$rows)) {
-      if (nrow(query_result$rows) > 0) query_result$rows <-
-          query_result$rows[,query_result$columns,drop=FALSE]
+
+      if (nrow(query_result$rows) > 0) {
+        query_result$rows <- query_result$rows[,query_result$columns,drop=FALSE]
+      }
+
     } else {
+
       lapply(1:length(query_result$columns), function(col_idx) {
+
         ctype <- query_result$metadata[col_idx]
+
         if (ctype == "INT") {
           integer(0)
         } else if (ctype == "VARCHAR") {
@@ -131,13 +138,21 @@ drill_uplift <- function(query_result) {
         } else {
           character(0)
         }
+
       }) -> xdf
+
       xdf <- set_names(xdf, query_result$columns)
       class(xdf) <- c("data.frame")
       return(xdf)
-    }
-  }
 
+    }
+
+  } else {
+
+    xdf <- dplyr::tibble()
+    return(xdf)
+
+  }
 
   # ** only available in Drill 1.15.0+ **
   # be smarter about type conversion now that the REST API provides

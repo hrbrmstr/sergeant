@@ -1,6 +1,6 @@
 #' Generate a Drill CTAS Statement from a Query
 #'
-#' When working with CSV\[H] files in Drill 1.15.0+ everyting comes back
+#' When working with CSV\[H] files in Drill 1.15.0+ everything comes back
 #' `VARCHAR` since that's the way it should be. The old behaviour of
 #' `sergeant` to auto-type convert was kinda horribad wrong. However,
 #' it's a royal pain to make [`CTAS`](https://drill.apache.org/docs/create-table-as-ctas/)

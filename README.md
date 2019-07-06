@@ -69,7 +69,7 @@ The following functions are implemented:
   - `src_drill`: Connect to Drill (using `dplyr`) + supporting functions
 
 Note that a number of Drill SQL functions have been mapped to R
-functions (e.g. `grepl`) to make it easier to transition from
+functions (e.g. `grepl`) to make it easier to transition from
 non-database-backed SQL ops to Drill. See the help on
 `drill_custom_functions` for more info on these helper Drill custom
 function mappings.
@@ -111,11 +111,10 @@ function mappings.
 **Helpers**
 
   - `ctas_profile`: Generate a Drill CTAS Statement from a Query
-
- - - `drill_up`: Start a Dockerized Drill Instance
- - `showall_drill`: Show all dead and running Drill Docker containers
-  - `sdrill_down`:  stop a Dockerized Drill Instance by container id
-  - `topall_drill`: Prune all dead and running Drill Docker containers
+  - `drill_up`: sart a Dockerized Drill Instance \# `sdrill_down`: stop
+    a Dockerized Drill Instance by container id
+  - `howall_drill`: Show all dead and running Drill Docker containers
+  - `stopall_drill`: Prune all dead and running Drill Docker containers
 
 # Installation
 
@@ -137,25 +136,25 @@ db <- tbl(ds, "cp.`employee.json`")
 
 # without `collect()`:
 count(db, gender, marital_status)
-## # Source:   lazy query [?? x 3]
-## # Database: DrillConnection
-## # Groups:   gender
-##   gender marital_status     n
-##   <chr>  <chr>          <dbl>
-## 1 F      S                297
-## 2 M      M                278
-## 3 M      S                276
-## 4 F      M                304
+##  # Source:   lazy query [?? x 3]
+##  # Database: DrillConnection
+##  # Groups:   gender
+##    gender marital_status     n
+##    <chr>  <chr>          <dbl>
+##  1 F      S                297
+##  2 M      M                278
+##  3 M      S                276
+##  4 F      M                304
 
 count(db, gender, marital_status) %>% collect()
-## # A tibble: 4 x 3
-## # Groups:   gender [2]
-##   gender marital_status     n
-## * <chr>  <chr>          <dbl>
-## 1 F      S                297
-## 2 M      M                278
-## 3 M      S                276
-## 4 F      M                304
+##  # A tibble: 4 x 3
+##  # Groups:   gender [2]
+##    gender marital_status     n
+##    <chr>  <chr>          <dbl>
+##  1 F      S                297
+##  2 M      M                278
+##  3 M      S                276
+##  4 F      M                304
 
 group_by(db, position_title) %>%
   count(gender) -> tmp2
@@ -166,49 +165,49 @@ group_by(db, position_title) %>%
   mutate(full_desc = ifelse(gender == "F", "Female", "Male")) %>%
   collect() %>%
   select(Title = position_title, Gender = full_desc, Count = n)
-## # A tibble: 30 x 3
-##    Title                  Gender Count
-##  * <chr>                  <chr>  <dbl>
-##  1 President              Female     1
-##  2 VP Country Manager     Male       3
-##  3 VP Country Manager     Female     3
-##  4 VP Information Systems Female     1
-##  5 VP Human Resources     Female     1
-##  6 Store Manager          Female    13
-##  7 VP Finance             Male       1
-##  8 Store Manager          Male      11
-##  9 HQ Marketing           Female     2
-## 10 HQ Information Systems Female     4
-## # ... with 20 more rows
+##  # A tibble: 30 x 3
+##     Title                  Gender Count
+##     <chr>                  <chr>  <dbl>
+##   1 President              Female     1
+##   2 VP Country Manager     Male       3
+##   3 VP Country Manager     Female     3
+##   4 VP Information Systems Female     1
+##   5 VP Human Resources     Female     1
+##   6 Store Manager          Female    13
+##   7 VP Finance             Male       1
+##   8 Store Manager          Male      11
+##   9 HQ Marketing           Female     2
+##  10 HQ Information Systems Female     4
+##  # … with 20 more rows
 
 arrange(db, desc(employee_id)) %>% print(n = 20)
-## # Source:     table<cp.`employee.json`> [?? x 20]
-## # Database:   DrillConnection
-## # Ordered by: desc(employee_id)
-##    employee_id full_name first_name last_name position_id position_title store_id department_id birth_date hire_date
-##    <chr>       <chr>     <chr>      <chr>     <chr>       <chr>          <chr>    <chr>         <chr>      <chr>    
-##  1 999         Beverly … Beverly    Dittmar   17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  2 998         Elizabet… Elizabeth  Jantzer   17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  3 997         John Swe… John       Sweet     17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  4 996         William … William    Murphy    17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  5 995         Carol Li… Carol      Lindsay   17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  6 994         Richard … Richard    Burke     17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  7 993         Ethan Bu… Ethan      Bunosky   17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  8 992         Claudett… Claudette  Cabrera   17          Store Permane… 8        17            1914-02-02 1998-01-…
-##  9 991         Maria Te… Maria      Terry     17          Store Permane… 8        17            1914-02-02 1998-01-…
-## 10 990         Stacey C… Stacey     Case      17          Store Permane… 8        17            1914-02-02 1998-01-…
-## 11 99          Elizabet… Elizabeth  Horne     18          Store Tempora… 6        18            1976-10-05 1997-01-…
-## 12 989         Dominick… Dominick   Nutter    17          Store Permane… 8        17            1914-02-02 1998-01-…
-## 13 988         Brian Wi… Brian      Willeford 17          Store Permane… 8        17            1914-02-02 1998-01-…
-## 14 987         Margaret… Margaret   Clendenen 17          Store Permane… 8        17            1914-02-02 1998-01-…
-## 15 986         Maeve Wa… Maeve      Wall      17          Store Permane… 8        17            1914-02-02 1998-01-…
-## 16 985         Mildred … Mildred    Morrow    16          Store Tempora… 8        16            1914-02-02 1998-01-…
-## 17 984         French W… French     Wilson    16          Store Tempora… 8        16            1914-02-02 1998-01-…
-## 18 983         Elisabet… Elisabeth  Duncan    16          Store Tempora… 8        16            1914-02-02 1998-01-…
-## 19 982         Linda An… Linda      Anderson  16          Store Tempora… 8        16            1914-02-02 1998-01-…
-## 20 981         Selene W… Selene     Watson    16          Store Tempora… 8        16            1914-02-02 1998-01-…
-## # ... with more rows, and 6 more variables: salary <chr>, supervisor_id <chr>, education_level <chr>,
-## #   marital_status <chr>, gender <chr>, management_role <chr>
+##  # Source:     table<cp.`employee.json`> [?? x 20]
+##  # Database:   DrillConnection
+##  # Ordered by: desc(employee_id)
+##     employee_id full_name first_name last_name position_id position_title store_id department_id birth_date hire_date
+##     <chr>       <chr>     <chr>      <chr>     <chr>       <chr>          <chr>    <chr>         <chr>      <chr>    
+##   1 999         Beverly … Beverly    Dittmar   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   2 998         Elizabet… Elizabeth  Jantzer   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   3 997         John Swe… John       Sweet     17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   4 996         William … William    Murphy    17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   5 995         Carol Li… Carol      Lindsay   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   6 994         Richard … Richard    Burke     17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   7 993         Ethan Bu… Ethan      Bunosky   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   8 992         Claudett… Claudette  Cabrera   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   9 991         Maria Te… Maria      Terry     17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  10 990         Stacey C… Stacey     Case      17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  11 99          Elizabet… Elizabeth  Horne     18          Store Tempora… 6        18            1976-10-05 1997-01-…
+##  12 989         Dominick… Dominick   Nutter    17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  13 988         Brian Wi… Brian      Willeford 17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  14 987         Margaret… Margaret   Clendenen 17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  15 986         Maeve Wa… Maeve      Wall      17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  16 985         Mildred … Mildred    Morrow    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  17 984         French W… French     Wilson    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  18 983         Elisabet… Elisabeth  Duncan    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  19 982         Linda An… Linda      Anderson  16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  20 981         Selene W… Selene     Watson    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  # … with more rows, and 6 more variables: salary <chr>, supervisor_id <chr>, education_level <chr>,
+##  #   marital_status <chr>, gender <chr>, management_role <chr>
 
 mutate(db, position_title = tolower(position_title)) %>%
   mutate(salary = as.numeric(salary)) %>%
@@ -217,20 +216,20 @@ mutate(db, position_title = tolower(position_title)) %>%
   group_by(supervisor_id) %>%
   summarise(underlings_count = n()) %>%
   collect()
-## # A tibble: 112 x 2
-##    supervisor_id underlings_count
-##  * <chr>                    <dbl>
-##  1 0                            1
-##  2 1                            7
-##  3 5                            9
-##  4 4                            2
-##  5 2                            3
-##  6 20                           2
-##  7 21                           4
-##  8 22                           7
-##  9 6                            4
-## 10 36                           2
-## # ... with 102 more rows
+##  # A tibble: 112 x 2
+##     supervisor_id underlings_count
+##     <chr>                    <dbl>
+##   1 0                            1
+##   2 1                            7
+##   3 5                            9
+##   4 4                            2
+##   5 2                            3
+##   6 20                           2
+##   7 21                           4
+##   8 22                           7
+##   9 6                            4
+##  10 36                           2
+##  # … with 102 more rows
 ```
 
 ### REST API
@@ -239,93 +238,92 @@ mutate(db, position_title = tolower(position_title)) %>%
 dc <- drill_connection("localhost") 
 
 drill_active(dc)
-## [1] TRUE
+##  [1] TRUE
 
 drill_version(dc)
-## [1] "1.15.0"
+##  [1] "1.15.0"
 
 drill_storage(dc)$name
-##  [1] "cp"       "dfs"      "drilldat" "hbase"    "hdfs"     "hive"     "kudu"     "mongo"    "my"       "s3"
+##   [1] "cp"       "dfs"      "drilldat" "hbase"    "hdfs"     "hive"     "kudu"     "mongo"    "my"       "s3"
 
 drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
-## # A tibble: 100 x 16
-##    employee_id full_name first_name last_name position_id position_title store_id department_id birth_date hire_date
-##  * <chr>       <chr>     <chr>      <chr>     <chr>       <chr>          <chr>    <chr>         <chr>      <chr>    
-##  1 1           Sheri No… Sheri      Nowmer    1           President      0        1             1961-08-26 1994-12-…
-##  2 2           Derrick … Derrick    Whelply   2           VP Country Ma… 0        1             1915-07-03 1994-12-…
-##  3 4           Michael … Michael    Spence    2           VP Country Ma… 0        1             1969-06-20 1998-01-…
-##  4 5           Maya Gut… Maya       Gutierrez 2           VP Country Ma… 0        1             1951-05-10 1998-01-…
-##  5 6           Roberta … Roberta    Damstra   3           VP Informatio… 0        2             1942-10-08 1994-12-…
-##  6 7           Rebecca … Rebecca    Kanagaki  4           VP Human Reso… 0        3             1949-03-27 1994-12-…
-##  7 8           Kim Brun… Kim        Brunner   11          Store Manager  9        11            1922-08-10 1998-01-…
-##  8 9           Brenda B… Brenda     Blumberg  11          Store Manager  21       11            1979-06-23 1998-01-…
-##  9 10          Darren S… Darren     Stanz     5           VP Finance     0        5             1949-08-26 1994-12-…
-## 10 11          Jonathan… Jonathan   Murraiin  11          Store Manager  1        11            1967-06-20 1998-01-…
-## # ... with 90 more rows, and 6 more variables: salary <chr>, supervisor_id <chr>, education_level <chr>,
-## #   marital_status <chr>, gender <chr>, management_role <chr>
+##  # A tibble: 100 x 16
+##     employee_id full_name first_name last_name position_id position_title store_id department_id birth_date hire_date
+##     <chr>       <chr>     <chr>      <chr>     <chr>       <chr>          <chr>    <chr>         <chr>      <chr>    
+##   1 1           Sheri No… Sheri      Nowmer    1           President      0        1             1961-08-26 1994-12-…
+##   2 2           Derrick … Derrick    Whelply   2           VP Country Ma… 0        1             1915-07-03 1994-12-…
+##   3 4           Michael … Michael    Spence    2           VP Country Ma… 0        1             1969-06-20 1998-01-…
+##   4 5           Maya Gut… Maya       Gutierrez 2           VP Country Ma… 0        1             1951-05-10 1998-01-…
+##   5 6           Roberta … Roberta    Damstra   3           VP Informatio… 0        2             1942-10-08 1994-12-…
+##   6 7           Rebecca … Rebecca    Kanagaki  4           VP Human Reso… 0        3             1949-03-27 1994-12-…
+##   7 8           Kim Brun… Kim        Brunner   11          Store Manager  9        11            1922-08-10 1998-01-…
+##   8 9           Brenda B… Brenda     Blumberg  11          Store Manager  21       11            1979-06-23 1998-01-…
+##   9 10          Darren S… Darren     Stanz     5           VP Finance     0        5             1949-08-26 1994-12-…
+##  10 11          Jonathan… Jonathan   Murraiin  11          Store Manager  1        11            1967-06-20 1998-01-…
+##  # … with 90 more rows, and 6 more variables: salary <chr>, supervisor_id <chr>, education_level <chr>,
+##  #   marital_status <chr>, gender <chr>, management_role <chr>
 
-drill_query(dc, "SELECT COUNT(gender) AS gender FROM cp.`employee.json` GROUP BY gender")
+drill_query(dc, "SELECT COUNT(gender) AS gctFROM cp.`employee.json` GROUP BY gender")
 
 drill_options(dc)
-## # A tibble: 179 x 6
-##    name                                                       value    defaultValue accessibleScopes kind   optionScope
-##  * <chr>                                                      <chr>    <chr>        <chr>            <chr>  <chr>      
-##  1 debug.validate_iterators                                   FALSE    false        ALL              BOOLE… BOOT       
-##  2 debug.validate_vectors                                     FALSE    false        ALL              BOOLE… BOOT       
-##  3 drill.exec.functions.cast_empty_string_to_null             FALSE    false        ALL              BOOLE… BOOT       
-##  4 drill.exec.hashagg.fallback.enabled                        FALSE    false        ALL              BOOLE… BOOT       
-##  5 drill.exec.hashjoin.fallback.enabled                       FALSE    false        ALL              BOOLE… BOOT       
-##  6 drill.exec.memory.operator.output_batch_size               16777216 16777216     SYSTEM           LONG   BOOT       
-##  7 drill.exec.memory.operator.output_batch_size_avail_mem_fa… 0.1      0.1          SYSTEM           DOUBLE BOOT       
-##  8 drill.exec.storage.file.partition.column.label             dir      dir          ALL              STRING BOOT       
-##  9 drill.exec.storage.implicit.filename.column.label          filename filename     ALL              STRING BOOT       
-## 10 drill.exec.storage.implicit.filepath.column.label          filepath filepath     ALL              STRING BOOT       
-## # ... with 169 more rows
+##  # A tibble: 179 x 6
+##     name                                                        value    defaultValue accessibleScopes kind   optionScope
+##     <chr>                                                       <chr>    <chr>        <chr>            <chr>  <chr>      
+##   1 debug.validate_iterators                                    FALSE    false        ALL              BOOLE… BOOT       
+##   2 debug.validate_vectors                                      FALSE    false        ALL              BOOLE… BOOT       
+##   3 drill.exec.functions.cast_empty_string_to_null              FALSE    false        ALL              BOOLE… BOOT       
+##   4 drill.exec.hashagg.fallback.enabled                         FALSE    false        ALL              BOOLE… BOOT       
+##   5 drill.exec.hashjoin.fallback.enabled                        FALSE    false        ALL              BOOLE… BOOT       
+##   6 drill.exec.memory.operator.output_batch_size                16777216 16777216     SYSTEM           LONG   BOOT       
+##   7 drill.exec.memory.operator.output_batch_size_avail_mem_fac… 0.1      0.1          SYSTEM           DOUBLE BOOT       
+##   8 drill.exec.storage.file.partition.column.label              dir      dir          ALL              STRING BOOT       
+##   9 drill.exec.storage.implicit.filename.column.label           filename filename     ALL              STRING BOOT       
+##  10 drill.exec.storage.implicit.filepath.column.label           filepath filepath     ALL              STRING BOOT       
+##  # … with 169 more rows
 
 drill_options(dc, "json")
-## # A tibble: 10 x 6
-##    name                                                    value defaultValue accessibleScopes kind    optionScope
-##    <chr>                                                   <chr> <chr>        <chr>            <chr>   <chr>      
-##  1 store.hive.maprdb_json.optimize_scan_with_native_reader FALSE false        ALL              BOOLEAN BOOT       
-##  2 store.json.all_text_mode                                TRUE  false        ALL              BOOLEAN SYSTEM     
-##  3 store.json.extended_types                               TRUE  false        ALL              BOOLEAN SYSTEM     
-##  4 store.json.read_numbers_as_double                       FALSE false        ALL              BOOLEAN BOOT       
-##  5 store.json.reader.allow_nan_inf                         TRUE  true         ALL              BOOLEAN BOOT       
-##  6 store.json.reader.print_skipped_invalid_record_number   TRUE  false        ALL              BOOLEAN SYSTEM     
-##  7 store.json.reader.skip_invalid_records                  TRUE  false        ALL              BOOLEAN SYSTEM     
-##  8 store.json.writer.allow_nan_inf                         TRUE  true         ALL              BOOLEAN BOOT       
-##  9 store.json.writer.skip_null_fields                      TRUE  true         ALL              BOOLEAN BOOT       
-## 10 store.json.writer.uglify                                TRUE  false        ALL              BOOLEAN SYSTEM
+##  # A tibble: 10 x 6
+##     name                                                    value defaultValue accessibleScopes kind    optionScope
+##     <chr>                                                   <chr> <chr>        <chr>            <chr>   <chr>      
+##   1 store.hive.maprdb_json.optimize_scan_with_native_reader FALSE false        ALL              BOOLEAN BOOT       
+##   2 store.json.all_text_mode                                TRUE  false        ALL              BOOLEAN SYSTEM     
+##   3 store.json.extended_types                               TRUE  false        ALL              BOOLEAN SYSTEM     
+##   4 store.json.read_numbers_as_double                       FALSE false        ALL              BOOLEAN BOOT       
+##   5 store.json.reader.allow_nan_inf                         TRUE  true         ALL              BOOLEAN BOOT       
+##   6 store.json.reader.print_skipped_invalid_record_number   TRUE  false        ALL              BOOLEAN SYSTEM     
+##   7 store.json.reader.skip_invalid_records                  TRUE  false        ALL              BOOLEAN SYSTEM     
+##   8 store.json.writer.allow_nan_inf                         TRUE  true         ALL              BOOLEAN BOOT       
+##   9 store.json.writer.skip_null_fields                      TRUE  true         ALL              BOOLEAN BOOT       
+##  10 store.json.writer.uglify                                TRUE  false        ALL              BOOLEAN SYSTEM
 ```
 
 ## Working with parquet files
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nation.parquet` LIMIT 5")
-## # A tibble: 5 x 4
-##   N_NATIONKEY N_NAME    N_REGIONKEY N_COMMENT           
-## *       <dbl> <chr>           <dbl> <chr>               
-## 1           0 ALGERIA             0 haggle. carefully f 
-## 2           1 ARGENTINA           1 al foxes promise sly
-## 3           2 BRAZIL              1 y alongside of the p
-## 4           3 CANADA              1 eas hang ironic, sil
-## 5           4 EGYPT               4 y above the carefull
+##  # A tibble: 5 x 4
+##    N_NATIONKEY N_NAME    N_REGIONKEY N_COMMENT           
+##          <dbl> <chr>           <dbl> <chr>               
+##  1           0 ALGERIA             0 haggle. carefully f 
+##  2           1 ARGENTINA           1 al foxes promise sly
+##  3           2 BRAZIL              1 y alongside of the p
+##  4           3 CANADA              1 eas hang ironic, sil
+##  5           4 EGYPT               4 y above the carefull
 ```
 
 Including multiple parquet files in different directories (note the
-wildcard
-support):
+wildcard support):
 
 ``` r
 drill_query(dc, "SELECT * FROM dfs.`/usr/local/drill/sample-data/nations*/nations*.parquet` LIMIT 5")
-## # A tibble: 5 x 5
-##   dir0      N_NATIONKEY N_NAME    N_REGIONKEY N_COMMENT           
-## * <chr>           <dbl> <chr>           <dbl> <chr>               
-## 1 nationsSF           0 ALGERIA             0 haggle. carefully f 
-## 2 nationsSF           1 ARGENTINA           1 al foxes promise sly
-## 3 nationsSF           2 BRAZIL              1 y alongside of the p
-## 4 nationsSF           3 CANADA              1 eas hang ironic, sil
-## 5 nationsSF           4 EGYPT               4 y above the carefull
+##  # A tibble: 5 x 5
+##    dir0      N_NATIONKEY N_NAME    N_REGIONKEY N_COMMENT           
+##    <chr>           <dbl> <chr>           <dbl> <chr>               
+##  1 nationsSF           0 ALGERIA             0 haggle. carefully f 
+##  2 nationsSF           1 ARGENTINA           1 al foxes promise sly
+##  3 nationsSF           2 BRAZIL              1 y alongside of the p
+##  4 nationsSF           3 CANADA              1 eas hang ironic, sil
+##  5 nationsSF           4 EGYPT               4 y above the carefull
 ```
 
 ### Drill has built-in support for spatial ops
@@ -346,24 +344,24 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
                 )
             )
 ")
-## # A tibble: 7 x 3
-##   city        lon          lat       
-## * <chr>       <chr>        <chr>     
-## 1 Burbank     -121.9316233 37.3232752
-## 2 San Jose    -121.8949555 37.3393857
-## 3 Lick        -121.8457863 37.2871647
-## 4 Willow Glen -121.8896771 37.3085532
-## 5 Buena Vista -121.9166227 37.3213308
-## 6 Parkmoor    -121.9307898 37.3210531
-## 7 Fruitdale   -121.932746  37.31086
+##  # A tibble: 7 x 3
+##    city        lon          lat       
+##    <chr>       <chr>        <chr>     
+##  1 Burbank     -121.9316233 37.3232752
+##  2 San Jose    -121.8949555 37.3393857
+##  3 Lick        -121.8457863 37.2871647
+##  4 Willow Glen -121.8896771 37.3085532
+##  5 Buena Vista -121.9166227 37.3213308
+##  6 Parkmoor    -121.9307898 37.3210531
+##  7 Fruitdale   -121.932746  37.31086
 ```
 
 ### sergeant Metrics
 
-| Lang | \# Files |  (%) | LoC |  (%) | Blank lines |  (%) | \# Lines |  (%) |
-| :--- | -------: | ---: | --: | ---: | ----------: | ---: | -------: | ---: |
-| R    |       14 | 0.93 | 894 | 0.94 |         236 | 0.81 |      627 | 0.88 |
-| Rmd  |        1 | 0.07 |  54 | 0.06 |          56 | 0.19 |       87 | 0.12 |
+| Lang | \# Files |  (%) |  LoC |  (%) | Blank lines |  (%) | \# Lines |  (%) |
+| :--- | -------: | ---: | ---: | ---: | ----------: | ---: | -------: | ---: |
+| R    |       18 | 0.95 | 1212 | 0.96 |         349 | 0.86 |      716 | 0.89 |
+| Rmd  |        1 | 0.05 |   54 | 0.04 |          56 | 0.14 |       92 | 0.11 |
 
 ## Code of Conduct
 

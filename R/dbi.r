@@ -220,7 +220,8 @@ setMethod(
 
       warning(resp, call.=FALSE)
 
-      return(dplyr::data_frame())
+      xdf <- dplyr::tibble()
+      return(xdf)
 
     } else {
 
@@ -272,6 +273,9 @@ setMethod(
           class(xdf) <- c("data.frame")
           return(xdf)
         }
+      } else {
+        xdf <- dplyr::tibble()
+        return(xdf)
       }
 
       # ** only available in Drill 1.15.0+ **

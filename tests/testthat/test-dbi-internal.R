@@ -7,7 +7,7 @@ test_that("core DBI ops work", {
 
   testthat::skip_on_cran()
 
-  con <- dbConnect(Drill(), "localhost")
+  con <- dbConnect(Drill(), test_host)
   expect_is(con, "DrillConnection")
 
   expect_true(dbIsValid(con))

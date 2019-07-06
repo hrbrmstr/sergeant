@@ -12,7 +12,7 @@ ctas_profile(x, new_table_name = "CHANGE____ME")
 \item{new_table_name}{a new Drill data source spec (e.g. \code{dfs.xyz.`a.parquet`})}
 }
 \description{
-When working with CSV[H] files in Drill 1.15.0+ everyting comes back
+When working with CSV[H] files in Drill 1.15.0+ everything comes back
 \code{VARCHAR} since that's the way it should be. The old behaviour of
 \code{sergeant} to auto-type convert was kinda horribad wrong. However,
 it's a royal pain to make \href{https://drill.apache.org/docs/create-table-as-ctas/}{CTAS}

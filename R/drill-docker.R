@@ -33,7 +33,7 @@
 #' @examples \dontrun{
 #' drill_up(data_dir = "~/Data")
 #' }
-drill_up <- function(image = "drill/apache-drill:1.15.0",
+drill_up <- function(image = "drill/apache-drill:1.16.0",
                      container_name = "drill",
                      data_dir = getwd(), remove = TRUE) {
 

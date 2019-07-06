@@ -5,7 +5,8 @@ Authors@R: c(
       person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-5670-2640")),
       person("Edward", "Visel", email = "edward.visel@gmail.com", role = "ctb"),
-      person("Andy", "Hine", email = "andyyhine@gmail.com", role = "ctb")
+      person("Andy", "Hine", email = "andyyhine@gmail.com", role = "ctb"),
+      person("Scott", "Came", email = "scottcame10@gmail.com", role = "ctb")
     )
 Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 
     data exploration and 'analytics' on both relational and non-relational 'datastores', 
@@ -35,4 +36,4 @@ Imports:
 Suggests:
     testthat (>= 1.0.2),
     covr (>= 3.0.0)
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.1

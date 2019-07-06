@@ -127,6 +127,8 @@ devtools::install_git("https://git.sr.ht/~hrbrmstr/sergeant")
 # or
 devtools::install_gitlab("hrbrmstr/sergeant")
 # or
+devtools::install_bitbucket("hrbrmstr/sergeant")
+# or
 devtools::install_github("hrbrmstr/sergeant")
 ```
 
@@ -377,10 +379,9 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 
 ### sergeant Metrics
 
-| Lang | \# Files |  (%) |  LoC |  (%) | Blank lines |  (%) | \# Lines |  (%) |
-| :--- | -------: | ---: | ---: | ---: | ----------: | ---: | -------: | ---: |
-| R    |       18 | 0.95 | 1212 | 0.96 |         349 | 0.86 |      716 | 0.89 |
-| Rmd  |        1 | 0.05 |   56 | 0.04 |          55 | 0.14 |       90 | 0.11 |
+| Lang | \# Files | (%) | LoC | (%) | Blank lines | (%) | \# Lines | (%) |
+| :--- | -------: | --: | --: | --: | ----------: | --: | -------: | --: |
+| Rmd  |        1 |   1 |  56 |   1 |          55 |   1 |       90 |   1 |
 
 ## Code of Conduct
 

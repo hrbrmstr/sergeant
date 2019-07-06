@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   fig.path = "README-"
 )
 options(sergeant.bigint.warnonce = FALSE)
+options(width=120)
 ```
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1248912.svg)](https://doi.org/10.5281/zenodo.1248912) 
@@ -95,12 +96,8 @@ Note that a number of Drill SQL functions have been mapped to R functions (e.g. 
 
 ```{r einstall-ex, results='asis', echo = FALSE}
 hrbrpkghelpr::install_block()
-````
-``{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-options(width=120)
-```
-
-## Usage
+`````
+# Usage
 
 ### `dplyr` interface
 

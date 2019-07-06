@@ -132,17 +132,11 @@ devtools::install_bitbucket("hrbrmstr/sergeant")
 devtools::install_github("hrbrmstr/sergeant")
 ```
 
-\`\`{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-options(width=120)
-
-```` 
-
-## Usage
+# Usage
 
 ### `dplyr` interface
 
-
-```r
+``` r
 library(sergeant)
 library(tidyverse)
 
@@ -200,32 +194,30 @@ arrange(db, desc(employee_id)) %>% print(n = 20)
 ##  # Source:     table<cp.`employee.json`> [?? x 20]
 ##  # Database:   DrillConnection
 ##  # Ordered by: desc(employee_id)
-##     employee_id full_name first_name last_name position_id position_title
-##     <chr>       <chr>     <chr>      <chr>     <chr>       <chr>         
-##   1 999         Beverly … Beverly    Dittmar   17          Store Permane…
-##   2 998         Elizabet… Elizabeth  Jantzer   17          Store Permane…
-##   3 997         John Swe… John       Sweet     17          Store Permane…
-##   4 996         William … William    Murphy    17          Store Permane…
-##   5 995         Carol Li… Carol      Lindsay   17          Store Permane…
-##   6 994         Richard … Richard    Burke     17          Store Permane…
-##   7 993         Ethan Bu… Ethan      Bunosky   17          Store Permane…
-##   8 992         Claudett… Claudette  Cabrera   17          Store Permane…
-##   9 991         Maria Te… Maria      Terry     17          Store Permane…
-##  10 990         Stacey C… Stacey     Case      17          Store Permane…
-##  11 99          Elizabet… Elizabeth  Horne     18          Store Tempora…
-##  12 989         Dominick… Dominick   Nutter    17          Store Permane…
-##  13 988         Brian Wi… Brian      Willeford 17          Store Permane…
-##  14 987         Margaret… Margaret   Clendenen 17          Store Permane…
-##  15 986         Maeve Wa… Maeve      Wall      17          Store Permane…
-##  16 985         Mildred … Mildred    Morrow    16          Store Tempora…
-##  17 984         French W… French     Wilson    16          Store Tempora…
-##  18 983         Elisabet… Elisabeth  Duncan    16          Store Tempora…
-##  19 982         Linda An… Linda      Anderson  16          Store Tempora…
-##  20 981         Selene W… Selene     Watson    16          Store Tempora…
-##  # … with more rows, and 10 more variables: store_id <chr>,
-##  #   department_id <chr>, birth_date <chr>, hire_date <chr>, salary <chr>,
-##  #   supervisor_id <chr>, education_level <chr>, marital_status <chr>,
-##  #   gender <chr>, management_role <chr>
+##     employee_id full_name first_name last_name position_id position_title store_id department_id birth_date hire_date
+##     <chr>       <chr>     <chr>      <chr>     <chr>       <chr>          <chr>    <chr>         <chr>      <chr>    
+##   1 999         Beverly … Beverly    Dittmar   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   2 998         Elizabet… Elizabeth  Jantzer   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   3 997         John Swe… John       Sweet     17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   4 996         William … William    Murphy    17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   5 995         Carol Li… Carol      Lindsay   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   6 994         Richard … Richard    Burke     17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   7 993         Ethan Bu… Ethan      Bunosky   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   8 992         Claudett… Claudette  Cabrera   17          Store Permane… 8        17            1914-02-02 1998-01-…
+##   9 991         Maria Te… Maria      Terry     17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  10 990         Stacey C… Stacey     Case      17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  11 99          Elizabet… Elizabeth  Horne     18          Store Tempora… 6        18            1976-10-05 1997-01-…
+##  12 989         Dominick… Dominick   Nutter    17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  13 988         Brian Wi… Brian      Willeford 17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  14 987         Margaret… Margaret   Clendenen 17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  15 986         Maeve Wa… Maeve      Wall      17          Store Permane… 8        17            1914-02-02 1998-01-…
+##  16 985         Mildred … Mildred    Morrow    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  17 984         French W… French     Wilson    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  18 983         Elisabet… Elisabeth  Duncan    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  19 982         Linda An… Linda      Anderson  16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  20 981         Selene W… Selene     Watson    16          Store Tempora… 8        16            1914-02-02 1998-01-…
+##  # … with more rows, and 6 more variables: salary <chr>, supervisor_id <chr>, education_level <chr>,
+##  #   marital_status <chr>, gender <chr>, management_role <chr>
 
 mutate(db, position_title = tolower(position_title)) %>%
   mutate(salary = as.numeric(salary)) %>%
@@ -248,7 +240,7 @@ mutate(db, position_title = tolower(position_title)) %>%
 ##   9 6                            4
 ##  10 36                           2
 ##  # … with 102 more rows
-````
+```
 
 ### REST API
 
@@ -262,60 +254,57 @@ drill_version(dc)
 ##  [1] "1.15.0"
 
 drill_storage(dc)$name
-##   [1] "cp"       "dfs"      "drilldat" "hbase"    "hdfs"     "hive"    
-##   [7] "kudu"     "mongo"    "my"       "s3"
+##   [1] "cp"       "dfs"      "drilldat" "hbase"    "hdfs"     "hive"     "kudu"     "mongo"    "my"       "s3"
 
 drill_query(dc, "SELECT * FROM cp.`employee.json` limit 100")
 ##  # A tibble: 100 x 16
-##     employee_id full_name first_name last_name position_id position_title
-##     <chr>       <chr>     <chr>      <chr>     <chr>       <chr>         
-##   1 1           Sheri No… Sheri      Nowmer    1           President     
-##   2 2           Derrick … Derrick    Whelply   2           VP Country Ma…
-##   3 4           Michael … Michael    Spence    2           VP Country Ma…
-##   4 5           Maya Gut… Maya       Gutierrez 2           VP Country Ma…
-##   5 6           Roberta … Roberta    Damstra   3           VP Informatio…
-##   6 7           Rebecca … Rebecca    Kanagaki  4           VP Human Reso…
-##   7 8           Kim Brun… Kim        Brunner   11          Store Manager 
-##   8 9           Brenda B… Brenda     Blumberg  11          Store Manager 
-##   9 10          Darren S… Darren     Stanz     5           VP Finance    
-##  10 11          Jonathan… Jonathan   Murraiin  11          Store Manager 
-##  # … with 90 more rows, and 10 more variables: store_id <chr>,
-##  #   department_id <chr>, birth_date <chr>, hire_date <chr>, salary <chr>,
-##  #   supervisor_id <chr>, education_level <chr>, marital_status <chr>,
-##  #   gender <chr>, management_role <chr>
+##     employee_id full_name first_name last_name position_id position_title store_id department_id birth_date hire_date
+##     <chr>       <chr>     <chr>      <chr>     <chr>       <chr>          <chr>    <chr>         <chr>      <chr>    
+##   1 1           Sheri No… Sheri      Nowmer    1           President      0        1             1961-08-26 1994-12-…
+##   2 2           Derrick … Derrick    Whelply   2           VP Country Ma… 0        1             1915-07-03 1994-12-…
+##   3 4           Michael … Michael    Spence    2           VP Country Ma… 0        1             1969-06-20 1998-01-…
+##   4 5           Maya Gut… Maya       Gutierrez 2           VP Country Ma… 0        1             1951-05-10 1998-01-…
+##   5 6           Roberta … Roberta    Damstra   3           VP Informatio… 0        2             1942-10-08 1994-12-…
+##   6 7           Rebecca … Rebecca    Kanagaki  4           VP Human Reso… 0        3             1949-03-27 1994-12-…
+##   7 8           Kim Brun… Kim        Brunner   11          Store Manager  9        11            1922-08-10 1998-01-…
+##   8 9           Brenda B… Brenda     Blumberg  11          Store Manager  21       11            1979-06-23 1998-01-…
+##   9 10          Darren S… Darren     Stanz     5           VP Finance     0        5             1949-08-26 1994-12-…
+##  10 11          Jonathan… Jonathan   Murraiin  11          Store Manager  1        11            1967-06-20 1998-01-…
+##  # … with 90 more rows, and 6 more variables: salary <chr>, supervisor_id <chr>, education_level <chr>,
+##  #   marital_status <chr>, gender <chr>, management_role <chr>
 
 drill_query(dc, "SELECT COUNT(gender) AS gctFROM cp.`employee.json` GROUP BY gender")
 
 drill_options(dc)
 ##  # A tibble: 179 x 6
-##     name              value  defaultValue accessibleScopes kind  optionScope
-##     <chr>             <chr>  <chr>        <chr>            <chr> <chr>      
-##   1 debug.validate_i… FALSE  false        ALL              BOOL… BOOT       
-##   2 debug.validate_v… FALSE  false        ALL              BOOL… BOOT       
-##   3 drill.exec.funct… FALSE  false        ALL              BOOL… BOOT       
-##   4 drill.exec.hasha… FALSE  false        ALL              BOOL… BOOT       
-##   5 drill.exec.hashj… FALSE  false        ALL              BOOL… BOOT       
-##   6 drill.exec.memor… 16777… 16777216     SYSTEM           LONG  BOOT       
-##   7 drill.exec.memor… 0.1    0.1          SYSTEM           DOUB… BOOT       
-##   8 drill.exec.stora… dir    dir          ALL              STRI… BOOT       
-##   9 drill.exec.stora… filen… filename     ALL              STRI… BOOT       
-##  10 drill.exec.stora… filep… filepath     ALL              STRI… BOOT       
+##     name                                                        value    defaultValue accessibleScopes kind   optionScope
+##     <chr>                                                       <chr>    <chr>        <chr>            <chr>  <chr>      
+##   1 debug.validate_iterators                                    FALSE    false        ALL              BOOLE… BOOT       
+##   2 debug.validate_vectors                                      FALSE    false        ALL              BOOLE… BOOT       
+##   3 drill.exec.functions.cast_empty_string_to_null              FALSE    false        ALL              BOOLE… BOOT       
+##   4 drill.exec.hashagg.fallback.enabled                         FALSE    false        ALL              BOOLE… BOOT       
+##   5 drill.exec.hashjoin.fallback.enabled                        FALSE    false        ALL              BOOLE… BOOT       
+##   6 drill.exec.memory.operator.output_batch_size                16777216 16777216     SYSTEM           LONG   BOOT       
+##   7 drill.exec.memory.operator.output_batch_size_avail_mem_fac… 0.1      0.1          SYSTEM           DOUBLE BOOT       
+##   8 drill.exec.storage.file.partition.column.label              dir      dir          ALL              STRING BOOT       
+##   9 drill.exec.storage.implicit.filename.column.label           filename filename     ALL              STRING BOOT       
+##  10 drill.exec.storage.implicit.filepath.column.label           filepath filepath     ALL              STRING BOOT       
 ##  # … with 169 more rows
 
 drill_options(dc, "json")
 ##  # A tibble: 10 x 6
-##     name               value defaultValue accessibleScopes kind  optionScope
-##     <chr>              <chr> <chr>        <chr>            <chr> <chr>      
-##   1 store.hive.maprdb… FALSE false        ALL              BOOL… BOOT       
-##   2 store.json.all_te… TRUE  false        ALL              BOOL… SYSTEM     
-##   3 store.json.extend… TRUE  false        ALL              BOOL… SYSTEM     
-##   4 store.json.read_n… FALSE false        ALL              BOOL… BOOT       
-##   5 store.json.reader… TRUE  true         ALL              BOOL… BOOT       
-##   6 store.json.reader… TRUE  false        ALL              BOOL… SYSTEM     
-##   7 store.json.reader… TRUE  false        ALL              BOOL… SYSTEM     
-##   8 store.json.writer… TRUE  true         ALL              BOOL… BOOT       
-##   9 store.json.writer… TRUE  true         ALL              BOOL… BOOT       
-##  10 store.json.writer… TRUE  false        ALL              BOOL… SYSTEM
+##     name                                                    value defaultValue accessibleScopes kind    optionScope
+##     <chr>                                                   <chr> <chr>        <chr>            <chr>   <chr>      
+##   1 store.hive.maprdb_json.optimize_scan_with_native_reader FALSE false        ALL              BOOLEAN BOOT       
+##   2 store.json.all_text_mode                                TRUE  false        ALL              BOOLEAN SYSTEM     
+##   3 store.json.extended_types                               TRUE  false        ALL              BOOLEAN SYSTEM     
+##   4 store.json.read_numbers_as_double                       FALSE false        ALL              BOOLEAN BOOT       
+##   5 store.json.reader.allow_nan_inf                         TRUE  true         ALL              BOOLEAN BOOT       
+##   6 store.json.reader.print_skipped_invalid_record_number   TRUE  false        ALL              BOOLEAN SYSTEM     
+##   7 store.json.reader.skip_invalid_records                  TRUE  false        ALL              BOOLEAN SYSTEM     
+##   8 store.json.writer.allow_nan_inf                         TRUE  true         ALL              BOOLEAN BOOT       
+##   9 store.json.writer.skip_null_fields                      TRUE  true         ALL              BOOLEAN BOOT       
+##  10 store.json.writer.uglify                                TRUE  false        ALL              BOOLEAN SYSTEM
 ```
 
 ## Working with parquet files
@@ -381,7 +370,7 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 
 | Lang | \# Files | (%) | LoC | (%) | Blank lines | (%) | \# Lines | (%) |
 | :--- | -------: | --: | --: | --: | ----------: | --: | -------: | --: |
-| Rmd  |        1 |   1 |  56 |   1 |          55 |   1 |       90 |   1 |
+| Rmd  |        1 |   1 |  55 |   1 |          54 |   1 |       89 |   1 |
 
 ## Code of Conduct
 

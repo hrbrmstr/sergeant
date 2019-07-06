@@ -19,7 +19,7 @@ options(sergeant.bigint.warnonce = FALSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1248912.svg)](https://doi.org/10.5281/zenodo.1248912) 
 [![Travis-CI Build Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant) 
 [![Coverage Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
 
 # 💂 sergeant
 
@@ -29,21 +29,7 @@ Tools to Transform and Query Data with 'Apache' 'Drill'
 
 Version 0.7.0 (a.k.a. the main branch) splits off the JDBC interface into a separate package `sergeant.caffeinated` ([GitLab](https://gitlab.com/hrbrmstr/sergeant-caffeinated); [GitHub](https://github.com/hrbrmstr/sergeant-caffeinated)).
 
-If you want to try all the new features coming in 0.8.0 please install from the 0.8.0 branch via:
-
-```{r eval=FALSE}
-# sr.ht
-devtools::install_git("https://git.sr.ht/~hrbrmstr/sergeant", ref="0.8.0")
-
-# GitLab
-devtools::install_git("https://gitlab.com/hrbrmstr/sergeant", ref="0.8.0")
-
-# GitHub
-devtools::install_git("https://github.com/hrbrmstr/sergeant", ref="0.8.0")
-```
-
-
-## Description
+I# Description
 
 Drill + `sergeant` is (IMO) a streamlined alternative to Spark + `sparklyr` if you don't need the ML components of Spark (i.e. just need to query "big data" sources, need to interface with parquet, need to combine disparate data source types — json, csv, parquet, rdbms - for aggregation, etc). Drill also has support for spatial queries.
 
@@ -107,11 +93,10 @@ Note that a number of Drill SQL functions have been mapped to R functions (e.g. 
 
 # Installation
 
-```{r eval=FALSE}
-devtools::install_github("hrbrmstr/sergeant")
-```
-
-```{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
+```{r einstall-ex, results='asis', echo = FALSE}
+hrbrpkghelpr::install_block()
+````
+``{r echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 options(width=120)
 ```
 

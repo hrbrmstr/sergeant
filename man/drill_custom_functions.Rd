@@ -22,6 +22,7 @@ If you want a particular custom function mapped, file a PR or issue request in
 the link found in the \code{DESCRIPTION} file.
 \itemize{
 \item \code{as.character(x)} : \code{CAST( x AS CHARACTER )}
+\item \code{as.integer64(x)} : \code{CAST( x AS BIGINT )}
 \item \code{as.date(x)} : \code{CAST( x AS DATE )}
 \item \code{as.logical(x)} : \code{CAST( x AS BOOLEAN) }
 \item \code{as.numeric(x)} : \code{CAST( x AS DOUBLE )}

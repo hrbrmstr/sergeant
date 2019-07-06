@@ -13,10 +13,10 @@ having to create and manage schemas. Some of the key features are:
 }
 \details{
 \itemize{
-  \item{Schema-free JSON document model similar to MongoDB and Elasticsearch}
-  \item{Industry-standard APIs: ANSI SQL, ODBC/JDBC, RESTful APIs}
-  \item{Extremely user and developer friendly}
-  \item{Pluggable architecture enables connectivity to multiple datastores}
+\item{Schema-free JSON document model similar to MongoDB and Elasticsearch}
+\item{Industry-standard APIs: ANSI SQL, ODBC/JDBC, RESTful APIs}
+\item{Extremely user and developer friendly}
+\item{Pluggable architecture enables connectivity to multiple datastores}
 }
 
 Drill includes a distributed execution environment, purpose built for large-scale data
@@ -27,11 +27,12 @@ the client.
 You can install and run a Drillbit service on one node or on many nodes to form a
 distributed cluster environment. When a Drillbit runs on each data node in a cluster,
 Drill can maximize data locality during query execution without moving data over the
-network or between nodes. Drill uses ZooKeeper to maintain cluster membership and health
+network or between nodes. Drill uses Zookeeper to maintain cluster membership and health
 check information.
 
 Methods are provided to work with Drill via the REST APIs along with R
-\code{DBI} and \code{dplyr} interfaces.
+\code{DBI} and \code{dplyr} interfaces. Helper functions are included to facilitate
+using official 'Drill' 'Docker' images/containers.
 }
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}
@@ -39,3 +40,4 @@ Methods are provided to work with Drill via the REST APIs along with R
 \author{
 Bob Rudis (bob@rud.is)
 }
+\keyword{internal}

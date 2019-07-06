@@ -7,16 +7,16 @@
 drill_uplift(query_result)
 }
 \arguments{
-\item{query_result}{the result of a call to `drill_query()`}
+\item{query_result}{the result of a call to \code{drill_query()}}
 }
 \description{
-If you know the result of `drill_query()` will be a data frame, then
-you can pipe it to this function to pull out `rows` and automatically
+If you know the result of \code{drill_query()} will be a data frame, then
+you can pipe it to this function to pull out \code{rows} and automatically
 type-convert it.
 }
 \details{
 Not really intended to be called directly, but useful if you accidentally ran
-\code{drill_query()} without `uplift=TRUE` but want to then convert the structure.
+\code{drill_query()} without \code{uplift=TRUE} but want to then convert the structure.
 }
 \references{
 \href{https://drill.apache.org/docs/}{Drill documentation}

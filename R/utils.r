@@ -27,3 +27,8 @@ auth_drill <- function(ssl, host, port, username, password) {
   httr::stop_for_status(res)
 
 }
+
+set_names <- function(object = nm, nm) {
+  names(object) <- nm
+  object
+}

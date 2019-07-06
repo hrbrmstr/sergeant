@@ -17,6 +17,7 @@
 #' the link found in the `DESCRIPTION` file.
 #'
 #' - `as.character(x)` : `CAST( x AS CHARACTER )`
+#' - `as.integer64(x)` : `CAST( x AS BIGINT )`
 #' - `as.date(x)` : `CAST( x AS DATE )`
 #' - `as.logical(x)` : `CAST( x AS BOOLEAN) `
 #' - `as.numeric(x)` : `CAST( x AS DOUBLE )`

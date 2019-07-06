@@ -1,13 +1,13 @@
 #' Connect to Drill (dplyr)
 #'
-#' Use \code{src_drill()} to connect to a Drill cluster and `tbl()` to connect to a
+#' Use `src_drill()` to connect to a Drill cluster and `tbl()` to connect to a
 #' fully-qualified "table reference". The vast majority of Drill SQL functions have
-#' also been made available to the \code{dplyr} interface. If you have custom Drill
+#' also been made available to the `dplyr` interface. If you have custom Drill
 #' SQL functions that need to be implemented please file an issue on GitHub.
 #'
 #' @md
-#' @param host Drill host (will pick up the value from \code{DRILL_HOST} env var)
-#' @param port Drill port (will pick up the value from \code{DRILL_PORT} env var)
+#' @param host Drill host (will pick up the value from `DRILL_HOST` env var)
+#' @param port Drill port (will pick up the value from `DRILL_PORT` env var)
 #' @param ssl use ssl?
 #' @family Drill REST `dplyr` API
 #' @param username,password if not `NULL` the credentials for the Drill service.
@@ -105,7 +105,7 @@ db_desc.src_drill <- function(x) {
 #' @keywords internal
 #' @export
 sql_escape_ident.DrillConnection <- function(con, x) {
-  ifelse(grepl("`", x), sql_quote(x, ' '), sql_quote(x, '`'))
+  ifelse(grepl("`", x), dbplyr::sql_quote(x, ' '), dbplyr::sql_quote(x, '`'))
 }
 
 #' @rdname src_tbls
@@ -129,7 +129,7 @@ tbl.src_drill <- function(src, from, ...) {
 #' @keywords internal
 #' @export
 db_explain.DrillConnection <- function(con, sql, ...) {
-  explain_sql <- dbplyr::build_sql("EXPLAIN PLAN FOR ", sql)
+  explain_sql <- dbplyr::build_sql("EXPLAIN PLAN FOR ", sql, con = con)
   explanation <- dbGetQuery(con, explain_sql)
   return(paste(explanation[[1]], collapse = "\n"))
 }
@@ -140,7 +140,8 @@ db_explain.DrillConnection <- function(con, sql, ...) {
 db_query_fields.DrillConnection <- function(con, sql, ...) {
 
   fields <- dbplyr::build_sql(
-    "SELECT * FROM ", sql, " LIMIT 1",
+    # "SELECT * FROM ", sql, " LIMIT 1",
+    "SELECT * FROM ", dplyr::sql_subquery(con, sql), " LIMIT 1",
     con = con
   )
   result <- dbSendQuery(con, fields)
@@ -183,6 +184,7 @@ sql_translate_env.DrillConnection <- function(con) {
     scalar = dbplyr::sql_translator(
       .parent = dbplyr::base_scalar,
       `!=` = dbplyr::sql_infix("<>"),
+      as.integer64 = function(x) build_sql("CAST(", x, "AS BIGINT)"),
       as.numeric = function(x) build_sql("CAST(", x, " AS DOUBLE)"),
       as.character = function(x) build_sql("CAST(", x, " AS CHARACTER)"),
       as.date = function(x) build_sql("CAST(", x, " AS DATE)"),
@@ -192,54 +194,56 @@ sql_translate_env.DrillConnection <- function(con) {
       grepl = function(x, y) build_sql("CONTAINS(", y, ", ", x, ")"),
       gsub = function(x, y, z) build_sql("REGEXP_REPLACE(", z, ", ", x, ",", y ,")"),
       trimws = function(x) build_sql("TRIM(both ' ' FROM ", x, ")"),
-      cbrt = sql_prefix("CBRT", 1),
-      degrees = sql_prefix("DEGREES", 1),
-      e = sql_prefix("E", 0),
-      row_number = sql_prefix("row_number", 0),
-      lshift = sql_prefix("LSHIFT", 2),
-      mod = sql_prefix("MOD", 2),
-      age = sql_prefix("AGE", 1),
-      negative = sql_prefix("NEGATIVE", 1),
-      pi = sql_prefix("PI", 0),
-      pow = sql_prefix("POW", 2),
-      radians = sql_prefix("RADIANS", 1),
-      rand = sql_prefix("RAND", 0),
-      rshift = sql_prefix("RSHIFT", 2),
-      trunc = sql_prefix("TRUNC", 2),
-      contains = sql_prefix("CONTAINS", 2),
-      convert_to = sql_prefix("CONVERT_TO", 2),
-      convert_from = sql_prefix("CONVERT_FROM", 2),
-      string_binary = sql_prefix("STRING_BINARY", 1),
-      binary_string = sql_prefix("BINARY_STRING", 1),
-      to_char = sql_prefix("TO_CHAR", 2),
-      to_date = sql_prefix("TO_DATE", 2),
-      to_number = sql_prefix("TO_NUMBER", 2),
-      char_to_timestamp = sql_prefix("TO_TIMESTAMP", 2),
-      double_to_timestamp = sql_prefix("TO_TIMESTAMP", 1),
-      char_length = sql_prefix("CHAR_LENGTH", 1),
-      flatten = sql_prefix("FLATTEN", 1),
-      kvgen = sql_prefix("KVGEN", 1),
-      repeated_count = sql_prefix("REPEATED_COUNT", 1),
-      repeated_contains = sql_prefix("REPEATED_CONTAINS", 2),
-      ilike = sql_prefix("ILIKE", 2),
-      init_cap = sql_prefix("INIT_CAP", 1),
-      length = sql_prefix("LENGTH", 1),
-      lower = sql_prefix("LOWER", 1),
-      tolower = sql_prefix("LOWER", 1),
-      ltrim = sql_prefix("LTRIM", 2),
-      nullif = sql_prefix("NULLIF", 2),
+      cbrt = dbplyr::sql_prefix("CBRT", 1),
+      degrees = dbplyr::sql_prefix("DEGREES", 1),
+      as_interval = function(x, y) build_sql("CAST(", x, " AS INTERVAL ", sql(toupper(y)), ")"),
+      e = dbplyr::sql_prefix("E", 0),
+      cast = function(x, y) build_sql("CAST(", x, " AS ", sql(y), ")"),
+      row_number = dbplyr::sql_prefix("row_number", 0),
+      lshift = dbplyr::sql_prefix("LSHIFT", 2),
+      mod = dbplyr::sql_prefix("MOD", 2),
+      age = dbplyr::sql_prefix("AGE", 1),
+      negative = dbplyr::sql_prefix("NEGATIVE", 1),
+      pi = dbplyr::sql_prefix("PI", 0),
+      pow = dbplyr::sql_prefix("POW", 2),
+      radians = dbplyr::sql_prefix("RADIANS", 1),
+      rand = dbplyr::sql_prefix("RAND", 0),
+      rshift = dbplyr::sql_prefix("RSHIFT", 2),
+      trunc = dbplyr::sql_prefix("TRUNC", 2),
+      contains = dbplyr::sql_prefix("CONTAINS", 2),
+      convert_to = dbplyr::sql_prefix("CONVERT_TO", 2),
+      convert_from = dbplyr::sql_prefix("CONVERT_FROM", 2),
+      string_binary = dbplyr::sql_prefix("STRING_BINARY", 1),
+      binary_string = dbplyr::sql_prefix("BINARY_STRING", 1),
+      to_char = dbplyr::sql_prefix("TO_CHAR", 2),
+      to_date = dbplyr::sql_prefix("TO_DATE", 2),
+      to_number = dbplyr::sql_prefix("TO_NUMBER", 2),
+      char_to_timestamp = dbplyr::sql_prefix("TO_TIMESTAMP", 2),
+      double_to_timestamp = dbplyr::sql_prefix("TO_TIMESTAMP", 1),
+      char_length = dbplyr::sql_prefix("CHAR_LENGTH", 1),
+      flatten = dbplyr::sql_prefix("FLATTEN", 1),
+      kvgen = dbplyr::sql_prefix("KVGEN", 1),
+      repeated_count = dbplyr::sql_prefix("REPEATED_COUNT", 1),
+      repeated_contains = dbplyr::sql_prefix("REPEATED_CONTAINS", 2),
+      ilike = dbplyr::sql_prefix("ILIKE", 2),
+      init_cap = dbplyr::sql_prefix("INIT_CAP", 1),
+      length = dbplyr::sql_prefix("LENGTH", 1),
+      lower = dbplyr::sql_prefix("LOWER", 1),
+      tolower = dbplyr::sql_prefix("LOWER", 1),
+      ltrim = dbplyr::sql_prefix("LTRIM", 2),
+      nullif = dbplyr::sql_prefix("NULLIF", 2),
       position = function(x, y) build_sql("POSITION(", x, " IN ", y, ")"),
-      regexp_replace = sql_prefix("REGEXP_REPLACE", 3),
-      rtrim = sql_prefix("RTRIM", 2),
-      rpad = sql_prefix("RPAD", 2),
-      rpad_with = sql_prefix("RPAD", 3),
-      lpad = sql_prefix("LPAD", 2),
-      lpad_with = sql_prefix("LPAD", 3),
-      strpos = sql_prefix("STRPOS", 2),
-      substr = sql_prefix("SUBSTR", 3),
+      regexp_replace = dbplyr::sql_prefix("REGEXP_REPLACE", 3),
+      rtrim = dbplyr::sql_prefix("RTRIM", 2),
+      rpad = dbplyr::sql_prefix("RPAD", 2),
+      rpad_with = dbplyr::sql_prefix("RPAD", 3),
+      lpad = dbplyr::sql_prefix("LPAD", 2),
+      lpad_with = dbplyr::sql_prefix("LPAD", 3),
+      strpos = dbplyr::sql_prefix("STRPOS", 2),
+      substr = dbplyr::sql_prefix("SUBSTR", 3),
       trim = function(x, y, z) build_sql("TRIM(", x, " ", y, " FROM ", z, ")"),
-      upper = sql_prefix("UPPER", 1),
-      toupper = sql_prefix("UPPER", 1)
+      upper = dbplyr::sql_prefix("UPPER", 1),
+      toupper = dbplyr::sql_prefix("UPPER", 1)
     ),
 
     aggregate = dbplyr::sql_translator(

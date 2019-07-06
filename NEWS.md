@@ -12,6 +12,12 @@
 - License change to GPL-3 since the pkg now uses code from bibrquery
 - New `option()` => "`sergeant.bigint.warnonce`" to control `BIGINT` 
   warnings. Use `options(sergeant.bigint.warnonce = FALSE)` 
+- Fixed bug in `dbListFields()` (`DrillConnection-class`)
+- Added `as.integer64()` `dplyr` custom Drill function to convert
+  columns to `BIGINT`
+- Added `ctas_profile()` to automagically create a CTAS query from 
+  a Drill `tbl` (Ref: #29 / inspired by David Severski)
+- Added more tests to cover DBI and extended d[b]plyr operations
 
 # sergeant 0.7.0-BETA
 

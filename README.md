@@ -87,7 +87,7 @@ function mappings.
   - `drill_options`: List the name, default, and data type of the system
     and session options
   - `drill_popts`: Show all the available Drill options (1.15.0+)
-  - `drill_rofile`: Get the profile of the query that has the given
+  - `drill_profile`: Get the profile of the query that has the given
     query id
   - `drill_profiles`: Get the profiles of running and completed queries
   - `drill_query`: Submit a query and return results

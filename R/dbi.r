@@ -1,4 +1,4 @@
-s_head <- purrr::safely(httr::HEAD)
+s_head <- purrr::safely(function(...){httr::RETRY(verb = "HEAD", ...)})
 
 #' Driver for Drill database.
 #'
@@ -165,7 +165,8 @@ setMethod(
 
     if (.progress) {
 
-      httr::POST(
+      httr::RETRY(
+        verb = "POST",
         url = res@drill_server,
         path = "/query.json",
         encode = "json",
@@ -173,19 +174,22 @@ setMethod(
         body = list(
           queryType = "SQL",
           query = res@statement
-        )
+        ),
+        terminate_on = c(403, 404)
       ) -> resp
 
     } else {
 
-      httr::POST(
+      httr::RETRY(
+        verb = "POST",
         url = res@drill_server,
         path = "/query.json",
         encode = "json",
         body = list(
           queryType = "SQL",
           query = res@statement
-        )
+        ),
+        terminate_on = c(403, 404)
       ) -> resp
 
     }
@@ -426,11 +430,13 @@ setMethod(
   'dbListFields',
   signature(conn='DrillResult', name='missing'),
   function(conn, name) {
-    httr::POST(
+    httr::RETRY(
+      verb = "POST",
       sprintf("%s/query.json", conn@drill_server),
       encode = "json",
       body = list(queryType="SQL", query=conn@statement
-      )
+      ),
+      terminate_on = c(403, 404)
     ) -> res
 
     # fatal query error on the Drill side so return no fields

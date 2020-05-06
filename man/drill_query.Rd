@@ -17,7 +17,7 @@ ignored if \code{drill_con} is a \code{JDBCConnection} created by
 \code{drill_jdbc()})}
 
 \item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
-\code{httr::POST} to display a progress bar}
+\code{httr::RETRY} to display a progress bar}
 }
 \description{
 This function can handle REST API connections or JDBC connections. There is a benefit to

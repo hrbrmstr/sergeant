@@ -14,14 +14,16 @@ auth_drill <- function(ssl, host, port, username, password) {
 
   httr::set_config(config(ssl_verifypeer = 0L))
 
-  httr::POST(
+  httr::RETRY(
+    "POST",
     url = sprintf("%s://%s:%s", ifelse(ssl[1], "https", "http"), host, port),
     path = "/j_security_check",
     encode = "form",
     body = list(
       j_username = username,
       j_password = password
-    )
+    ),
+    terminate_on = c(403, 404)
   ) -> res
 
   httr::stop_for_status(res)

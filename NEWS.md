@@ -1,4 +1,4 @@
-# sergeant 0.8.0
+# sergeant 0.9.0
 
 - Column order preserved in REST API & REST API DBI-based calls if
   using Apache Drill 1.15.0+ (Addresses #18)

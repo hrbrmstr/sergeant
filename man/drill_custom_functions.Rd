@@ -21,12 +21,12 @@ especially when you want to use parameters in a different order.
 If you want a particular custom function mapped, file a PR or issue request in
 the link found in the \code{DESCRIPTION} file.
 \itemize{
-\item \code{as.character(x)} : \code{CAST( x AS CHARACTER )}
-\item \code{as.integer64(x)} : \code{CAST( x AS BIGINT )}
-\item \code{as.date(x)} : \code{CAST( x AS DATE )}
-\item \code{as.logical(x)} : \code{CAST( x AS BOOLEAN) }
-\item \code{as.numeric(x)} : \code{CAST( x AS DOUBLE )}
-\item \code{as.posixct(x)} : \code{CAST( x AS TIMESTAMP )}
+\item \code{as.character(x)} : \verb{CAST( x AS CHARACTER )}
+\item \code{as.integer64(x)} : \verb{CAST( x AS BIGINT )}
+\item \code{as.date(x)} : \verb{CAST( x AS DATE )}
+\item \code{as.logical(x)} : \verb{CAST( x AS BOOLEAN) }
+\item \code{as.numeric(x)} : \verb{CAST( x AS DOUBLE )}
+\item \code{as.posixct(x)} : \verb{CAST( x AS TIMESTAMP )}
 \item \code{binary_string(x)} : \code{BINARY_STRING( x )}
 \item \code{cbrt(x)} : \code{CBRT( x )}
 \item \code{char_to_timestamp(x, y)} : \code{TO_TIMESTAMP( x, y )}
@@ -42,7 +42,7 @@ the link found in the \code{DESCRIPTION} file.
 \item \code{string_binary(x)} : \code{STRING_BINARY( x )}
 \item \code{radians(x)} : \code{RADIANS( x )}
 \item \code{rshift(x)} : \code{RSHIFT( x )}
-\item \code{to_char(x, y)} : \code{TO_CHAR  x, y )}
+\item \code{to_char(x, y)} : \verb{TO_CHAR  x, y )}
 \item \code{to_date(x, y)} : \code{TO_DATE( x, y )}
 \item \code{to_number(x, y)} : \code{TO_NUMBER( x, y )}
 \item \code{trunc(x)} : \code{TRUNC( x )}
@@ -58,8 +58,8 @@ the link found in the \code{DESCRIPTION} file.
 \item \code{lower(x)} = \code{LOWER( x )}
 \item \code{tolower(x)} = \code{LOWER( x )}
 \item \code{ltrim(x, y)} = \code{LTRIM( x, y )}
-\item \code{nullif(x, y} = \code{NULLIF( x, y )}
-\item \code{position(x, y)} = \code{POSITION( x IN  y )}
+\item \verb{nullif(x, y} = \code{NULLIF( x, y )}
+\item \code{position(x, y)} = \verb{POSITION( x IN  y )}
 \item \code{gsub(x, y, z)} = \code{REGEXP_REPLACE( z, x, y )}
 \item \code{regexp_replace(x, y, z)} = \code{REGEXP_REPLACE( x, y, z )}
 \item \code{rtrim(x, y)} = \code{RTRIM( x, y )}
@@ -80,7 +80,8 @@ You can get a compact list of these with:
 as well.
 }
 \seealso{
-Other Drill REST `dplyr` API: \code{\link{src_drill}},
-  \code{\link{src_tbls.src_drill}}
+Other Drill REST \code{dplyr} API: 
+\code{\link{src_drill}()},
+\code{\link{src_tbls.src_drill}()}
 }
-\concept{Drill REST `dplyr` API}
+\concept{Drill REST \code{dplyr} API}

@@ -26,7 +26,8 @@ drill_connection() \%>\% drill_show_files("dfs.tmp")
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
 \seealso{
-Other Dill direct REST API Interface: \code{\link{drill_show_schemas}},
-  \code{\link{drill_use}}
+Other Dill direct REST API Interface: 
+\code{\link{drill_show_schemas}()},
+\code{\link{drill_use}()}
 }
 \concept{Dill direct REST API Interface}

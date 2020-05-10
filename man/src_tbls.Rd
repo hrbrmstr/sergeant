@@ -11,7 +11,7 @@
 \alias{sql_translate_env.DrillConnection}
 \title{src tbls}
 \usage{
-\method{src_tbls}{src_drill}(x)
+\method{src_tbls}{src_drill}(x, ...)
 
 \method{db_desc}{src_drill}(x)
 
@@ -29,13 +29,16 @@
 }
 \arguments{
 \item{x}{x}
+
+\item{...}{ignored}
 }
 \description{
 "SHOW DATABASES"
 }
 \seealso{
-Other Drill REST `dplyr` API: \code{\link{drill_custom_functions}},
-  \code{\link{src_drill}}
+Other Drill REST \code{dplyr} API: 
+\code{\link{drill_custom_functions}},
+\code{\link{src_drill}()}
 }
-\concept{Drill REST `dplyr` API}
+\concept{Drill REST \code{dplyr} API}
 \keyword{internal}

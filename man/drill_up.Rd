@@ -5,8 +5,12 @@
 \alias{drill_down}
 \title{Start a Dockerized Drill Instance}
 \usage{
-drill_up(image = "drill/apache-drill:1.16.0", container_name = "drill",
-  data_dir = getwd(), remove = TRUE)
+drill_up(
+  image = "drill/apache-drill:1.16.0",
+  container_name = "drill",
+  data_dir = getwd(),
+  remove = TRUE
+)
 
 drill_down(id)
 }
@@ -18,7 +22,7 @@ to most recent Drill docker image.}
 \item{container_name}{naem for the container. Defaults to "\code{drill}".}
 
 \item{data_dir}{valid path to a place where your data is stored; defaults to the
-value of \code{\link[=getwd]{getwd()}}. This will be \code{\link[=path.expand]{path.expand()}}ed and mapped to \code{/data}
+value of \code{\link[=getwd]{getwd()}}. This will be \code{\link[=path.expand]{path.expand()}}ed and mapped to \verb{/data}
 in the container. This will be mapped to the \code{dfs} storage plugin as the
 \code{dfs.d} workspace.}
 
@@ -29,7 +33,7 @@ Defaults to \code{TRUE} since you shouldn't be relying on this in production.}
 }
 \value{
 a \code{stevedore} docker object (invisibly) which \emph{you} are responsible
-for killing with the \code{$stop()}  function or from the Docker command
+for killing with the \verb{$stop()}  function or from the Docker command
 line (in interactive mode the docker container ID is printed as well).
 }
 \description{
@@ -40,15 +44,15 @@ one at \href{https://hub.docker.com/u/drill}{Drill's Docker Hub}.
 }
 \details{
 The path specified in \code{data_dir} will be mapped inside the container as
-\code{/data} and a new \code{dfs} storage workspace will created (\code{dfs.d}) that
-maps to \code{/data} and is writable.
+\verb{/data} and a new \code{dfs} storage workspace will created (\code{dfs.d}) that
+maps to \verb{/data} and is writable.
 
 Use \code{\link[=drill_down]{drill_down()}} to stop a running Drill container by container id
 (full or partial).
 }
 \note{
 this requires a working Docker setup on your system and it is \emph{highly suggested}
-you \code{docker pull} it yourself before running this function.
+you \verb{docker pull} it yourself before running this function.
 }
 \examples{
 \dontrun{
@@ -56,7 +60,8 @@ drill_up(data_dir = "~/Data")
 }
 }
 \seealso{
-Other Drill Docker functions: \code{\link{killall_drill}},
-  \code{\link{showall_drill}}
+Other Drill Docker functions: 
+\code{\link{killall_drill}()},
+\code{\link{showall_drill}()}
 }
 \concept{Drill Docker functions}

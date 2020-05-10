@@ -9,7 +9,7 @@ drill_set(drill_con, ..., type = c("session", "system"))
 \arguments{
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
-\item{...}{named parameters to be sent to \code{ALTER SYSTEM} or \code{ALTER SESSION}}
+\item{...}{named parameters to be sent to \verb{ALTER SYSTEM} or \verb{ALTER SESSION}}
 
 \item{type}{set the \code{session} or \code{system} parameter}
 }
@@ -34,17 +34,23 @@ drill_connection() \%>\%
 \href{https://drill.apache.org/docs/}{Drill documentation}
 }
 \seealso{
-Other Drill direct REST API Interface: \code{\link{drill_active}},
-  \code{\link{drill_cancel}},
-  \code{\link{drill_connection}},
-  \code{\link{drill_functions}},
-  \code{\link{drill_metrics}}, \code{\link{drill_options}},
-  \code{\link{drill_opts}}, \code{\link{drill_profiles}},
-  \code{\link{drill_profile}}, \code{\link{drill_query}},
-  \code{\link{drill_settings_reset}},
-  \code{\link{drill_stats}}, \code{\link{drill_status}},
-  \code{\link{drill_storage}},
-  \code{\link{drill_system_reset}},
-  \code{\link{drill_threads}}, \code{\link{drill_version}}
+Other Drill direct REST API Interface: 
+\code{\link{drill_active}()},
+\code{\link{drill_cancel}()},
+\code{\link{drill_connection}()},
+\code{\link{drill_functions}()},
+\code{\link{drill_metrics}()},
+\code{\link{drill_options}()},
+\code{\link{drill_opts}()},
+\code{\link{drill_profiles}()},
+\code{\link{drill_profile}()},
+\code{\link{drill_query}()},
+\code{\link{drill_settings_reset}()},
+\code{\link{drill_stats}()},
+\code{\link{drill_status}()},
+\code{\link{drill_storage}()},
+\code{\link{drill_system_reset}()},
+\code{\link{drill_threads}()},
+\code{\link{drill_version}()}
 }
 \concept{Drill direct REST API Interface}

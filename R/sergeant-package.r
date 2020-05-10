@@ -36,6 +36,7 @@
 #' @importFrom scales comma
 #' @importFrom purrr map map2 map2_df %>%
 #' @importFrom readr type_convert
+#' @importFrom tibble as_tibble
 #' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter
 #' @importFrom dplyr db_desc src db_data_type db_explain sql_translate_env copy_to
 #' @importFrom dplyr db_query_fields src_tbls sql_escape_ident case_when collect

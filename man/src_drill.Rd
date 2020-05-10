@@ -5,9 +5,13 @@
 \alias{tbl.src_drill}
 \title{Connect to Drill (dplyr)}
 \usage{
-src_drill(host = Sys.getenv("DRILL_HOST", "localhost"),
-  port = as.integer(Sys.getenv("DRILL_PORT", 8047L)), ssl = FALSE,
-  username = NULL, password = NULL)
+src_drill(
+  host = Sys.getenv("DRILL_HOST", "localhost"),
+  port = as.integer(Sys.getenv("DRILL_PORT", 8047L)),
+  ssl = FALSE,
+  username = NULL,
+  password = NULL
+)
 
 \method{tbl}{src_drill}(src, from, ...)
 }
@@ -83,10 +87,12 @@ select(emp, full_name) \%>\%
 }, silent=TRUE)
 }
 \seealso{
-Other Drill REST `dplyr` API: \code{\link{drill_custom_functions}},
-  \code{\link{src_tbls.src_drill}}
+Other Drill REST \code{dplyr} API: 
+\code{\link{drill_custom_functions}},
+\code{\link{src_tbls.src_drill}()}
 
-Other Drill REST `dplyr` API: \code{\link{drill_custom_functions}},
-  \code{\link{src_tbls.src_drill}}
+Other Drill REST \code{dplyr} API: 
+\code{\link{drill_custom_functions}},
+\code{\link{src_tbls.src_drill}()}
 }
-\concept{Drill REST `dplyr` API}
+\concept{Drill REST \code{dplyr} API}

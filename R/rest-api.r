@@ -206,7 +206,7 @@ drill_storage <- function(drill_con, plugin=NULL, as=c("tbl", "list", "raw")) {
 
   switch(
     as,
-    tbl = jsonlite::fromJSON(out, flatten=TRUE) %>% dplyr::tbl_df(),
+    tbl = jsonlite::fromJSON(out, flatten=TRUE) %>% tibble::as_tibble(),
     list = jsonlite::fromJSON(
       out, simplifyVector = TRUE, simplifyDataFrame = FALSE, flatten = FALSE
     ),
@@ -275,7 +275,7 @@ drill_options <- function(drill_con, pattern=NULL) {
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt) %>%
-    dplyr::tbl_df() -> out
+    tibble::as_tibble() -> out
   if (!is.null(pattern)) out <- dplyr::filter(out, grepl(pattern, name))
   out
 }

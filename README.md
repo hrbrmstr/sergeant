@@ -14,7 +14,7 @@ Tools to Transform and Query Data with ‘Apache’ ‘Drill’
 
 ## \*\* IMPORTANT \*\*
 
-Version 0.7.0 (a.k.a. the main branch) splits off the JDBC interface
+Version 0.7.0+ (a.k.a. the main branch) splits off the JDBC interface
 into a separate package `sergeant.caffeinated`
 ([GitLab](https://gitlab.com/hrbrmstr/sergeant-caffeinated);
 [GitHub](https://github.com/hrbrmstr/sergeant-caffeinated)).

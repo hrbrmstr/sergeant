@@ -1,4 +1,4 @@
-# sergeant 0.8.0 (in-progress)
+# sergeant 0.8.0
 
 - Column order preserved in REST API & REST API DBI-based calls if
   using Apache Drill 1.15.0+ (Addresses #18)
@@ -17,7 +17,8 @@
   columns to `BIGINT`
 - Added `ctas_profile()` to automagically create a CTAS query from 
   a Drill `tbl` (Ref: #29 / inspired by David Severski)
-- Added more tests to cover DBI and extended d[b]plyr operations
+- Switched to the more diminuitive {tinytest}
+- Added more tests to cover DBI and extended/new d[b]plyr operations
 
 # sergeant 0.7.0-BETA
 

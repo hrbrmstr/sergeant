@@ -11,7 +11,8 @@ This function will show \emph{all} Docker containers that are based on an
 image matching a runtime command of "\code{bin/drill-embedded}".
 }
 \seealso{
-Other Drill Docker functions: \code{\link{drill_up}},
-  \code{\link{killall_drill}}
+Other Drill Docker functions: 
+\code{\link{drill_up}()},
+\code{\link{killall_drill}()}
 }
 \concept{Drill Docker functions}

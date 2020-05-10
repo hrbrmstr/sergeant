@@ -2,13 +2,10 @@ test_host <- Sys.getenv("DRILL_TEST_HOST", "localhost")
 
 options(sergeant.bigint.warnonce = FALSE)
 
-context("dbi")
-test_that("core DBI ops work", {
-
-  testthat::skip_on_cran()
+if (at_home()) {
 
   con <- dbConnect(Drill(), test_host)
-  expect_is(con, "DrillConnection")
+  expect_true(inherits(con, "DrillConnection"))
 
   expect_true(dbIsValid(con))
 
@@ -26,7 +23,7 @@ test_that("core DBI ops work", {
   )
 
   res <- dbSendQuery(con, "SELECT full_name from cp.`employee.json` LIMIT 1")
-  expect_is(res, "DrillResult")
+  expect_true(inherits(res, "DrillResult"))
 
   xdf <- dbFetch(res)
   expect_identical(dim(xdf), c(1L, 1L))
@@ -42,9 +39,9 @@ test_that("core DBI ops work", {
   expect_equal(dbDataType(con, bit64::integer64(0)), "BIGINT")
   expect_equal(dbDataType(con, numeric(0)), "DOUBLE")
 
-  expect_is(dbGetInfo(Drill()), "list")
+  expect_true(inherits(dbGetInfo(Drill()), "list"))
 
   inf <- dbGetInfo(con)
   expect_equal(inf$port, 8047)
 
-})
+}

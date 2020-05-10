@@ -80,9 +80,10 @@ src_drill <- function(host  = Sys.getenv("DRILL_HOST", "localhost"),
 #'
 #' @rdname src_tbls
 #' @param x x
+#' @param ... ignored
 #' @family Drill REST `dplyr` API
 #' @export
-src_tbls.src_drill <- function(x) {
+src_tbls.src_drill <- function(x, ...) {
   tmp <- dbGetQuery(x$con, "SHOW DATABASES")
   paste0(unlist(tmp$SCHEMA_NAME, use.names=FALSE), collapse=", ")
 }

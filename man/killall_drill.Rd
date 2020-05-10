@@ -15,7 +15,8 @@ You may want to consider using the Docker command-line interface to perform
 this work manually.
 }
 \seealso{
-Other Drill Docker functions: \code{\link{drill_up}},
-  \code{\link{showall_drill}}
+Other Drill Docker functions: 
+\code{\link{drill_up}()},
+\code{\link{showall_drill}()}
 }
 \concept{Drill Docker functions}

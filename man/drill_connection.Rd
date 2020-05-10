@@ -4,10 +4,13 @@
 \alias{drill_connection}
 \title{Setup a Drill connection}
 \usage{
-drill_connection(host = Sys.getenv("DRILL_HOST", "localhost"),
-  port = Sys.getenv("DRILL_PORT", 8047), ssl = FALSE,
+drill_connection(
+  host = Sys.getenv("DRILL_HOST", "localhost"),
+  port = Sys.getenv("DRILL_PORT", 8047),
+  ssl = FALSE,
   user = Sys.getenv("DRILL_USER", ""),
-  password = Sys.getenv("DRILL_PASSWORD", ""))
+  password = Sys.getenv("DRILL_PASSWORD", "")
+)
 }
 \arguments{
 \item{host}{Drill host (will pick up the value from \code{DRILL_HOST} env var)}
@@ -29,16 +32,23 @@ interface immediately to prime the cookie-jar with the session id.
 dc <- drill_connection()
 }
 \seealso{
-Other Drill direct REST API Interface: \code{\link{drill_active}},
-  \code{\link{drill_cancel}},
-  \code{\link{drill_functions}},
-  \code{\link{drill_metrics}}, \code{\link{drill_options}},
-  \code{\link{drill_opts}}, \code{\link{drill_profiles}},
-  \code{\link{drill_profile}}, \code{\link{drill_query}},
-  \code{\link{drill_settings_reset}},
-  \code{\link{drill_set}}, \code{\link{drill_stats}},
-  \code{\link{drill_status}}, \code{\link{drill_storage}},
-  \code{\link{drill_system_reset}},
-  \code{\link{drill_threads}}, \code{\link{drill_version}}
+Other Drill direct REST API Interface: 
+\code{\link{drill_active}()},
+\code{\link{drill_cancel}()},
+\code{\link{drill_functions}()},
+\code{\link{drill_metrics}()},
+\code{\link{drill_options}()},
+\code{\link{drill_opts}()},
+\code{\link{drill_profiles}()},
+\code{\link{drill_profile}()},
+\code{\link{drill_query}()},
+\code{\link{drill_settings_reset}()},
+\code{\link{drill_set}()},
+\code{\link{drill_stats}()},
+\code{\link{drill_status}()},
+\code{\link{drill_storage}()},
+\code{\link{drill_system_reset}()},
+\code{\link{drill_threads}()},
+\code{\link{drill_version}()}
 }
 \concept{Drill direct REST API Interface}

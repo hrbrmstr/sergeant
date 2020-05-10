@@ -23,7 +23,7 @@ drill_show_schemas <- function(drill_con, .progress=interactive()) {
 drill_use <- function(drill_con, schema_name, .progress=interactive()) {
   query <- sprintf("USE `%s`", schema_name)
   out <- drill_query(drill_con, query, .progress = .progress)
-  if (!("errorMessage" %in% names(out))) message(out)
+  if (("errorMessage" %in% names(out))) message(str(out, 2))
   invisible(out)
 }
 

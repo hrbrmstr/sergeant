@@ -33,7 +33,7 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
     try_require("RJDBC")
     try_require("sergeant.caffeinated")
 
-    dplyr::tbl_df(dbGetQuery(drill_con, query))
+    tibble::as_tibble(dbGetQuery(drill_con, query))
 
   } else {
 
@@ -207,7 +207,7 @@ drill_uplift <- function(query_result) {
     }) -> col_types
 
     suppressMessages(
-      dplyr::tbl_df(
+      tibble::as_tibble(
         readr::type_convert(
           df = query_result$rows,
           col_types = paste0(col_types, collapse=""),
@@ -219,7 +219,7 @@ drill_uplift <- function(query_result) {
   } else {
 
     suppressMessages(
-      dplyr::tbl_df(
+      tibble::as_tibble(
         readr::type_convert(df = query_result$rows, na = character())
       )
     ) -> xdf

@@ -1,6 +1,6 @@
 Package: sergeant
-Title: Tools to Transform and Query Data with 'Apache' 'Drill'
-Version: 0.8.0
+Title: Tools to Transform and Query Data with Apache Drill
+Version: 0.9.0
 Authors@R: c(
       person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-5670-2640")),
@@ -10,14 +10,14 @@ Authors@R: c(
       person("David", "Severski", email = "davidski@deadheaven.com", role = "ctb",
         comment = c(ORCID = "https://orcid.org/0000-0001-7867-0459"))
     )
-Description: 'Apache Drill' is a low-latency distributed query engine designed to enable 
-    data exploration and 'analytics' on both relational and non-relational 'datastores', 
-    scaling to petabytes of data. Methods are provided that enable working with 'Apache' 
-    'Drill' instances via the 'REST' 'API', 'JDBC' interface (optional), 'DBI' 'methods'
+Description: Apache Drill is a low-latency distributed query engine designed to enable 
+    data exploration and analytics on both relational and non-relational datastores, 
+    scaling to petabytes of data. Methods are provided that enable working with Apache 
+    Drill instances via the REST API, JDBC interface (optional), DBI methods
     and using 'dplyr'/'dbplyr' idioms. Helper functions are included to facilitate
-    using official 'Drill' 'Docker' images/containers.
+    using official Drill Docker images/containers.
 Depends:
-    R (>= 3.2.0)
+    R (>= 3.6.0)
 URL: https://gitlab.com/hrbrmstr/sergeant
 BugReports: https://gitlab.com/hrbrmstr/sergeant/issues
 License: MIT + file LICENSE
@@ -26,22 +26,23 @@ LazyData: true
 Imports: 
     bit64 (>= 0.9-7),
     DBI (>= 0.7),
-    dplyr (>= 0.7.0),
-    dbplyr (>= 1.1.0),
+    dplyr (>= 0.8.0),
+    dbplyr (>= 1.3.0),
     httr (>= 1.2.1),
     jsonlite (>= 1.5.0),
     htmltools (>= 0.3.6),
     readr (>= 1.1.1),
     purrr (>= 0.2.2),
     scales (>= 0.4.1),
+    tibble,
     utils,
     methods,
     magrittr (>= 1.5)
 Suggests:
     DT (>= 0.5),
     stevedore,
-    testthat (>= 1.0.2),
+    tinytest,
     covr (>= 3.0.0),
     DBItest
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)

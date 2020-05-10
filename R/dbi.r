@@ -331,7 +331,7 @@ setMethod(
         }) -> col_types
 
         suppressMessages(
-          dplyr::tbl_df(
+          tibble::as_tibble(
             readr::type_convert(
               df = xdf,
               col_types = paste0(col_types, collapse=""),
@@ -343,7 +343,7 @@ setMethod(
       } else {
 
         suppressMessages(
-          dplyr::tbl_df(
+          tibble::as_tibble(
             readr::type_convert(df = xdf, na = character())
           )
         ) -> xdf

@@ -3,7 +3,6 @@
 \docType{package}
 \name{sergeant}
 \alias{sergeant}
-\alias{sergeant-package}
 \title{Tools to Transform and Query Data with 'Apache' 'Drill'}
 \description{
 Drill is an innovative low-latency distributed query engine designed to enable data

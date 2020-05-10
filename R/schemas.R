@@ -2,7 +2,7 @@
 #'
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param .progress if \code{TRUE} (default if in an interactive session) then ask
-#'                  \code{httr::POST} to display a progress bar
+#'                  \code{httr::RETRY} to display a progress bar
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @family Dill direct REST API Interface
 #' @export
@@ -16,7 +16,7 @@ drill_show_schemas <- function(drill_con, .progress=interactive()) {
 #' @param schema_name A unique name for a Drill schema. A schema in Drill is a configured
 #'                   storage plugin, such as hive, or a storage plugin and workspace.
 #' @param .progress if \code{TRUE} (default if in an interactive session) then ask
-#'                  \code{httr::POST} to display a progress bar
+#'                  \code{httr::RETRY} to display a progress bar
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @family Dill direct REST API Interface
 #' @export
@@ -32,7 +32,7 @@ drill_use <- function(drill_con, schema_name, .progress=interactive()) {
 #' @param drill_con drill server connection object setup by \code{drill_connection()}
 #' @param schema_spec properly quoted "filesystem.directory_name" reference path
 #' @param .progress if \code{TRUE} (default if in an interactive session) then ask
-#'                  \code{httr::POST} to display a progress bar
+#'                  \code{httr::RETRY} to display a progress bar
 #' @export
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @family Dill direct REST API Interface

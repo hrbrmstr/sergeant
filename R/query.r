@@ -13,7 +13,7 @@
 #'               ignored if \code{drill_con} is a \code{JDBCConnection} created by
 #'               \code{drill_jdbc()})
 #' @param .progress if \code{TRUE} (default if in an interactive session) then ask
-#'                  \code{httr::POST} to display a progress bar
+#'                  \code{httr::RETRY} to display a progress bar
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @family Drill direct REST API Interface
 #' @export
@@ -40,23 +40,26 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
     drill_server <- make_server(drill_con)
 
     if (.progress) {
-      httr::POST(
+      httr::RETRY(
+        "POST",
         url = sprintf("%s/query.json", drill_server),
         encode = "json",
         httr::progress(),
         body = list(
           queryType = "SQL",
           query = query
-        )
+        ),
+        terminate_on = c(403, 404)
       ) -> res
     } else {
-      httr::POST(
+      httr::RETRY(
         url = sprintf("%s/query.json", drill_server),
         encode = "json",
         body = list(
           queryType = "SQL",
           query = query
-        )
+        ),
+        terminate_on = c(403, 404)
       ) -> res
     }
 

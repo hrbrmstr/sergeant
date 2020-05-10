@@ -1,4 +1,4 @@
-s_head <- purrr::safely(httr::HEAD)
+s_head <- purrr::safely(function(...){httr::RETRY(verb = "HEAD", ...)})
 
 #' Setup a Drill connection
 #'
@@ -61,7 +61,7 @@ drill_active <- function(drill_con) {
 #' }
 drill_status <- function(drill_con) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/status", drill_server))
+  res <- httr::RETRY("GET", sprintf("%s/status", drill_server), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   cnt <- htmltools::HTML(cnt)
@@ -78,7 +78,7 @@ drill_status <- function(drill_con) {
 #' }
 drill_metrics <- function(drill_con) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/status/metrics", drill_server))
+  res <- httr::RETRY("GET", sprintf("%s/status/metrics", drill_server), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt, flatten=TRUE)
@@ -95,7 +95,7 @@ drill_metrics <- function(drill_con) {
 #' }
 drill_threads <- function(drill_con) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/status/threads", drill_server))
+  res <- httr::RETRY("GET", sprintf("%s/status/threads", drill_server), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   cnt <- htmltools::HTML(sprintf("<pre>%s</pre>", cnt))
@@ -113,7 +113,7 @@ drill_threads <- function(drill_con) {
 #' }
 drill_profiles <- function(drill_con) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/profiles.json", drill_server))
+  res <- httr::RETRY("GET", sprintf("%s/profiles.json", drill_server), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
@@ -128,7 +128,7 @@ drill_profiles <- function(drill_con) {
 #' @export
 drill_profile <- function(drill_con, query_id) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/profiles/%s.json", drill_server, query_id))
+  res <- httr::RETRY("GET", sprintf("%s/profiles/%s.json", drill_server, query_id), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)
@@ -143,7 +143,7 @@ drill_profile <- function(drill_con, query_id) {
 #' @export
 drill_cancel <- function(drill_con, query_id) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/profiles/cancel/%s", drill_server, query_id))
+  res <- httr::RETRY("GET", sprintf("%s/profiles/cancel/%s", drill_server, query_id), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   message(httr::content(res, as="text", encoding="UTF-8"))
   invisible(TRUE)
@@ -195,9 +195,9 @@ drill_storage <- function(drill_con, plugin=NULL, as=c("tbl", "list", "raw")) {
   drill_server <- make_server(drill_con)
 
   if (is.null(plugin)) {
-    res <- httr::GET(sprintf("%s/storage.json", drill_server))
+    res <- httr::RETRY("GET", sprintf("%s/storage.json", drill_server), terminate_on = c(403, 404))
   } else {
-    res <- httr::GET(sprintf("%s/storage/%s.json", drill_server, plugin))
+    res <- httr::RETRY("GET", sprintf("%s/storage/%s.json", drill_server, plugin), terminate_on = c(403, 404))
   }
 
   httr::stop_for_status(res)
@@ -225,11 +225,13 @@ drill_mod_storage <- function(drill_con, name, config) {
 
   drill_server <- make_server(drill_con)
 
-  httr::POST(
+  httr::RETRY(
+    verb = "POST",
     url = sprintf("%s/storage/%s.json", drill_server, name),
     httr::content_type_json(),
     body = config,
-    encode = "raw"
+    encode = "raw",
+    terminate_on = c(403, 404)
   ) -> res
 
   httr::stop_for_status(res)
@@ -247,9 +249,11 @@ drill_rm_storage <- function(drill_con, name) {
 
   drill_server <- make_server(drill_con)
 
-  httr::DELETE(
+  httr::RETRY(
+    verb = "DELETE",
     url = sprintf("%s/storage/%s.json", drill_server, name),
-    httr::content_type_json()
+    httr::content_type_json(),
+    terminate_on = c(403, 404)
   ) -> res
 
   httr::stop_for_status(res)
@@ -271,7 +275,7 @@ drill_rm_storage <- function(drill_con, name) {
 #' }
 drill_options <- function(drill_con, pattern=NULL) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/options.json", drill_server))
+  res <- httr::RETRY("GET", sprintf("%s/options.json", drill_server), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt) %>%
@@ -291,7 +295,7 @@ drill_options <- function(drill_con, pattern=NULL) {
 #' }
 drill_stats <- function(drill_con) {
   drill_server <- make_server(drill_con)
-  res <- httr::GET(sprintf("%s/cluster.json", drill_server))
+  res <- httr::RETRY("GET", sprintf("%s/cluster.json", drill_server), terminate_on = c(403, 404))
   httr::stop_for_status(res)
   cnt <- httr::content(res, as="text", encoding="UTF-8")
   jsonlite::fromJSON(cnt)

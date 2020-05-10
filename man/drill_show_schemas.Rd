@@ -10,7 +10,7 @@ drill_show_schemas(drill_con, .progress = interactive())
 \item{drill_con}{drill server connection object setup by \code{drill_connection()}}
 
 \item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
-\code{httr::POST} to display a progress bar}
+\code{httr::RETRY} to display a progress bar}
 }
 \description{
 Returns a list of available schemas.

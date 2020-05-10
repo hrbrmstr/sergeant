@@ -13,7 +13,7 @@ drill_use(drill_con, schema_name, .progress = interactive())
 storage plugin, such as hive, or a storage plugin and workspace.}
 
 \item{.progress}{if \code{TRUE} (default if in an interactive session) then ask
-\code{httr::POST} to display a progress bar}
+\code{httr::RETRY} to display a progress bar}
 }
 \description{
 Change to a particular schema.

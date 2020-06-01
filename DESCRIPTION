@@ -12,9 +12,9 @@ Authors@R: c(
       person("James", "Lamb", email = "jaylamb20@gmail.com", role = "ctb")
     )
 Description: Apache Drill is a low-latency distributed query engine designed to enable 
-    data exploration and analytics on both relational and non-relational datastores, 
+    data exploration and analysis on both relational and non-relational data stores, 
     scaling to petabytes of data. Methods are provided that enable working with Apache 
-    Drill instances via the REST API, JDBC interface (optional), DBI methods
+    Drill instances via the REST API, DBI methods
     and using 'dplyr'/'dbplyr' idioms. Helper functions are included to facilitate
     using official Drill Docker images/containers.
 Depends:

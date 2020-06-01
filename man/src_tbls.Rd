@@ -36,9 +36,9 @@
 "SHOW DATABASES"
 }
 \seealso{
-Other Drill REST \code{dplyr} API: 
+Other Drill REST API (dplyr): 
 \code{\link{drill_custom_functions}},
 \code{\link{src_drill}()}
 }
-\concept{Drill REST \code{dplyr} API}
+\concept{Drill REST API (dplyr)}
 \keyword{internal}

@@ -13,9 +13,9 @@ drill_active(drill_con)
 This is a very simple test (performs \code{HEAD /} request on the Drill server/cluster)
 }
 \examples{
-try({
+\dontrun{
 drill_connection() \%>\% drill_active()
-}, silent=TRUE)
+}
 }
 \seealso{
 Other Drill direct REST API Interface: 

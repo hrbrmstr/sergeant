@@ -374,6 +374,6 @@ select columns[2] as city, columns[4] as lon, columns[3] as lat
 
 ## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of
-Conduct](CONDUCT.md). By participating in this project you agree to
+Please note that this project is released with a Contributor Code of
+Conduct By participating in this project you agree to
 abide by its terms.

@@ -74,7 +74,7 @@
 #' as well.
 #'
 #' @md
-#' @family Drill REST `dplyr` API
+#' @family Drill REST API (dplyr)
 #' @name drill_custom_functions
 NULL
 

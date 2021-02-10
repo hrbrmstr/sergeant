@@ -1,6 +1,6 @@
 Package: sergeant
 Title: Tools to Transform and Query Data with Apache Drill
-Version: 0.9.0
+Version: 0.9.1
 Authors@R: c(
       person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-5670-2640")),
@@ -45,5 +45,5 @@ Suggests:
     tinytest,
     covr (>= 3.0.0),
     DBItest
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)

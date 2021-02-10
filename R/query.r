@@ -41,7 +41,7 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
 
     if (.progress) {
       httr::RETRY(
-        "POST",
+        verb = "POST",
         url = sprintf("%s/query.json", drill_server),
         encode = "json",
         httr::progress(),
@@ -53,6 +53,7 @@ drill_query <- function(drill_con, query, uplift=TRUE, .progress=interactive()) 
       ) -> res
     } else {
       httr::RETRY(
+        verb = "POST",
         url = sprintf("%s/query.json", drill_server),
         encode = "json",
         body = list(

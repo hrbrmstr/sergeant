@@ -263,6 +263,20 @@ sql_translate_env.DrillConnection <- function(con) {
       .parent = dbplyr::base_win,
       n = function() { dbplyr::win_over(dbplyr::sql("count(*)"),
                                         partition = dbplyr::win_current_group()) },
+      lag = function(x, n = 1L, default = NA, order_by = NULL, ...) {
+        dbplyr::win_over(
+          dbplyr::sql_call2("lag", x, n),
+          partition = dbplyr::win_current_group(),
+          order = if (is.null(order_by)) dbplyr::win_current_order() else order_by
+        )
+      },
+      lead = function(x, n = 1L, default = NA, order_by = NULL, ...) {
+        dbplyr::win_over(
+          dbplyr::sql_call2("lead", x, n),
+          partition = dbplyr::win_current_group(),
+          order = if (is.null(order_by)) dbplyr::win_current_order() else order_by
+        )
+      },
       cor = dbplyr::win_recycled("corr"),
       cov = dbplyr::win_recycled("covar_samp"),
       sd =  dbplyr::win_recycled("stddev_samp"),

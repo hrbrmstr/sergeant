@@ -1,5 +1,6 @@
 # sergeant 0.9.1
 
+- Fixed SQL translation bug for `lag()` and `lead()` (@alistaire47)
 - Fixed identifier quoting issue #44 by @alistaire47
 - Fixed `RETRY` bug in `drill_query` (directg REST API)
 

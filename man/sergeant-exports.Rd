@@ -2,7 +2,6 @@
 % Please edit documentation in R/sergeant-package.r
 \name{sergeant-exports}
 \alias{sergeant-exports}
-\alias{\%>\%}
 \alias{tbl}
 \title{sergeant exported operators}
 \description{

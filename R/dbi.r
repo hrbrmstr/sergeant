@@ -436,13 +436,17 @@ setMethod(
 #' @export
 setMethod(
   'dbListFields',
-  signature(conn='DrillResult', name='missing'),
+  signature(conn = 'DrillResult', name = 'missing'),
+
   function(conn, name) {
+
     httr::RETRY(
       verb = "POST",
-      sprintf("%s/query.json", conn@drill_server),
+      url = sprintf("%s/query.json", conn@drill_server),
       encode = "json",
-      body = list(queryType="SQL", query=conn@statement
+      body = list(
+        queryType = "SQL",
+        query = stringi::stri_replace_all_regex(conn@statement, '"([[:alnum:]]+)"', '`$1`')
       ),
       terminate_on = c(403, 404)
     ) -> res

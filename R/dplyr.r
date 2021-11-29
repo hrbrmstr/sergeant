@@ -106,7 +106,9 @@ db_desc.src_drill <- function(x) {
 #' @keywords internal
 #' @export
 sql_escape_ident.DrillConnection <- function(con, x) {
-  ifelse(grepl("`", x), dbplyr::sql_quote(x, ' '), dbplyr::sql_quote(x, '`'))
+  x <- ifelse(grepl("`", x), dbplyr::sql_quote(x, ' '), dbplyr::sql_quote(x, '`'))
+  x <- gsub('"', '`', x)
+  x
 }
 
 #' @rdname src_tbls

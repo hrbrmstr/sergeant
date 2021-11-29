@@ -11,13 +11,12 @@ if (at_home()) {
 
   expect_true(inherits(db, "src_drill"))
 
-  test_dplyr <- tbl(db, "cp.`employee.json`")
-
+  test_dplyr <- tbl(db, sql("SELECT * FROM cp.`employee.json`"))
   expect_true(inherits(test_dplyr, "tbl"))
 
   db <- src_drill(test_host)
 
-  test_dplyr <- tbl(db, "cp.`employee.json`")
+  test_dplyr <- tbl(db, sql("SELECT * FROM cp.`employee.json`"))
 
   expect_true(inherits(dplyr::count(test_dplyr, gender), "tbl"))
   expect_true(sum(dplyr::collect(dplyr::count(test_dplyr, gender))[["n"]]) > 100)

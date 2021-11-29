@@ -2,10 +2,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1248912.svg)](https://doi.org/10.5281/zenodo.1248912)
-[![Travis-CI Build
-Status](https://travis-ci.org/hrbrmstr/sergeant.svg?branch=master)](https://travis-ci.org/hrbrmstr/sergeant)
-[![Coverage
-Status](https://codecov.io/gh/hrbrmstr/sergeant/branch/master/graph/badge.svg)](https://codecov.io/gh/hrbrmstr/sergeant)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/sergeant)](https://cran.r-project.org/package=sergeant)
 
 # 💂 sergeant
@@ -16,8 +12,7 @@ Tools to Transform and Query Data with ‘Apache’ ‘Drill’
 
 Version 0.7.0+ (a.k.a. the main branch) splits off the JDBC interface
 into a separate package `sergeant.caffeinated`
-([GitLab](https://gitlab.com/hrbrmstr/sergeant-caffeinated);
-[GitHub](https://github.com/hrbrmstr/sergeant-caffeinated)).
+([GitHub](https://github.com/hrbrmstr/sergeant-caffeinated)).
 
 I\# Description
 

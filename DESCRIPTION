@@ -1,6 +1,6 @@
 Package: sergeant
 Title: Tools to Transform and Query Data with Apache Drill
-Version: 0.9.0
+Version: 0.9.1
 Authors@R: c(
       person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-5670-2640")),
@@ -20,10 +20,9 @@ Description: Apache Drill is a low-latency distributed query engine designed to 
 Depends:
     R (>= 3.6.0)
 URL: https://gitlab.com/hrbrmstr/sergeant
-BugReports: https://gitlab.com/hrbrmstr/sergeant/issues
+BugReports: https://gitlab.com/hrbrmstr/sergeant/-/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Imports: 
     bit64 (>= 0.9-7),
     DBI (>= 0.7),
@@ -35,6 +34,7 @@ Imports:
     readr (>= 1.1.1),
     purrr (>= 0.2.2),
     scales (>= 0.4.1),
+    stringi,
     tibble,
     utils,
     methods,
@@ -45,5 +45,5 @@ Suggests:
     tinytest,
     covr (>= 3.0.0),
     DBItest
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)

@@ -55,3 +55,4 @@ if (at_home()) {
   expect_warning(dbListFields(con, "missing"))
 
 }
+

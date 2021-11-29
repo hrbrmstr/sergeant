@@ -32,11 +32,13 @@
 #' @references \href{https://drill.apache.org/docs/}{Drill documentation}
 #' @docType package
 #' @author Bob Rudis (bob@@rud.is)
-#' @import utils DBI methods bit64 httr jsonlite htmltools bit64
+#' @import DBI methods httr jsonlite htmltools bit64 stringi
 #' @importFrom scales comma
 #' @importFrom purrr map map2 map2_df %>%
 #' @importFrom readr type_convert
 #' @importFrom tibble as_tibble
+#' @importFrom bit64 integer64
+#' @importFrom utils globalVariables compareVersion packageVersion head str
 #' @importFrom dplyr mutate select left_join bind_cols bind_rows data_frame tbl filter
 #' @importFrom dplyr db_desc src db_data_type db_explain sql_translate_env copy_to
 #' @importFrom dplyr db_query_fields src_tbls sql_escape_ident case_when collect
@@ -51,11 +53,6 @@ NULL
 #' pipe operator with no additional library calls
 #'
 #' @name sergeant-exports
-NULL
-
-#' @name %>%
-#' @export
-#' @rdname sergeant-exports
 NULL
 
 #' @name tbl

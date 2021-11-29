@@ -410,9 +410,17 @@ setMethod(
   }
 )
 
+quote_identifier <- function(conn, x, ...) {
+  ifelse(grepl("`", x), dbplyr::sql_quote(x, ' '), dbplyr::sql_quote(x, '`'))
+}
+
+#' @export
+setMethod("dbQuoteIdentifier", signature("DrillConnection", "character"), quote_identifier)
+
 #' @rdname DrillConnection-class
 #' @family Drill REST DBI API
 #' @export
+#'
 setMethod(
   'dbListFields',
   c('DrillConnection', 'character'),

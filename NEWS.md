@@ -1,3 +1,8 @@
+# sergeant 0.9.1
+
+- Fixed identifier quoting issue #44 by @alistaire47
+- Fixed `RETRY` bug in `drill_query` (directg REST API)
+
 # sergeant 0.9.0
 
 - Column order preserved in REST API & REST API DBI-based calls if
